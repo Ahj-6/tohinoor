@@ -1,0 +1,23 @@
+# Laravel
+tohinoor-api/vendor/
+tohinoor-api/node_modules/
+tohinoor-api/storage/logs/*
+tohinoor-api/storage/framework/cache/*
+tohinoor-api/storage/framework/sessions/*
+tohinoor-api/storage/framework/views/*
+tohinoor-api/bootstrap/cache/*
+tohinoor-api/.env
+
+# React
+tohinoor-frontend/node_modules/
+tohinoor-frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+underConstruction
