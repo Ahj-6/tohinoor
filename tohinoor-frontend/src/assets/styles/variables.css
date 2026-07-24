@@ -1,0 +1,30 @@
+:root {
+  /* ========= Colors ========= */
+
+  --color-primary: #d4a64e;
+  --color-primary-dark: #b88425;
+  --color-secondary: #1c2344;
+  --color-background: #f5efe6;
+  --color-surface: #ffffff;
+  --color-text: #1f1f1f;
+  --color-text-light: #6c6c6c;
+  --color-border: #e6d8c5;
+  --color-success: #3c8d40;
+  --color-danger: #c0392b;
+
+  /* ========= Fonts ========= */
+  --font-fa: "Vazirmatn", sans-serif;
+  --font-en: "Poppins", sans-serif;
+
+  /* ========= Radius ========= */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  /* ========= Shadow ========= */
+  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.12);
+
+  /* ========= Transition ========= */
+  --transition: 0.25s ease;
+}
