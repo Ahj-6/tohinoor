@@ -1,11 +1,16 @@
 import "./Home.css";
 import StarField from "../../components/common/StarField";
-
+import HomeHero from "../../components/home/HomeHero/HomeHero";
+import HomeCards from "../../components/home/HomeCards/HomeCards";
 
 export default function Home() {
   return (
     <div className="home-page">
-      <StarField>اینجا لوگو اینجا دکمه ورود اینجا چهار کارت</StarField>
+      <StarField>
+        <HomeHero />
+
+        <HomeCards />
+      </StarField>
     </div>
   );
 }

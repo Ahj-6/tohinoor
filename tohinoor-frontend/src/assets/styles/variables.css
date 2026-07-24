@@ -1,25 +1,42 @@
 :root {
   /* ========= Colors ========= */
+  --color-primary: #f5ca72;
 
-  --color-primary: #d4a64e;
-  --color-primary-dark: #b88425;
-  --color-secondary: #1c2344;
-  --color-background: #f5efe6;
-  --color-surface: #ffffff;
-  --color-text: #1f1f1f;
-  --color-text-light: #6c6c6c;
-  --color-border: #e6d8c5;
-  --color-success: #3c8d40;
-  --color-danger: #c0392b;
+  --bg-main: #f1e8de;
+  --bg-content: #f6f3ee;
+  --bg-cards: #f8f4f0;
+  --bg-counter-box: #aeadac;
+  --bg-rate-box: #ece3d6;
+  --bg-zodiac-box: #c69b5a;
+
+  --txt-white: #fff;
+  --txt-black: #000;
+  --txt-menu-hover-gold: #f5ca72;
+  --txt-titles: #040a20;
+  --txt-person-detail-title: #c69b5a;
+  --txt-person-detail: #1f232e;
+  --txt-zodiac-icons: #312b24;
+  --txt-searchbox: #d9cab4;
+  --txt-rate-title: #822402;
+  --txt-rate: #8c6a3c;
+
+  --line-color: #312b24;
+
+  --stroke-searchbox: #ece3d6;
+  --stroke-person-image: #caa56a;
+
+  --btn-arrow-person-show: #e7d6be;
 
   /* ========= Fonts ========= */
-  --font-fa: "Vazirmatn", sans-serif;
   --font-en: "Poppins", sans-serif;
+  --font-primary: "Vazirmatn", sans-serif;
+  --font-heading: "Vazirmatn B", sans-serif;
+  --font-fancy: "B Koodak", cursive;
+  --font-secondary: "Shabnam", sans-serif;
 
   /* ========= Radius ========= */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
+  --radius-md: 10px;
+  --radius-lg: 30px;
 
   /* ========= Shadow ========= */
   --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);

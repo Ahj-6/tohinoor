@@ -1,0 +1,26 @@
+.login-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    color: var(--color-primary);
+
+    font-size: 15px;
+    font-family: var(--font-primary);
+
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.login-button:hover {
+    color: var(--txt-white);
+}
+
+.login-button__icon {
+    font-size: 20px;
+}
