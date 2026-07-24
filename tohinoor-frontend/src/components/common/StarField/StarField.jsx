@@ -2,16 +2,29 @@ import { useEffect, useRef } from "react";
 
 import "./StarField.css";
 
-import { startAnimation } from "../../../pages/Home/components/GalaxyBackground/animation";
+import { startAnimation } from "./animation";
 
-export default function StarField() {
-  const canvasRef = useRef(null);
+export default function StarField({ children, className = "" }) {
+    const canvasRef = useRef(null);
 
-  useEffect(() => {
-    const cleanup = startAnimation(canvasRef.current);
+    useEffect(() => {
+        if (!canvasRef.current) return;
 
-    return cleanup;
-  }, []);
+        const cleanup = startAnimation(canvasRef.current);
 
-  return <canvas ref={canvasRef} className="star-field" />;
+        return cleanup;
+    }, []);
+
+    return (
+        <div className={`star-field ${className}`}>
+            <canvas
+                ref={canvasRef}
+                className="star-field__canvas"
+            />
+
+            <div className="star-field__content">
+                {children}
+            </div>
+        </div>
+    );
 }

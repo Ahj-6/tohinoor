@@ -22,6 +22,8 @@ export function startAnimation(canvas) {
     createStars(canvas, starCount, CONFIG);
   }
 
+  resizeCanvas();
+
   window.addEventListener("resize", resizeCanvas);
 
   function animate() {
@@ -37,8 +39,6 @@ export function startAnimation(canvas) {
 
     animationId = requestAnimationFrame(animate);
   }
-
-  resizeCanvas();
 
   animate();
 
