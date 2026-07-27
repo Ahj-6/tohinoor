@@ -8,20 +8,51 @@ export function startAnimation(canvas) {
 
   let animationId;
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  // function resizeCanvas() {
+  //   canvas.width = window.innerWidth;
+  //   canvas.height = window.innerHeight;
 
-    const area = canvas.width * canvas.height;
+  //   const area = canvas.width * canvas.height;
+
+  //   const starCount = Math.min(
+  //     CONFIG.stars.max,
+  //     Math.max(CONFIG.stars.min, Math.floor(area / CONFIG.stars.density)),
+  //   );
+
+  //   createStars(canvas, starCount, CONFIG);
+  // }
+
+  function resizeCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const area = width * height;
 
     const starCount = Math.min(
       CONFIG.stars.max,
       Math.max(CONFIG.stars.min, Math.floor(area / CONFIG.stars.density)),
     );
 
-    createStars(canvas, starCount, CONFIG);
+    createStars(
+      {
+        width,
+        height,
+      },
+      starCount,
+      CONFIG,
+    );
   }
-
+  
   resizeCanvas();
 
   window.addEventListener("resize", resizeCanvas);
