@@ -1,24 +1,24 @@
 @font-face {
     font-family: "Shabnam";
-    src: url("../assets/fonts/Shabnam.ttf") format("truetype");
+    src: url("../fonts/Shabnam.ttf") format("truetype");
     font-display: swap;
 }
 
 @font-face {
     font-family: "B Koodak";
-    src: url("../assets/fonts/BKoodakBold.ttf") format("truetype");
+    src: url("../fonts/BKoodakBold.ttf") format("truetype");
     font-display: swap;
 }
 
 @font-face {
     font-family: "Vazirmatn";
-    src: url("../assets/fonts/Vazirmatn-Medium.ttf") format("truetype");
+    src: url("../fonts/Vazirmatn-Medium.ttf") format("truetype");
     font-display: swap;
 }
 
 @font-face {
     font-family: "Vazirmatn B";
-    src: url("../assets/fonts/Vazirmatn-Bold.ttf") format("truetype");
+    src: url("../fonts/Vazirmatn-Bold.ttf") format("truetype");
     font-display: swap;
 }
 
