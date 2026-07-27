@@ -20,6 +20,7 @@
   --txt-rate-title: #822402;
   --txt-rate: #8c6a3c;
 
+  --line-color-home-card:#E5E5E5;
   --line-color: #312b24;
 
   --stroke-searchbox: #ece3d6;
@@ -28,20 +29,62 @@
   --btn-arrow-person-show: #e7d6be;
 
   /* ========= Fonts ========= */
-  --font-en: "Poppins", sans-serif;
+  --font-en: "Poppins";
   --font-primary: "Vazirmatn", sans-serif;
-  --font-heading: "Vazirmatn B", sans-serif;
+  --font-heading: "Vazirmatn", sans-serif;
+  --font-heading2: "B Roya", sans-serif;
   --font-fancy: "B Koodak", cursive;
   --font-secondary: "Shabnam", sans-serif;
+  --font-sanserif : sans-serif;
 
   /* ========= Radius ========= */
   --radius-md: 10px;
   --radius-lg: 30px;
 
   /* ========= Shadow ========= */
-  --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0px 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0px 8px 20px rgba(0, 0, 0, 0.12);
+  --glow-sm: 0px 2px 6px rgba(252, 186, 7, 0.08);
+  --glow-md: 0px 8px 20px rgba(252, 186, 7, 0.12);
 
   /* ========= Transition ========= */
   --transition: 0.25s ease;
+
+
+/* ==================================================
+   HOME PAGE
+================================================== */
+
+/* ---------- Hero ---------- */
+--home-logo-size: 115px;
+--home-header-padding-top: 30px;
+--home-header-gap: 18px;
+
+
+/* ---------- Cards ---------- */
+--home-card-columns: 4;
+--home-card-width: 230px;
+--home-card-height: 295px;
+--home-card-image-height: 160px;
+--home-card-gap: 20px;
+--home-card-radius: var(--radius-md);
+--home-card-image-radius: var(--radius-md) var(--radius-md) 0 0;
+--home-card-title-size: 22px;
+--home-card-link-size: 16px;
+--home-card-link-color: #678FB1;
+--home-card-link-color-hover: #26435c;
+--home-card-content-padding: 0px 2px 20px;
+--home-card-divider-width: 100%;
+--home-card-divider-height: 2px;
+--home-card-divider-margin: 16px 0 5px;
+--home-card-padding: 5px;
+
+--home-login-margin-bottom: 10px;
+
+
+/* ---------- Layout ---------- */
+--home-cards-margin-top: 20px;
+--home-cards-padding-inline: 70px;
+--home-layout-padding-top: 15px;
+--home-layout-padding-bottom: 48px;
 }

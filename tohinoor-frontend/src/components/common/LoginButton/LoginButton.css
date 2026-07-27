@@ -11,7 +11,8 @@
     color: var(--color-primary);
 
     font-size: 15px;
-    font-family: var(--font-primary);
+    font-family: "var(--font-heading)";
+    /* font-family: "B Koodak"; */
 
     cursor: pointer;
     transition: var(--transition);

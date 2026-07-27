@@ -1,0 +1,77 @@
+/* ==========================================
+   Laptop
+========================================== */
+
+@media (max-width: 1200px) {
+  :root {
+    --home-logo-size: 110px;
+
+    --home-card-width: 230px;
+    --home-card-height: 295px;
+
+    --home-card-image-height: 155px;
+
+    --home-card-gap: 18px;
+
+    --home-card-title-size: 20px;
+
+    --home-cards-padding-inline: 40px;
+  }
+}
+
+/* ==========================================
+   Tablet
+========================================== */
+
+@media (max-width: 992px) {
+  :root {
+    --home-logo-size: 100px;
+
+    --home-card-width: 250px;
+    --home-card-height: 300px;
+
+    --home-card-image-height: 165px;
+
+    --home-card-gap: 22px;
+
+    --home-cards-padding-inline: 30px;
+  }
+
+  .home-page {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .home-cards {
+    grid-template-columns: repeat(2, var(--home-card-width));
+  }
+
+  .home-layout {
+    justify-content: flex-start;
+    gap: 50px;
+  }
+
+  .home-header {
+    padding-top: 25px;
+
+  }
+}
+
+/* ==========================================
+   Mobile
+========================================== */
+
+@media (max-width: 690px) {
+  .home-cards {
+    grid-template-columns: 1fr;
+
+    justify-items: center;
+  }
+}
+
+/* ==========================================
+   Small Mobile
+========================================== */
+
+@media (max-width: 576px) {
+}

@@ -7,9 +7,10 @@ export default function Home() {
   return (
     <div className="home-page">
       <StarField>
-        <HomeHero />
-
-        <HomeCards />
+        <div className="home-layout">
+          <HomeHero />
+          <HomeCards />
+        </div>
       </StarField>
     </div>
   );

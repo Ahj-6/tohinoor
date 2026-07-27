@@ -1,14 +1,26 @@
-.home-page{
-    width:100%;
-    min-height:100vh;
-    position:relative;
+.home-page {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  
+  background: radial-gradient(
+    circle at top,
+    #18284a 0%,
+    #0c1430 35%,
+    #050816 70%,
+    #010204 100%
+    );
 
-    background:
-        radial-gradient(
-            circle at top,
-            #18284a 0%,
-            #0c1430 35%,
-            #050816 70%,
-            #010204 100%
-        );
+    /* border: 1px solid red; */
+}
+
+.home-layout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* justify-content: flex-start; */
+  padding-block: var(--home-layout-padding-top)
+    var(--home-layout-padding-bottom);
 }
