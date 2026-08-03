@@ -1,27 +1,33 @@
 .login-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 
-    padding: 0;
+  padding: 0;
 
-    border: none;
-    background: transparent;
+  border: none;
+  background: transparent;
 
-    color: var(--color-primary);
+  color: var(--color-primary);
 
-    font-size: 15px;
-    font-family: "var(--font-heading2)";
-    /* font-family: "B Koodak"; */
+  font-size: 15px;
+  font-family: var(--font-primary);
 
-    cursor: pointer;
-    transition: var(--transition);
+  cursor: pointer;
+  transition: var(--transition);
 }
 
 .login-button:hover {
-    color: var(--txt-white);
+  color: var(--txt-white);
 }
 
 .login-button__icon {
-    font-size: 20px;
+  font-size: 20px;
+}
+
+.login-button__text {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
 }

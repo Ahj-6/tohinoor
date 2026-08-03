@@ -1,0 +1,32 @@
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.header-nav__link {
+  text-decoration: none;
+  color: var(--txt-white);
+  font-family: var(--font-primary);
+  transition: var(--transition);
+}
+
+.header-nav__link:hover {
+  color: var(--color-primary);
+}
+
+.header-nav__link--active {
+  color: var(--color-primary);
+  position: relative;
+}
+
+.header-nav__link--active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -18px;
+  width: 52px;
+  height: 2px;
+  background: var(--color-primary);
+}

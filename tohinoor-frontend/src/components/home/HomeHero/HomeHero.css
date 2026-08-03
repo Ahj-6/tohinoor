@@ -1,4 +1,4 @@
-.home-header {
+.hero-home-header {
     width: 100%;
 
     display: flex;
@@ -8,10 +8,10 @@
     /* border: 1px solid orange; */
 }
 
-.home-header__logo {
+.hero-home-header__logo {
     display: flex;
     justify-content: center;
 }
-.home-logo{
+/* .hero-home-logo{
     width:var(--home-logo-size);
-}
+} */

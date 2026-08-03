@@ -8,7 +8,7 @@ export const homeCards = [
         id: 1,
         title: "دانش ستارگان",
         image: astroKnowledge,
-        href: "/astro-knowledge",
+        href: "/star-knowledge",
         linkText: "مشاهده بایگانی زایچه‌ها"
     },
     {

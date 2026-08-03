@@ -3,9 +3,10 @@ import Logo from "../../common/Logo";
 
 export default function HomeHero() {
     return (
-        <header className="home-header">
-            <div className="home-header__logo">
-                <Logo className="home-logo" />
+        <header className="hero-home-header">
+            <div className="hero-home-header__logo">
+                <Logo className="hero-home-logo" size={115}/>
+                {/* <Logo size={115} /> */}
             </div>
         </header>
     );

@@ -1,0 +1,25 @@
+.star-knowledge-page{
+    width:100%;
+    min-height:100vh;
+    background:var(--bg-main);
+}
+
+.star-knowledge-hero{
+    height:280px;
+    border:2px dashed #bbb;
+}
+
+.zodiac-filter{
+    height:120px;
+    border:2px dashed #bbb;
+}
+
+.search-box{
+    height:90px;
+    border:2px dashed #bbb;
+}
+
+.person-grid{
+    min-height:500px;
+    border:2px dashed #bbb;
+}

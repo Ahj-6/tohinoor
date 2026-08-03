@@ -74,7 +74,10 @@
 .home-card__divider {
   width: var(--home-card-divider-width);
   height: var(--home-card-divider-height);
+  /* height: 10px; */
   background: var(--line-color-home-card);
+  /* background: red; */
+  border: 0px;
   margin: 0px;
 }
 
@@ -89,10 +92,8 @@
   /* border: 1px solid red; */
 }
 
-.home-card:hover .home-card__link{
-
-    color:var(--home-card-link-color-hover);
-
+.home-card:hover .home-card__link {
+  color: var(--home-card-link-color-hover);
 }
 
 .home-card:hover {

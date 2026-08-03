@@ -1,10 +1,10 @@
 import "./HomeCards.css";
-import "../../../assets/styles/home-responsive.css"
 
 import LoginButton from "../../common/LoginButton";
 import HomeCard from "../HomeCard/HomeCard";
 
 import { homeCards } from "../../../constants/homeCards";
+import "../../../pages/Home/Home-responsive.css"
 
 export default function HomeCards() {
   return (

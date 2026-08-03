@@ -27,6 +27,8 @@
   :root {
     --home-logo-size: 100px;
 
+    --home-card-columns: 2;
+
     --home-card-width: 250px;
     --home-card-height: 300px;
 
@@ -43,9 +45,9 @@
   }
 
   .home-cards {
-    grid-template-columns: repeat(2, var(--home-card-width));
+    /* grid-template-columns: repeat(2, var(--home-card-width)); */
   }
-
+  
   .home-layout {
     justify-content: flex-start;
     gap: 50px;
@@ -53,7 +55,6 @@
 
   .home-header {
     padding-top: 25px;
-
   }
 }
 
@@ -62,9 +63,12 @@
 ========================================== */
 
 @media (max-width: 690px) {
-  .home-cards {
-    grid-template-columns: 1fr;
+  :root {
+    --home-card-columns: 1;
+  }
 
+  .home-cards {
+    /* grid-template-columns: 1fr; */
     justify-items: center;
   }
 }

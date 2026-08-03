@@ -3,16 +3,7 @@
   height: 100vh;
   overflow: hidden;
   position: relative;
-  
-  background: radial-gradient(
-    circle at top,
-    #18284a 0%,
-    #0c1430 35%,
-    #050816 70%,
-    #010204 100%
-    );
 
-    /* border: 1px solid red; */
 }
 
 .home-layout {
