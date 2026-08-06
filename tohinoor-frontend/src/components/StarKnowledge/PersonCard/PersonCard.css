@@ -1,0 +1,110 @@
+.person-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 6px 18px 6px 6px;
+  min-height: 118px;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid transparent;
+
+}
+
+.person-card:hover {
+  border: 1px solid var(--txt-searchbox);
+  box-shadow: var(--shadow-md);
+}
+
+.person-card__photo {
+  width: 107px;
+  height: 107px;
+  flex-shrink: 0;
+  margin: 0;
+  /* border:1px solid red; */
+}
+
+.person-card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid var(--stroke-person-image);
+}
+
+.person-card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* border:1px solid red; */
+}
+
+.person-card__name {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.person-card__footer {
+  display: flex;
+  align-items: center;
+}
+
+.person-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* .person-card__zodiac {
+  margin-bottom: 6px;
+} */
+.person-card__zodiac {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  color: #fff;
+  /* color: var(--white); */
+  background: var(--bg-zodiac-circle);
+
+  flex-shrink: 0;
+  /* border: 1px solid red; */
+}
+
+.person-card__symbol {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+}
+
+.person-card__rating {
+  padding: 3px 10px;
+  border-radius: var(--radius-md);
+  color: var(--txt-rate-title);
+  background-color: var(--bg-rate-box);
+}
+
+.person-card__rating span {
+  color: var(--txt-rate);
+  font-weight: bold;
+}
+
+.person-card__arrow {
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  cursor: pointer;
+  /* color:var(--btn-arrow-person-show); */
+  color: #e7d6be;
+}
+
+.person-card__arrow:hover {
+  color: #c69b5a;
+}

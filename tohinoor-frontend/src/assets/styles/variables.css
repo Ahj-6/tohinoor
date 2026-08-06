@@ -1,13 +1,14 @@
 :root {
   /* ========= Colors ========= */
   --color-primary: #f5ca72;
+  --color-primary-hover: #f5d89d;
 
   --bg-main: #f1e8de;
   --bg-content: #f6f3ee;
   --bg-cards: #f8f4f0;
   --bg-counter-box: #aeadac;
   --bg-rate-box: #ece3d6;
-  --bg-zodiac-box: #c69b5a;
+  --bg-zodiac-circle: #c69b5a;
 
   --txt-white: #fff;
   --txt-black: #000;
@@ -31,10 +32,10 @@
   /* ========= Fonts ========= */
   --font-en: "Poppins";
   --font-primary: "Vazirmatn", sans-serif;
-  --font-heading: "Vazirmatn", sans-serif;
-  --font-heading2: "B Roya", sans-serif;
-  --font-fancy: "B Koodak", cursive;
-  --font-secondary: "Shabnam", sans-serif;
+  --font-heading: "Vazirmatn-med", sans-serif;
+  --font-heading2: "Vazirmatn B", sans-serif;
+  --font-koodak: "B Koodak", cursive;
+  --font-shabnam: "Shabnam", sans-serif;
   --font-sanserif : sans-serif;
 
   /* ========= Radius ========= */
@@ -42,8 +43,8 @@
   --radius-lg: 30px;
 
   /* ========= Shadow ========= */
-  --shadow-sm: 0px 2px 6px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0px 8px 20px rgba(0, 0, 0, 0.12);
+  --shadow-sm: 0px 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0px 5px 7px rgba(0, 0, 0, 0.4);
   --glow-sm: 0px 2px 6px rgba(252, 186, 7, 0.08);
   --glow-md: 0px 8px 20px rgba(252, 186, 7, 0.12);
 
@@ -88,3 +89,4 @@
 --home-layout-padding-top: 15px;
 --home-layout-padding-bottom: 48px;
 }
+

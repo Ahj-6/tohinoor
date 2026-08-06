@@ -5,13 +5,9 @@
     justify-content: center;
 
     padding-top: 5px;
-    /* border: 1px solid orange; */
 }
 
 .hero-home-header__logo {
     display: flex;
     justify-content: center;
 }
-/* .hero-home-logo{
-    width:var(--home-logo-size);
-} */

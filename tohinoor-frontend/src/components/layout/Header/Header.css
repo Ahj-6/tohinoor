@@ -6,15 +6,19 @@
   align-items: center;
   justify-content: space-between;
 
-  padding-inline: 32px;
+  margin: 3px 0 0 0;
+  padding-inline: 30px;
+  /* border: 1px solid blue; */
 }
 
 .header__logo {
   display: flex;
   align-items: center;
+  /* border: 1px solid green; */
 }
 
 .header__actions {
   display: flex;
   align-items: center;
+  /* border: 1px solid yellow; */
 }

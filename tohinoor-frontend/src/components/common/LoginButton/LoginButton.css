@@ -18,7 +18,7 @@
 }
 
 .login-button:hover {
-  color: var(--txt-white);
+  color: var(--color-primary-hover);
 }
 
 .login-button__icon {

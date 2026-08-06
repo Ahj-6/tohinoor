@@ -6,7 +6,6 @@ export default function HomeHero() {
         <header className="hero-home-header">
             <div className="hero-home-header__logo">
                 <Logo className="hero-home-logo" size={115}/>
-                {/* <Logo size={115} /> */}
             </div>
         </header>
     );

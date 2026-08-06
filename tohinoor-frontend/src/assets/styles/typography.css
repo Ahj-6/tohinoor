@@ -12,6 +12,12 @@
 
 @font-face {
     font-family: "Vazirmatn";
+    src: url("../fonts/Vazirmatn-Light.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Vazirmatn-med";
     src: url("../fonts/Vazirmatn-Medium.ttf") format("truetype");
     font-display: swap;
 }

@@ -1,0 +1,15 @@
+.page-shell {
+  width: 100%;
+  padding: 32px 0 48px;
+  /* border: 1px solid blue; */
+}
+
+.page-shell__container {
+  width: min(1200px, calc(100% - 64px));
+  margin-inline: auto;
+  background: var(--bg-content);
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  /* border: 1px solid red; */
+}

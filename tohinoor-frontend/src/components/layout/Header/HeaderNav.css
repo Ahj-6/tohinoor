@@ -1,32 +1,21 @@
 .header-nav {
   display: flex;
   align-items: center;
+  direction: rtl;
   gap: 48px;
+  /* border: 1px solid red; */
 }
 
 .header-nav__link {
   text-decoration: none;
-  color: var(--txt-white);
-  font-family: var(--font-primary);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  border-bottom: 3px solid transparent;
   transition: var(--transition);
 }
 
 .header-nav__link:hover {
-  color: var(--color-primary);
-}
-
-.header-nav__link--active {
-  color: var(--color-primary);
-  position: relative;
-}
-
-.header-nav__link--active::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: -18px;
-  width: 52px;
-  height: 2px;
-  background: var(--color-primary);
+  color: var(--color-primary-hover);
+  border-bottom: 3px solid var(--color-primary-hover);
+  position: relative; 
 }

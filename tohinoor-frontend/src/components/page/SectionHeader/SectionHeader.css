@@ -1,0 +1,25 @@
+.section-header {
+  text-align: center;
+
+  margin-bottom: 40px;
+}
+
+.section-header__subtitle {
+  display: block;
+
+  color: var(--color-primary);
+
+  margin-bottom: 10px;
+
+  font-size: 15px;
+}
+
+.section-header__title {
+  margin: 0;
+
+  color: var(--txt-titles);
+
+  font-family: var(--font-heading2);
+
+  font-size: 34px;
+}

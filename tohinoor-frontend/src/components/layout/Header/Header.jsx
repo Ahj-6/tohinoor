@@ -12,9 +12,9 @@ export default function Header() {
     <StarField variant="header">
       <header className="header">
 
-        <div className="header__logo">
-          <Logo size={52} />
-        </div>
+        <a className="header__logo">
+          <Logo size={62} />
+        </a>
 
         <HeaderNav />
 

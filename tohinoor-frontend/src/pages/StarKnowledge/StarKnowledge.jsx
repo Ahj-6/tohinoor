@@ -1,26 +1,31 @@
 import "./StarKnowledge.css";
 import "./StarKnowledge-responsive.css";
 
+import PageShell from "../../components/layout/PageShell";
+import PageHero from "../../components/page/PageHero";
+// import SectionHeader from "../../components/page/SectionHeader";
+import PersonList from "../../components/StarKnowledge/PersonList";
+
+import heroImage from "../../assets/images/backgrounds/star-knowledge.png";
+
 export default function StarKnowledge() {
   return (
-    <main className="star-knowledge-page">
+    <PageShell>
+      <PageHero
+        title="دانش ستارگان"
+        subtitle="بایگانی زایچه‌ها"
+        backgroundImage={heroImage}
+      />
 
-      <section className="star-knowledge-hero">
-        Hero
-      </section>
+      <div className="star-knoledge__content">
+        {/* <SectionHeader title="نمایش زایچه‌ها" subtitle="جستجو و فیلتر" />
 
-      <section className="zodiac-filter">
-        Zodiac Filter
-      </section>
+        <section className="zodiac-filter">Zodiac Filter</section>
 
-      <section className="search-box">
-        Search Box
-      </section>
+        <section className="search-box">Search Box</section> */}
 
-      <section className="person-grid">
-        Person Grid
-      </section>
-
-    </main>
+        <PersonList />
+      </div>
+    </PageShell>
   );
 }

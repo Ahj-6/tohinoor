@@ -1,0 +1,18 @@
+<svg 
+    width="39" 
+    height="39" 
+    viewBox="0 0 39 39" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg">
+
+    <circle 
+        cx="19.2204" 
+        cy="19.2204" 
+        r="17.7204" 
+        stroke="currentColor" stroke-width="3"/>
+    <path 
+        d="M13.4097 12.5156L25.0313 19.4631L13.4097 26.8192" 
+        stroke="currentColor" 
+        stroke-width="3" 
+        stroke-linecap="round"/>
+</svg>
