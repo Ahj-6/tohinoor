@@ -1,0 +1,58 @@
+.search-box {
+  width: 100%;
+  max-width: 420px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+
+  background-color: var(--bg-cards);
+  border: 1px solid rgba(4, 10, 32, 0.1);
+  border-radius: 14px;
+
+  padding: 0 16px;
+
+  transition: all 0.3s ease;
+  border: 2px solid var(--stroke-searchbox-svg);
+}
+
+/* حالت فوکوس */
+.search-box:focus-within {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(245, 202, 114, 0.2);
+}
+
+/* Input */
+.search-box input {
+  flex: 1;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  font-family: var(--font-body);
+  font-size: 14px;
+
+  color: var(--txt-titles);
+
+  direction: rtl;
+}
+
+.search-box input::placeholder {
+  color: var(--stroke-searchbox-svg);
+  font-weight: bold;
+}
+
+/* Icon */
+.search-box svg {
+  width: 22px;
+  height: 22px;
+
+  color: var(--stroke-searchbox-svg);
+
+  cursor: pointer;
+
+  margin-right: 8px;
+  margin-left: 8px;
+}

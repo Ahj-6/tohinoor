@@ -1,13 +1,11 @@
 import "./SectionHeader.css";
 
-export default function SectionHeader({ title, subtitle, children }) {
+export default function SectionHeader({ title, badge }) {
   return (
-    <header className="section-header">
-      {subtitle && <span className="section-header__subtitle">{subtitle}</span>}
-
+    <div className="section-header">
       <h2 className="section-header__title">{title}</h2>
 
-      {children}
-    </header>
+      {badge && <span className="section-header__badge">{badge}</span>}
+    </div>
   );
 }

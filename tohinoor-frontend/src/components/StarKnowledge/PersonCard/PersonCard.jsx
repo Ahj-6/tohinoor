@@ -24,14 +24,20 @@ export default function PersonCard({ person }) {
               <ZodiacSymbol className="person-card__symbol" />
             </span>
 
-            <span className="person-card__rating">Rate | <span>{person.rating}</span></span>
+            <span className="person-card__rating">
+              Rate | <span>{person.rating}</span>
+            </span>
           </div>
         </div>
       </div>
-      <div>
-        {/* <button className="person-card__arrow">→</button> */}
-        <BtnArrow className="person-card__arrow" />
-      </div>
+
+      {/* <BtnArrow className="person-card__arrow" /> */}
+      <button
+        className="person-card__action"
+        aria-label={`مشاهده ${person.name}`}
+      >
+        <BtnArrow className="person-card__arrow"/>
+      </button>
     </article>
   );
 }

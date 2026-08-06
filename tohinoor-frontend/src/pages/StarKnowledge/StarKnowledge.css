@@ -1,14 +1,35 @@
-.star-knowledge-page{
-    width:100%;
-    min-height:100vh;
-    background:var(--bg-content);
+.star-knowledge-page {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg-content);
 }
 
-.star-knoledge__content{
-    width:100%;
-    min-height:100%;
-    padding: 30px;
-    background:var(--bg-content);
+.star-knoledge__content {
+  width: 100%;
+  min-height: 100%;
+  padding: 30px;
+  background: var(--bg-content);
+  /* border: 1px solid red; */
+}
+
+.search-box__content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  padding: 0px 10px 20px 0;
+  justify-content: flex-start;
+  align-items: center;
+  /* border:2px dashed #bbb; */
+  border-bottom: 3px solid var(--stroke-searchbox);
+  margin-bottom: 50px;
+}
+
+.star-knoledge__content hr {
+  width: 100%;
+  height: 3px;
+  background: var(--stroke-searchbox);
+  border: 0px;
+  margin: 100px 0 70px 0;
 }
 
 /* .star-knowledge-hero{
@@ -19,13 +40,9 @@
 .zodiac-filter{
     height:120px;
     border:2px dashed #bbb;
-}
-
-.search-box{
-    height:90px;
-    border:2px dashed #bbb;
-}
-
+    }
+    
+    
 .person-grid{
     min-height:500px;
     border:2px dashed #bbb;

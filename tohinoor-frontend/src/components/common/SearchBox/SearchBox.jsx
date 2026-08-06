@@ -3,7 +3,7 @@ import "./SearchBox.css";
 import { BiSearch } from "react-icons/bi";
 
 export default function SearchBox({
-  placeholder = "جستجو...",
+  placeholder = "جستجو در لیست زایچه‌ها",
   value,
   onChange,
 }) {

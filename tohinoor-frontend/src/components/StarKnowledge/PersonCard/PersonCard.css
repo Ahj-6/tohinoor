@@ -8,12 +8,12 @@
   border-radius: 16px;
   box-shadow: var(--shadow-sm);
   border: 1px solid transparent;
-
 }
 
 .person-card:hover {
   border: 1px solid var(--txt-searchbox);
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .person-card__photo {
@@ -44,6 +44,9 @@
   margin: 0 0 10px;
   font-size: 24px;
   font-weight: 700;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
 .person-card__footer {
@@ -105,6 +108,6 @@
   color: #e7d6be;
 }
 
-.person-card__arrow:hover {
-  color: #c69b5a;
+.person-card:hover .person-card__arrow{
+    color: #c69b5a;
 }

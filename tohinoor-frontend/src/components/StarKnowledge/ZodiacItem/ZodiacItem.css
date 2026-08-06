@@ -1,0 +1,47 @@
+.zodiac-item {
+  text-decoration: none;
+  color: inherit;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+}
+
+.zodiac-item:hover .zodiac-item__circle{
+  background: var(--bg-zodiac-circle);
+}
+
+.zodiac-item:hover .zodiac-item__circle svg{
+  color: #fff;
+}
+
+.zodiac-item__circle {
+  width: 68px;
+  height: 68px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--bg-rate-box);
+  /* border: 1px solid red; */
+}
+
+.zodiac-item__circle svg {
+  width: 37px;
+  height: 37px;
+
+  /* color: #312b24; */
+  color: #8C6A3C;
+}
+
+.zodiac-item__name {
+  font-size: 18px;
+  color: var(--txt-rate);
+  /* color: red; */
+}

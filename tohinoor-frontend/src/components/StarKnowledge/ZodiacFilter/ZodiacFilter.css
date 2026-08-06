@@ -1,0 +1,17 @@
+/* .zodiac-filter {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 36px 24px;
+} */
+
+.zodiac-filter {
+  width: 100%;
+}
+
+.zodiac-filter__list {
+  display: grid;
+
+  grid-template-columns: repeat(6, 1fr);
+
+  gap: 36px 24px;
+}
