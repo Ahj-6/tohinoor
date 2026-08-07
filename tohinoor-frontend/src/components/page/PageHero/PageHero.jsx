@@ -1,4 +1,5 @@
 import "./PageHero.css";
+import "./PageHero-responsive.css";
 
 export default function PageHero({
   title,

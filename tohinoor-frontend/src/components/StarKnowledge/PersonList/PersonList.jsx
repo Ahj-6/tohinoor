@@ -1,4 +1,5 @@
 import "./PersonList.css";
+import "./PersonList-responsive.css";
 
 import PersonCard from "../PersonCard";
 import SectionHeader from "../../page/SectionHeader";

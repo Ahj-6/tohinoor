@@ -1,4 +1,5 @@
 import "./SearchBox.css";
+import "./SearchBox-responsive.css";
 
 import { BiSearch } from "react-icons/bi";
 

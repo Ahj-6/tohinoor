@@ -1,4 +1,5 @@
 import "./SectionHeader.css";
+import "./SectionHeader-responsive.css";
 
 export default function SectionHeader({ title, badge }) {
   return (

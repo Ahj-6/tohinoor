@@ -1,4 +1,5 @@
 import "./PersonCard.css";
+import "./PersonCard-responsive.css";
 import { zodiacSigns } from "../../../constants/zodiacSigns";
 import BtnArrow from "../../../assets/images/icons/btnArrow.svg?react";
 

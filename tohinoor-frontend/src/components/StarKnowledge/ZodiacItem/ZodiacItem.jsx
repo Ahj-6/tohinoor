@@ -1,4 +1,6 @@
 import "./ZodiacItem.css";
+import "./ZodiacItem-responsive.css";
+
 import { Link } from "react-router-dom";
 
 export default function ZodiacItem({ zodiac }) {

@@ -1,4 +1,5 @@
 import "./ZodiacFilter.css";
+import "./ZodiacFilter-responsive.css";
 
 import ZodiacItem from "../ZodiacItem";
 import { zodiacSigns } from "../../../constants/zodiacSigns";

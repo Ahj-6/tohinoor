@@ -18,7 +18,7 @@ export default function StarKnowledge() {
         backgroundImage={heroImage}
       />
 
-      <div className="star-knoledge__content">
+      <div className="star-knowledge__content">
         <section className="search-box__content">
           <SearchBox />
         </section>

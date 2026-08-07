@@ -1,0 +1,75 @@
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 992px) {
+  .person-card {
+    min-height: 105px;
+    gap: 14px;
+    padding: 6px 14px 6px 6px;
+  }
+
+  .person-card__photo {
+    width: 95px;
+    height: 95px;
+  }
+
+  .person-card__name {
+    font-size: 21px;
+  }
+
+  .person-card__arrow {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 576px) {
+  .person-card {
+    gap: 12px;
+
+    padding: 6px 10px 6px 6px;
+
+    min-height: 95px;
+  }
+
+  .person-card__photo {
+    width: 82px;
+    height: 82px;
+  }
+
+  .person-card__name {
+    font-size: 18px;
+
+    margin-bottom: 8px;
+  }
+
+  .person-card__meta {
+    gap: 6px;
+  }
+
+  .person-card__zodiac {
+    width: 28px;
+    height: 28px;
+  }
+
+  .person-card__symbol {
+    width: 17px;
+    height: 17px;
+  }
+
+  .person-card__rating {
+    font-size: 12px;
+
+    padding: 3px 8px;
+  }
+
+  .person-card__arrow {
+    width: 30px;
+    height: 30px;
+  }
+}

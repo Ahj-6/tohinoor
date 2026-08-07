@@ -1,0 +1,11 @@
+/* =========================
+   Tablet & Mobile
+========================= */
+
+@media (max-width: 915px) {
+  .person-list__grid {
+    grid-template-columns: 1fr;
+
+    gap: 24px;
+  }
+}

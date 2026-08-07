@@ -1,0 +1,23 @@
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 992px) {
+  .zodiac-filter__list {
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 30px 20px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 576px) {
+  .zodiac-filter__list {
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 24px 14px;
+  }
+}

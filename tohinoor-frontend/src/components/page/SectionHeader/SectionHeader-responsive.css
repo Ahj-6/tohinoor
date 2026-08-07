@@ -1,0 +1,35 @@
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 992px) {
+  .section-header {
+    margin-bottom: 24px;
+  }
+
+  .section-header__title {
+    font-size: 20px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 576px) {
+  .section-header {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .section-header__title {
+    font-size: 18px;
+  }
+
+  .section-header__badge {
+    min-width: 42px;
+    height: 25px;
+    padding: 0 8px;
+    font-size: 12px;
+  }
+}

@@ -4,7 +4,7 @@
   background: var(--bg-content);
 }
 
-.star-knoledge__content {
+.star-knowledge__content {
   width: 100%;
   min-height: 100%;
   padding: 30px;
@@ -24,7 +24,7 @@
   margin-bottom: 50px;
 }
 
-.star-knoledge__content hr {
+.star-knowledge__content hr {
   width: 100%;
   height: 3px;
   background: var(--stroke-searchbox);

@@ -1,0 +1,43 @@
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 992px) {
+  .zodiac-item__circle {
+    width: 60px;
+    height: 60px;
+  }
+
+  .zodiac-item__circle svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .zodiac-item__name {
+    font-size: 16px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 576px) {
+  .zodiac-item {
+    gap: 6px;
+  }
+
+  .zodiac-item__circle {
+    width: 52px;
+    height: 52px;
+  }
+
+  .zodiac-item__circle svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .zodiac-item__name {
+    font-size: 14px;
+  }
+}
