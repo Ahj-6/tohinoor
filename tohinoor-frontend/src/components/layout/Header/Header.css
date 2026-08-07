@@ -6,19 +6,42 @@
   align-items: center;
   justify-content: space-between;
 
-  margin: 3px 0 0 0;
+  margin-top: 3px;
   padding-inline: 30px;
-  /* border: 1px solid blue; */
 }
+
 
 .header__logo {
   display: flex;
   align-items: center;
-  /* border: 1px solid green; */
+  justify-content: flex-end;
+  margin-left: 0;
 }
+
 
 .header__actions {
   display: flex;
   align-items: center;
-  /* border: 1px solid yellow; */
+}
+
+
+/* Hamburger */
+
+.header__menu {
+  display: none;
+
+  background: transparent;
+  border: none;
+
+  font-size: 28px;
+  color: var(--color-primary);
+
+  cursor: pointer;
+}
+
+
+/* Mobile menu */
+
+.header__mobile-menu {
+  display: none;
 }

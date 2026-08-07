@@ -1,0 +1,127 @@
+/* =========================
+   Tablet
+========================= */
+
+@media (max-width: 992px) {
+  .header {
+    padding-inline: 20px;
+  }
+
+  .header-nav {
+    gap: 24px;
+  }
+
+  .header-nav__link {
+    font-size: 14px;
+  }
+}
+
+/* =========================
+   Small Tablet
+========================= */
+
+/* Tablet small */
+
+@media (max-width: 830px) {
+  .header {
+    position: relative;
+    overflow: visible !important;
+  }
+
+  .header-nav {
+    display: none !important;
+  }
+
+  .header__menu {
+    display: block;
+    order: 1;
+    position: relative;
+    z-index: 1001;
+  }
+
+  .header__logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+  }
+
+  .header__actions {
+    order: 3;
+    position: relative;
+    z-index: 1001;
+  }
+
+  /* Mobile menu */
+
+  .header__mobile-menu {
+    position: absolute;
+
+    top: 72px;
+    right: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px 30px;
+
+    background: rgba(10, 15, 35, 0.96);
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+    transform: translateY(-20px);
+    opacity: 0;
+    visibility: hidden;
+    overflow: visible;
+
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease,
+      visibility 0.25s ease;
+
+    z-index: 1000;
+  }
+
+  .header__mobile-menu--open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .header__mobile-link {
+    padding: 14px 10px;
+
+    text-decoration: none;
+
+    color: var(--color-primary);
+
+    font-family: var(--font-heading);
+    font-size: 16px;
+
+    text-align: right;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    transition: var(--transition);
+  }
+
+  .header__mobile-link:hover {
+    color: var(--color-primary-hover);
+    padding-right: 16px;
+  }
+}
+
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 576px) {
+  .header {
+    padding-inline: 15px;
+  }
+
+  .header__menu {
+    font-size: 24px;
+  }
+}

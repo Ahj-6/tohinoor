@@ -29,21 +29,10 @@
   height: 3px;
   background: var(--stroke-searchbox);
   border: 0px;
-  margin: 100px 0 70px 0;
+  margin: 130px 0 100px 0;
 }
 
-/* .star-knowledge-hero{
-    height:280px;
-    border:2px dashed #bbb;
+.zodiac-filter {
+  margin:50px 0 50px 0 ;
+  /* border: 1px solid salmon; */
 }
-
-.zodiac-filter{
-    height:120px;
-    border:2px dashed #bbb;
-    }
-    
-    
-.person-grid{
-    min-height:500px;
-    border:2px dashed #bbb;
-} */
