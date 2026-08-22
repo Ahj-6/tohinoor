@@ -4,26 +4,31 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateElementRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
+        $element = $this->route('element');
+
         return [
-            //
+            'name' => ['required', 'string', 'max:50'],
+            'name_eng' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('elements', 'name_eng')->ignore($element?->id),
+            ],
+            'description' => ['nullable', 'string'],
         ];
     }
 }

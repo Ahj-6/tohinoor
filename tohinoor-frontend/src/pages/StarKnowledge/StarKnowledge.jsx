@@ -3,7 +3,7 @@ import "./StarKnowledge-responsive.css";
 
 import PageShell from "../../components/layout/PageShell";
 import PageHero from "../../components/page/PageHero";
-import heroImage from "../../assets/images/backgrounds/star-knowledge.png";
+import heroImage from "../../assets/images/backgrounds/star-knowledge.jpg";
 import SearchBox from "../../components/common/SearchBox/SearchBox";
 import { people } from "../../data/people";
 import PersonList from "../../components/StarKnowledge/PersonList";

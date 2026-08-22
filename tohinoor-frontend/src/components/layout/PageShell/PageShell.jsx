@@ -1,4 +1,5 @@
 import "./PageShell.css";
+import "./PageShell-responsive.css";
 
 export default function PageShell({ children }) {
   return (

@@ -9,14 +9,17 @@ export const headerMenu = [
   },
   {
     title: "کتاب دیجیتال",
-    path: "/books",
+    // path: "/books",
+    path: "#",
   },
   {
     title: "نمونه کار اعضا",
-    path: "/portfolio",
+    // path: "/portfolio",
+    path: "#",
   },
   {
     title: "فیلم‌های پیشنهادی",
-    path: "/movies",
+    // path: "/movies",
+    path: "#",
   },
 ];

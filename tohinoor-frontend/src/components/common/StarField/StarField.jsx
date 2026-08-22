@@ -13,7 +13,8 @@ export default function StarField({
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const cleanup = startAnimation(canvasRef.current);
+    // const cleanup = startAnimation(canvasRef.current);
+    const cleanup = startAnimation(canvasRef.current, variant);
 
     return cleanup;
   }, []);

@@ -3,30 +3,16 @@ import { createStars, updateStars, drawStars } from "./stars";
 
 import { updateMeteor, drawMeteor } from "./meteor";
 
-export function startAnimation(canvas) {
+export function startAnimation(canvas, variant = "full") {
   const ctx = canvas.getContext("2d");
 
   let animationId;
 
-  // function resizeCanvas() {
-  //   canvas.width = window.innerWidth;
-  //   canvas.height = window.innerHeight;
-
-  //   const area = canvas.width * canvas.height;
-
-  //   const starCount = Math.min(
-  //     CONFIG.stars.max,
-  //     Math.max(CONFIG.stars.min, Math.floor(area / CONFIG.stars.density)),
-  //   );
-
-  //   createStars(canvas, starCount, CONFIG);
-  // }
-
   function resizeCanvas() {
     const dpr = window.devicePixelRatio || 1;
 
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    const width = canvas.parentElement.clientWidth;
+    const height = canvas.parentElement.clientHeight;
 
     canvas.style.width = width + "px";
     canvas.style.height = height + "px";
@@ -38,9 +24,12 @@ export function startAnimation(canvas) {
 
     const area = width * height;
 
+    const density =
+      variant === "header" ? CONFIG.stars.headerDensity : CONFIG.stars.density;
+
     const starCount = Math.min(
       CONFIG.stars.max,
-      Math.max(CONFIG.stars.min, Math.floor(area / CONFIG.stars.density)),
+      Math.max(CONFIG.stars.min, Math.floor(area / density)),
     );
 
     createStars(
@@ -52,10 +41,15 @@ export function startAnimation(canvas) {
       CONFIG,
     );
   }
-  
+
   resizeCanvas();
 
-  window.addEventListener("resize", resizeCanvas);
+  // window.addEventListener("resize", resizeCanvas);
+  const observer = new ResizeObserver(() => {
+    resizeCanvas();
+  });
+
+  observer.observe(canvas.parentElement);
 
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -74,7 +68,7 @@ export function startAnimation(canvas) {
   animate();
 
   return () => {
-    window.removeEventListener("resize", resizeCanvas);
+    observer.disconnect();
 
     cancelAnimationFrame(animationId);
   };

@@ -3,47 +3,45 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreElementRequest;
+use App\Http\Requests\UpdateElementRequest;
 use App\Http\Resources\ElementResource;
 use App\Models\Element;
-use Illuminate\Http\Request;
 
 class ElementController extends Controller
 {
     public function index()
     {
-        $elements = Element::orderBy('id')->get();
+        $elements = Element::ordered()->get();
+
         return ElementResource::collection($elements);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreElementRequest $request)
     {
-        //
+        $element = Element::create($request->validated());
+
+        return new ElementResource($element);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Element $element)
     {
-        //
+        return new ElementResource($element);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateElementRequest $request, Element $element)
     {
-        //
+        $element->update($request->validated());
+
+        return new ElementResource($element->fresh());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Element $element)
     {
-        //
+        $element->delete();
+
+        return response()->json([
+            'message' => 'Element deleted successfully.',
+        ]);
     }
 }

@@ -15,21 +15,24 @@ export const homeCards = [
         id: 2,
         title: "کتاب‌های الکترونیکی",
         image: ebooks,
-        href: "/ebooks",
+        // href: "/ebooks",
+        href: "#",
         linkText: "مشاهده"
     },
     {
         id: 3,
         title: "نمونه‌کار اعضا",
         image: portfolio,
-        href: "/portfolio",
+        // href: "/portfolio",
+        href: "#",
         linkText: "مشاهده"
     },
     {
         id: 4,
         title: "فیلم‌های پیشنهادی",
         image: videos,
-        href: "/videos",
+        // href: "/videos",
+        href: "#",
         linkText: "مشاهده"
     },
 ];

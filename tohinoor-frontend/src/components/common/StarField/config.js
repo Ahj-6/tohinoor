@@ -1,10 +1,14 @@
 export const CONFIG = {
   stars: {
-    density: 3500,
+    // min: 120,
+    // max: 550,
+    // density: 3500,
 
-    min: 120,
+    min: 40,
+    max: 300,
+    density: 7000,
 
-    max: 550,
+    headerDensity: 25000,
 
     colors: ["#ffffff", "#fff6d5", "#ffe8a3", "#d9ecff", "#f8fbff"],
 
