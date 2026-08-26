@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./PersonCard.css";
 import "./PersonCard-responsive.css";
 import { zodiacSigns } from "../../../constants/zodiacSigns";
@@ -18,9 +19,6 @@ export default function PersonCard({ person }) {
 
         <div className="person-card__footer">
           <div className="person-card__meta">
-            {/* <span className="person-card__zodiac">
-              <img src={zodiac.symbol} alt={zodiac.name} />
-            </span> */}
             <span className="person-card__zodiac">
               <ZodiacSymbol className="person-card__symbol" />
             </span>
@@ -32,13 +30,13 @@ export default function PersonCard({ person }) {
         </div>
       </div>
 
-      {/* <BtnArrow className="person-card__arrow" /> */}
-      <button
+      <Link
+        to={`/star-knowledge/${person.slug}`}
         className="person-card__action"
         aria-label={`مشاهده ${person.name}`}
       >
-        <BtnArrow className="person-card__arrow"/>
-      </button>
+        <BtnArrow className="person-card__arrow" />
+      </Link>
     </article>
   );
 }

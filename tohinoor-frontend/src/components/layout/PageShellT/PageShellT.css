@@ -1,0 +1,11 @@
+.page-shell-t {
+  width: 100%;
+  padding: 40px 0 48px;
+}
+
+.page-shell-t__container {
+  width: min(1200px, calc(100% - 64px));
+  margin-inline: auto;
+  background: transparent;
+  overflow: hidden;
+}

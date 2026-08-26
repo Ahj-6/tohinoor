@@ -1,0 +1,25 @@
+@media (max-width: 768px) {
+  .person-info-card {
+    padding: 24px;
+  }
+
+  .person-info-card__body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .person-info-card__photo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .person-info-card__grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .person-info-card__field {
+    align-items: center;
+  }
+}

@@ -1,0 +1,31 @@
+.bio-card {
+  background: var(--bg-cards);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: 40px;
+}
+
+.bio-card__title {
+  font-family: var(--font-heading2);
+  font-weight: normal;
+  font-size: 22px;
+  color: var(--txt-titles);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+.bio-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bio-card__body p {
+  direction: rtl;
+  margin: 0;
+  font-family: var(--font-primary);
+  font-size: 14.5px;
+  line-height: 2;
+  color: var(--txt-person-detail);
+  text-align: justify;
+}

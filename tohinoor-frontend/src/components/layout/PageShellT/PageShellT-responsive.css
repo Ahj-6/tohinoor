@@ -1,0 +1,16 @@
+/* =========================
+   Mobile
+========================= */
+
+@media (max-width: 576px) {
+  .page-shell-t {
+    width: 100%;
+    padding: 40px 0 48px;
+  }
+
+  .page-shell-t__container {
+    width: 92%;
+    margin-inline: auto;
+    overflow: hidden;
+  }
+}
