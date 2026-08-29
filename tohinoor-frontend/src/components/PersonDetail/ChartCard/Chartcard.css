@@ -2,21 +2,29 @@
   background: var(--bg-cards);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  padding: 32px;
+  padding: 40px;
   text-align: center;
 }
 
 .chart-card__title {
+  direction: rtl;
   font-family: var(--font-heading2);
   font-weight: normal;
   font-size: 20px;
-  color: var(--txt-titles);
-  margin: 0 0 28px;
+  /* color: var(--txt-titles); */
+  /* margin: 0 0 28px; */
+  margin: 0 0 0px;
+  color: var(--txt-titles-person-details);
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--txt-titles-person-details_line);
+
 }
 
 .chart-card__image {
   display: flex;
   justify-content: center;
+  padding:80px 0 50px;
+  /* border: 1px solid red; */
 }
 
 .chart-card__image img {

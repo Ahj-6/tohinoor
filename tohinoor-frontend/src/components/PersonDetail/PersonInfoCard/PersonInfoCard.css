@@ -48,6 +48,7 @@
 .person-info-card__text {
   flex: 1;
   min-width: 0;
+  width: 100%;
 }
 
 .person-info-card__name-fa {
@@ -78,6 +79,25 @@
   padding: 10px 0;
   border-radius: var(--radius-md);
   margin-bottom: 18px;
+}
+
+.person-info-card__zodiac-name{
+  font-size: 16px;
+}
+
+.person-info-card__zodiac-circle {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  /* background: var(--bg-rate-box); */
+  border: 2px solid #fff;
+
+  flex-shrink: 0;
 }
 
 .person-info-card__zodiac-symbol {

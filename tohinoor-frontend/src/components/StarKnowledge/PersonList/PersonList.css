@@ -4,7 +4,15 @@
 
 .person-list__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px 40px;
   align-items: start;
+}
+
+.person-list__empty {
+  direction: rtl;
+  margin: 40px 0;
+  text-align: center;
+  color: var(--txt-rate);
+  font-size: 18px;
 }

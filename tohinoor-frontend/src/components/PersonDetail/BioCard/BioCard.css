@@ -8,10 +8,12 @@
 .bio-card__title {
   font-family: var(--font-heading2);
   font-weight: normal;
-  font-size: 22px;
-  color: var(--txt-titles);
+  font-size: 20px;
   text-align: center;
-  margin: 0 0 24px;
+  margin: 0 0 30px;
+  color: var(--txt-titles-person-details);
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--txt-titles-person-details_line);
 }
 
 .bio-card__body {
@@ -22,10 +24,31 @@
 
 .bio-card__body p {
   direction: rtl;
-  margin: 0;
+  margin: 0 0 30px;
   font-family: var(--font-primary);
-  font-size: 14.5px;
+  font-size: 16px;
   line-height: 2;
   color: var(--txt-person-detail);
   text-align: justify;
+}
+
+.bio-card__wikipedia {
+  direction: rtl;
+  text-align: left;
+  /* border: 1px solid blue; */
+}
+
+.bio-card__wikipedia a{
+  /* text-decoration: underline; */
+  font-weight: bold;
+  color: var(--txt-titles-person-details);
+}
+
+.bio-card__wikipedia a:hover{
+  /* color: var(--txt-menu-hover-gold); */
+  color: rgb(190, 40, 73);
+}
+
+.red-b {
+  border: 1px solid red;
 }

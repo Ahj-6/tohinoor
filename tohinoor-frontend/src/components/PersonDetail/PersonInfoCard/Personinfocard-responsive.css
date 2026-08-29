@@ -10,8 +10,8 @@
   }
 
   .person-info-card__photo {
-    width: 120px;
-    height: 120px;
+    /* width: 120px;
+    height: 120px; */
   }
 
   .person-info-card__grid {

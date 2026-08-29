@@ -14,18 +14,13 @@
   --txt-black: #000;
   --txt-menu-hover-gold: #f5ca72;
   --txt-titles: #040a20;
-  --txt-person-detail-title: #c69b5a;
+  --txt-titles-person-details: #9b753c;
+  --txt-titles-person-details_line: #c69b5a;
   --txt-person-detail: #1f232e;
   --txt-zodiac-icons: #312b24;
   --txt-searchbox: #d9cab4;
   --txt-rate-title: #822402;
   --txt-rate: #8c6a3c;
-
-  --txt-titles-person-details: #9b753c;
-  --txt-titles-person-details_line: #c69b5a;
-  /* --txt-titles-person-details: #020841;
-  --txt-titles-person-details_line: #020841; */
-
 
   --line-color-home-card:#E5E5E5;
   --line-color: #312b24;

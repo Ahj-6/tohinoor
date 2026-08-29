@@ -25,7 +25,7 @@ export default function PersonDetail() {
       <div className="person-detail">
         <PersonInfoCard person={person} />
         <ChartCard chart={person.chart} />
-        <BioCard paragraphs={person.bio} />
+        <BioCard paragraphs={person.bio} wikipediaUrl={person.wikipedia_url} />
       </div>
     </PageShellT>
   );

@@ -1,6 +1,10 @@
 import "./BioCard.css";
 
-export default function BioCard({ title = "بایوگرافی", paragraphs = [] }) {
+export default function BioCard({
+  title = "بایوگرافی",
+  paragraphs = [],
+  wikipediaUrl,
+}) {
   return (
     <section className="bio-card">
       <h2 className="bio-card__title">{title}</h2>
@@ -9,6 +13,18 @@ export default function BioCard({ title = "بایوگرافی", paragraphs = [] 
         {paragraphs.map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}
+      </div>
+
+      <div className="bio-card__wikipedia">
+        {wikipediaUrl && (
+          <a
+            href={wikipediaUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            مطالعه بیشتر در Wikipedia
+          </a>
+        )}
       </div>
     </section>
   );

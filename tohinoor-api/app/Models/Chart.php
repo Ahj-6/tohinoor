@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class ChartType extends Model
+class Chart extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'name_eng',
-        'description',
+        'person_id',
+        'chart_type_id',
+        'image',
     ];
 
     /**
@@ -32,8 +32,13 @@ class ChartType extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function charts(): HasMany
+    public function person(): BelongsTo
     {
-        return $this->hasMany(Chart::class);
+        return $this->belongsTo(Person::class);
+    }
+
+    public function chartType(): BelongsTo
+    {
+        return $this->belongsTo(ChartType::class);
     }
 }

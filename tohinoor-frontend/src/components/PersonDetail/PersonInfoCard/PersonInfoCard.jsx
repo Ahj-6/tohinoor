@@ -29,8 +29,11 @@ export default function PersonInfoCard({ person }) {
           <p className="person-info-card__name-en mr-2">{person.name}</p>
 
           <div className="person-info-card__zodiac-bar">
-            <span>{zodiac.name}</span>
-            <ZodiacSymbol className="person-info-card__zodiac-symbol" />
+            <span className="person-info-card__zodiac-name">{zodiac.name}</span>
+
+            <span className="person-info-card__zodiac-circle">
+              <ZodiacSymbol className="person-info-card__zodiac-symbol" />
+            </span>
           </div>
 
           <div className="person-info-card__grid">

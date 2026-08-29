@@ -15,11 +15,18 @@ use App\Http\Controllers\Api\CityController;
 use App\Http\Controllers\Api\BirthAccuracyController;
 use App\Http\Controllers\Api\GenderController;
 use App\Http\Controllers\Api\PersonController;
+use App\Http\Controllers\Api\ChartController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AuthController;
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::apiResource('users', UserController::class);
+
+Route::post('login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('me', [AuthController::class, 'me']);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
 
 // ASTROLOGY
 Route::apiResource('elements', ElementController::class);
@@ -37,3 +44,4 @@ Route::apiResource('cities', CityController::class);
 Route::apiResource('birth-accuracies', BirthAccuracyController::class)->parameters(['birth-accuracies' => 'birthAccuracy',]);
 Route::apiResource('genders', GenderController::class);
 Route::apiResource('people', PersonController::class);
+Route::apiResource('charts', ChartController::class);
