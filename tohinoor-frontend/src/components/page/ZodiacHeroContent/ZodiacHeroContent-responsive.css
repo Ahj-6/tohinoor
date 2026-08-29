@@ -1,0 +1,86 @@
+@media (max-width: 760px) {
+  .zodiac-hero {
+    grid-template-columns: 0px auto 145px;
+    /* border: 1px solid green; */
+  }
+
+  .zodiac-hero__planet-image {
+    /* width: 70px;
+    height: 70px; */
+    /* border: 1px solid green; */
+    display: none;
+
+  }
+
+  .zodiac-hero__content h1 {
+    font-size: 23px;
+  }
+
+  .zodiac-hero__zodiac {
+    font-size: 17px;
+    gap: 8px;
+  }
+
+  .zodiac-hero__zodiac-symbol {
+    width: 26px;
+    height: 26px;
+  }
+
+  .zodiac-hero__ruler {
+    font-size: 12px;
+  }
+
+  .zodiac-hero__ruler-symbol {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* .zodiac-hero__zodiac-image {
+    width: 75px;
+    height: 75px;
+  } */
+
+  .zodiac-hero__large-symbol {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 577px) {
+  .zodiac-hero {
+    grid-template-columns: 0px auto 0px;
+  }
+
+  .zodiac-hero__planet-image {
+    width: 50px;
+    height: 50px;
+    display: none;
+  }
+
+  .zodiac-hero__content {
+    /* align-items: center;
+    text-align: center; */
+  }
+
+  .zodiac-hero__content h1 {
+    font-size: 19px;
+  }
+
+  .zodiac-hero__zodiac {
+    font-size: 14px;
+  }
+
+  .zodiac-hero__ruler {
+    font-size: 11px;
+  }
+
+  .zodiac-hero__zodiac-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .zodiac-hero__large-symbol {
+    width: 30px;
+    height: 30px;
+  }
+}

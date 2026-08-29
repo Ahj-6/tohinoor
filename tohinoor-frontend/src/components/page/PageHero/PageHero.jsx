@@ -6,17 +6,18 @@ export default function PageHero({
   subtitle,
   backgroundImage,
   children,
+  variant = "default",
 }) {
   return (
     <section
-      className="page-hero"
+      className={`page-hero page-hero--${variant}`}
       style={{
         backgroundImage: `url(${backgroundImage})`,
       }}
     >
       <div className="page-hero__overlay">
         <div className="page-hero__content">
-          <h1>{title}</h1>
+          {title && <h1>{title}</h1>}
 
           {subtitle && <p>{subtitle}</p>}
 

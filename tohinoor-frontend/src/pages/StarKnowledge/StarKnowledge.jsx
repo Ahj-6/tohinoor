@@ -6,11 +6,16 @@ import "./StarKnowledge-responsive.css";
 
 import PageShell from "../../components/layout/PageShell";
 import PageHero from "../../components/page/PageHero";
+import ZodiacHeroContent from "../../components/page/ZodiacHeroContent/ZodiacHeroContent";
+
 import heroImage from "../../assets/images/backgrounds/star-knowledge.jpg";
+
 import SearchBox from "../../components/common/SearchBox/SearchBox";
 import { people } from "../../data/people";
 import PersonList from "../../components/StarKnowledge/PersonList";
 import ZodiacFilter from "../../components/StarKnowledge/ZodiacFilter";
+
+import { zodiacSigns } from "../../constants/zodiacSigns";
 
 function normalizeSearchText(value = "") {
   return value
@@ -42,26 +47,17 @@ export default function StarKnowledge() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const queryFromUrl = searchParams.get("q") || "";
+  const zodiacFromUrl = searchParams.get("zodiac") || "";
+
+  const selectedZodiac = zodiacSigns[zodiacFromUrl] || null;
 
   const [searchInput, setSearchInput] = useState(queryFromUrl);
   const [suggestions, setSuggestions] = useState([]);
 
-  /*
-   * Keep the input synchronized with the URL.
-   * This matters when the user uses browser Back/Forward.
-   */
   useEffect(() => {
     setSearchInput(queryFromUrl);
   }, [queryFromUrl]);
 
-  /*
-   * Temporary local suggestion search.
-   *
-   * Later this block can be replaced with an API request
-   * such as:
-   *
-   * GET /api/people/suggestions?q=tesla
-   */
   useEffect(() => {
     const query = searchInput.trim();
 
@@ -82,20 +78,34 @@ export default function StarKnowledge() {
   }, [searchInput]);
 
   const filteredPeople = useMemo(() => {
-    return people.filter((person) =>
-      matchesPerson(person, queryFromUrl)
-    );
-  }, [queryFromUrl]);
+    return people.filter((person) => {
+      const matchesSearch = matchesPerson(
+        person,
+        queryFromUrl
+      );
+
+      const matchesZodiac =
+        !selectedZodiac ||
+        person.zodiac === selectedZodiac.key;
+
+      return matchesSearch && matchesZodiac;
+    });
+  }, [queryFromUrl, selectedZodiac]);
 
   const handleSearchSubmit = () => {
     const query = normalizeSearchText(searchInput);
 
-    if (!query) {
-      setSearchParams({});
-      return;
+    const nextParams = {};
+
+    if (query) {
+      nextParams.q = query;
     }
 
-    setSearchParams({ q: query });
+    if (zodiacFromUrl) {
+      nextParams.zodiac = zodiacFromUrl;
+    }
+
+    setSearchParams(nextParams);
   };
 
   const handleSuggestionClick = (person) => {
@@ -106,13 +116,24 @@ export default function StarKnowledge() {
 
   return (
     <PageShell>
-      <PageHero
-        title="دانش ستارگان"
-        subtitle="بایگانی زایچه‌ها"
-        backgroundImage={heroImage}
-      />
+
+      {selectedZodiac ? (
+        <PageHero
+          backgroundImage={heroImage}
+          variant="zodiac"
+        >
+          <ZodiacHeroContent zodiac={selectedZodiac} />
+        </PageHero>
+      ) : (
+        <PageHero
+          title="دانش ستارگان"
+          subtitle="بایگانی زایچه‌ها"
+          backgroundImage={heroImage}
+        />
+      )}
 
       <div className="star-knowledge__content">
+
         <section className="search-box__content">
           <SearchBox
             value={searchInput}
@@ -125,7 +146,13 @@ export default function StarKnowledge() {
 
         <PersonList
           people={filteredPeople}
-          title={hasSearch ? "نتایج جستجو" : "همه زایچه‌ها"}
+          title={
+            selectedZodiac
+              ? `زایچه‌های صورت فلکی ${selectedZodiac.name}`
+              : hasSearch
+                ? "نتایج جستجو"
+                : "همه زایچه‌ها"
+          }
         />
 
         <hr />
@@ -133,7 +160,9 @@ export default function StarKnowledge() {
         <section className="zodiac-filter">
           <ZodiacFilter />
         </section>
+
       </div>
+
     </PageShell>
   );
 }

@@ -9,14 +9,15 @@ export default function ZodiacItem({ zodiac }) {
   return (
     <Link
       className="zodiac-item"
-      // to={`/star-knowledge/${zodiac.name.toLowerCase()}`}
-      to={"#"}
+      to={`/star-knowledge?zodiac=${zodiac.key}`}
     >
       <div className="zodiac-item__circle">
         <Symbol />
       </div>
 
-      <span className="zodiac-item__name">{zodiac.name}</span>
+      <span className="zodiac-item__name">
+        {zodiac.name}
+      </span>
     </Link>
   );
 }
