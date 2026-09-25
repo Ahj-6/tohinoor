@@ -30,7 +30,12 @@ class UpdateChartRequest extends FormRequest
                 Rule::exists('chart_types', 'id')->whereNull('deleted_at'),
             ],
 
-            'image' => ['required', 'string', 'max:255'],
+            'image' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:5120',
+            ],
         ];
     }
 }

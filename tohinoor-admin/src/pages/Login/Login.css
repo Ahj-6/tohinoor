@@ -1,0 +1,119 @@
+.login-page {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 380px;
+}
+
+.login-card {
+    margin: 0;
+    border-radius: 0.45rem;
+    box-shadow: 0 0.35rem 1.25rem rgba(0, 0, 0, 0.08);
+}
+
+.login-brand {
+    font-size: 1.8rem;
+    color: #212529;
+}
+
+.login-subtitle {
+    font-size: 0.95rem;
+}
+
+.login-box-msg {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.login-alert {
+    font-size: 0.9rem;
+    padding: 0.7rem 0.85rem;
+    display: flex;
+    align-items: flex-start;
+    line-height: 1.7;
+}
+
+.login-button {
+    min-height: 44px;
+    font-size: 0.95rem;
+}
+
+.login-card .input-group-text {
+    min-width: 44px;
+    justify-content: center;
+    background-color: #fff;
+}
+
+.login-card .form-control {
+    min-height: 44px;
+    font-size: 0.95rem;
+}
+
+.login-card .form-control:focus {
+    box-shadow: none;
+}
+
+@media (max-width: 480px) {
+    .login-page {
+        padding: 1rem;
+    }
+
+    .login-card .card-body {
+        padding: 1.35rem;
+    }
+
+    .login-brand {
+        font-size: 1.6rem;
+    }
+}
+
+.password-field {
+    position: relative;
+}
+
+.password-field .form-control {
+    padding-left: 3rem;
+    padding-right: 0.75rem;
+}
+
+.password-toggle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 46px;
+    height: 100%;
+
+    border: 0;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #6c757d;
+
+    cursor: pointer;
+
+    z-index: 2;
+}
+
+.password-toggle:hover {
+    color: #212529;
+}
+
+.password-toggle:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.password-toggle i {
+    font-size: 1.05rem;
+}

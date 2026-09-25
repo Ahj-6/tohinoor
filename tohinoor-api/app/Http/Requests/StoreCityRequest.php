@@ -17,8 +17,9 @@ class StoreCityRequest extends FormRequest
             'country_id' => ['required', 'exists:countries,id'],
             'name' => ['required', 'string', 'max:100'],
             'name_eng' => ['required', 'string', 'max:100'],
-            'latitude' => ['required', 'numeric', 'between:-90,90'],
-            'longitude' => ['required', 'numeric', 'between:-180,180'],
+            'latitude' => ['required', 'string', 'max:20'],
+            'longitude' => ['required', 'string', 'max:20'],
         ];
     }
 }
+

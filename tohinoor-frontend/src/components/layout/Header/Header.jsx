@@ -50,16 +50,26 @@ export default function Header() {
             isMenuOpen ? "header__mobile-menu--open" : ""
           }`}
         >
-          {headerMenu.map((item) => (
-            <a
-              key={item.path}
-              href={item.path}
-              className="header__mobile-link"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {item.title}
-            </a>
-          ))}
+          {headerMenu.map((item) =>
+            item.disabled ? (
+              <span
+                key={item.id}
+                className="header__mobile-link header__mobile-link--disabled"
+                aria-disabled="true"
+              >
+                {item.title}
+              </span>
+            ) : (
+              <a
+                key={item.id}
+                href={item.path}
+                className="header__mobile-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.title}
+              </a>
+            ),
+          )}
         </nav>
       </header>
     </StarField>

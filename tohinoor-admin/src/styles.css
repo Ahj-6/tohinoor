@@ -1,0 +1,27 @@
+:root {
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Tahoma, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+/* VARIABLES */
+:root{
+  --card-border-top:#0d6efd;
+}

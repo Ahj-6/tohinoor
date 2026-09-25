@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('name_eng', 100);
 
-            $table->decimal('latitude', 10, 7);
-            $table->decimal('longitude', 10, 7);
+            $table->string('latitude', 20);
+            $table->string('longitude', 20);
 
             $table->timestamps();
             $table->softDeletes();

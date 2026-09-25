@@ -1,0 +1,247 @@
+.charts-page {
+    padding-bottom: 2rem;
+}
+
+.charts-page__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.charts-page__breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.charts-page__breadcrumb a {
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.charts-page__breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.charts-page__header h1 {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.charts-page__person-name {
+    margin-top: 0.35rem;
+    color: #6c757d;
+    direction: ltr;
+    text-align: right;
+}
+
+.charts-page__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.chart-card,
+.chart-form-card,
+.charts-empty {
+    background: #fff;
+    border: 1px solid #e2e6ea;
+    border-radius: 0.85rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.chart-card {
+    height: 100%;
+    overflow: hidden;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.chart-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(79, 70, 229, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+.chart-card__image-wrapper {
+    aspect-ratio: 4 / 3;
+    background: #f8f9fa;
+    overflow: hidden;
+    /* border: 1px solid red; */
+
+}
+
+.chart-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    padding: 10px;
+    /* border: 1px solid red; */
+}
+
+.chart-card__no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #adb5bd;
+}
+
+.chart-card__no-image i {
+    font-size: 2rem;
+}
+
+.chart-card__body {
+    padding: 1rem;
+}
+
+.chart-card__body h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.chart-card__english {
+    margin-top: 0.25rem;
+    color: #6c757d;
+    font-size: 0.85rem;
+    direction: ltr;
+    text-align: right;
+}
+
+.chart-card__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.chart-form-card {
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.chart-form-card__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.chart-form-card__header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.chart-form-card__header p {
+    margin: 0.35rem 0 0;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.chart-form-card__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.chart-form-preview {
+    padding: 1rem;
+    border: 1px dashed #ced4da;
+    border-radius: 0.75rem;
+    background: #f8f9fa;
+}
+
+.chart-form-preview__title {
+    margin-bottom: 0.75rem;
+    color: #495057;
+    font-weight: 600;
+}
+
+.chart-form-preview__image {
+    display: block;
+    width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+
+.charts-empty {
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.charts-empty__icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-size: 2rem;
+}
+
+.charts-empty h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.charts-empty p {
+    max-width: 520px;
+    margin: 0.75rem auto 1.5rem;
+    color: #6c757d;
+}
+
+@media (max-width: 767.98px) {
+    .charts-page__header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .charts-page__actions {
+        width: 100%;
+    }
+
+    .charts-page__actions .btn {
+        flex: 1;
+    }
+
+    .chart-card__actions {
+        flex-wrap: wrap;
+    }
+
+    .chart-card__actions .btn {
+        flex: 1;
+    }
+}
+
+
+.red-b{
+    border: 1px solid red;
+}

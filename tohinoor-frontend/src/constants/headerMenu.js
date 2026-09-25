@@ -1,25 +1,32 @@
 export const headerMenu = [
   {
+    id: "home",
     title: "خانه",
     path: "/",
+    disabled: false,
   },
   {
-    title: "لیست زایچه‌ها",
+    id: "star-knowledge",
+    title: "دانش ستارگان",
     path: "/star-knowledge",
+    disabled: false,
   },
   {
-    title: "کتاب دیجیتال",
-    // path: "/books",
+    id: "books",
+    title: "کتاب‌های الکترونیکی",
     path: "#",
+    disabled: true,
   },
   {
+    id: "portfolio",
     title: "نمونه کار اعضا",
-    // path: "/portfolio",
     path: "#",
+    disabled: true,
   },
   {
+    id: "movies",
     title: "فیلم‌های پیشنهادی",
-    // path: "/movies",
     path: "#",
+    disabled: true,
   },
 ];

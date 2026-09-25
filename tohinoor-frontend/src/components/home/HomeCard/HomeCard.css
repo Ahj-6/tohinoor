@@ -94,3 +94,12 @@
 .home-card:hover .home-card__title {
   text-shadow: 0px 2px 0px var(--color-primary);
 }
+
+.home-card--disabled {
+  opacity: 0.7;
+  cursor: context-menu;
+}
+
+.home-card--disabled .home-card__image {
+  filter: grayscale(40%);
+}

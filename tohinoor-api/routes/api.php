@@ -18,6 +18,11 @@ use App\Http\Controllers\Api\PersonController;
 use App\Http\Controllers\Api\ChartController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\BookPeopleController;
+use App\Http\Controllers\Api\MovieController;
+use App\Http\Controllers\Api\MoviePeopleController;
+use App\Http\Controllers\Api\SampleAnalysisController;
 
 
 Route::apiResource('users', UserController::class);
@@ -45,3 +50,17 @@ Route::apiResource('birth-accuracies', BirthAccuracyController::class)->paramete
 Route::apiResource('genders', GenderController::class);
 Route::apiResource('people', PersonController::class);
 Route::apiResource('charts', ChartController::class);
+
+// BOOKs
+Route::apiResource('books', BookController::class);
+Route::put('books/{book}/people', [BookPeopleController::class, 'sync']);
+
+// MOVIEs
+Route::apiResource('movies', MovieController::class);
+Route::put('movies/{movie}/people', [MoviePeopleController::class, 'sync']);
+
+// SAMPLE ANALYSIS
+Route::apiResource('sample-analyses', SampleAnalysisController::class)
+    ->parameters([
+        'sample-analyses' => 'sampleAnalysis',
+    ]);

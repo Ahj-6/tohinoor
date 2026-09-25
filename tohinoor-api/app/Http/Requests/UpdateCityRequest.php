@@ -27,8 +27,8 @@ class UpdateCityRequest extends FormRequest
                     ->where(fn ($query) => $query->where('country_id', $this->country_id))
                     ->ignore($city?->id),
             ],
-            'latitude' => ['required', 'numeric', 'between:-90,90'],
-            'longitude' => ['required', 'numeric', 'between:-180,180'],
+            'latitude' => ['required', 'string', 'max:20'],
+            'longitude' => ['required', 'string', 'max:20'],
         ];
     }
 }

@@ -93,7 +93,7 @@ export const planets = {
     nameEng: "Venus",
     nameArabic: null,
     nameSanskrit: null,
-    image: venusImage,
+    image: venusImage,  
     icon: venusIcon,
     symbol: venusSymbol,
   },

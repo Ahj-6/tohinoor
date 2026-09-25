@@ -20,11 +20,6 @@ class City extends Model
         'longitude',
     ];
 
-    protected $casts = [
-        'latitude' => 'decimal:7',
-        'longitude' => 'decimal:7',
-    ];
-
     /**
      * Scope a query to order records by id.
      */

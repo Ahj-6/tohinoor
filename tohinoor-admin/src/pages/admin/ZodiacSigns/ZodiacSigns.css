@@ -1,0 +1,354 @@
+.zodiac-signs-page {
+    padding: 0 0 2rem;
+}
+
+/* --------------------------------
+   Page Header
+-------------------------------- */
+
+.zodiac-signs-page-header {
+    margin-bottom: 1.25rem;
+}
+
+.zodiac-signs-page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.zodiac-signs-page-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #212529;
+}
+
+.zodiac-signs-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.zodiac-signs-breadcrumb a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.zodiac-signs-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.zodiac-signs-breadcrumb span {
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Card
+-------------------------------- */
+
+.zodiac-signs-card {
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.3rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.zodiac-signs-card-header {
+    min-height: 66px;
+    padding: 0.85rem 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    border-bottom: 1px solid #d7d7d7;
+    background: #fff;
+}
+
+.zodiac-signs-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #212529;
+}
+
+.zodiac-signs-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+
+    min-height: 36px;
+    padding: 0.35rem 0.8rem;
+
+    border: 1px solid #0d6efd;
+    border-radius: 0.25rem;
+
+    background: #0d6efd;
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.zodiac-signs-add-button:hover:not(:disabled) {
+    background: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.zodiac-signs-add-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   Table
+-------------------------------- */
+
+.zodiac-signs-card-body {
+    padding: 0;
+}
+
+.zodiac-signs-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.zodiac-signs-table {
+    width: 100%;
+    min-width: 1050px;
+    margin: 0;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.zodiac-signs-table thead th {
+    height: 46px;
+    padding: 0.65rem 0.75rem;
+
+    background: #6c757d;
+    color: #fff;
+
+    border: 1px solid #cfd3d7;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.zodiac-signs-table tbody td {
+    min-height: 46px;
+    padding: 0.55rem 0.7rem;
+
+    border: 1px solid #d8dce0;
+
+    color: #212529;
+    font-size: 0.87rem;
+
+    vertical-align: middle;
+}
+
+.zodiac-signs-table tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.zodiac-signs-table tbody tr:nth-child(even) {
+    background: #fff;
+}
+
+.zodiac-signs-table tbody tr:hover {
+    background: #e9ecef;
+}
+
+.zodiac-signs-table .col-number {
+    width: 65px;
+}
+
+.zodiac-signs-table .col-english {
+    width: 150px;
+}
+
+.zodiac-signs-table .col-symbol {
+    width: 105px;
+}
+
+.zodiac-signs-table .col-actions {
+    width: 190px;
+}
+
+.zodiac-sign-name {
+    font-weight: 500;
+}
+
+.zodiac-sign-name-eng {
+    color: #555;
+    text-align: left !important;
+}
+
+.zodiac-sign-symbol {
+    text-align: center;
+    font-weight: 500;
+}
+
+/* --------------------------------
+   Actions
+-------------------------------- */
+
+.zodiac-sign-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+.zodiac-sign-edit-button,
+.zodiac-sign-delete-button {
+    min-width: 78px;
+    min-height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+
+    padding: 0.25rem 0.55rem;
+
+    border-radius: 0.25rem;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.zodiac-sign-edit-button {
+    background: #ffc107;
+    border: 1px solid #ffc107;
+    color: #212529;
+}
+
+.zodiac-sign-edit-button:hover:not(:disabled) {
+    background: #ffca2c;
+    border-color: #ffca2c;
+}
+
+.zodiac-sign-delete-button {
+    background: #dc3545;
+    border: 1px solid #dc3545;
+    color: #fff;
+}
+
+.zodiac-sign-delete-button:hover:not(:disabled) {
+    background: #bb2d3b;
+    border-color: #b02a37;
+}
+
+.zodiac-sign-edit-button:disabled,
+.zodiac-sign-delete-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   States
+-------------------------------- */
+
+.zodiac-signs-state {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.75rem;
+
+    color: #6c757d;
+}
+
+.zodiac-signs-state i {
+    font-size: 2rem;
+}
+
+.zodiac-signs-error {
+    min-height: 160px;
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    color: #dc3545;
+}
+
+.zodiac-signs-error button {
+    border: 1px solid #dc3545;
+    background: transparent;
+    color: #dc3545;
+
+    border-radius: 0.25rem;
+
+    padding: 0.35rem 0.75rem;
+
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.zodiac-signs-error button:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* --------------------------------
+   Form
+-------------------------------- */
+
+.zodiac-signs-form-wrapper {
+    margin-bottom: 1.25rem;
+}
+
+.zodiac-sign-form-card {
+    overflow: hidden;
+}
+
+.zodiac-sign-form-card .card-footer {
+    background: var(--bs-tertiary-bg);
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 991.98px) {
+    .zodiac-signs-page-title h1 {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .zodiac-signs-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .zodiac-signs-add-button {
+        width: 100%;
+    }
+}

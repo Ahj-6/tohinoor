@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  Navigate,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 
 import "./StarKnowledge.css";
 import "./StarKnowledge-responsive.css";
@@ -33,31 +38,44 @@ function matchesPerson(person, query) {
     return true;
   }
 
-  return [
-    person.name,
-    person.nameFa,
-    person.slug,
-  ].some((value) =>
-    normalizeSearchText(value).includes(search)
+  return [person.name, person.nameFa, person.slug].some((value) =>
+    normalizeSearchText(value).includes(search),
   );
 }
 
 export default function StarKnowledge() {
   const navigate = useNavigate();
+
+  // Zodiac comes from URL path:
+  // /star-knowledge/aries
+  const { zodiac } = useParams();
+
+  // Search still comes from query string:
+  // /star-knowledge/aries?q=tesla
   const [searchParams, setSearchParams] = useSearchParams();
 
   const queryFromUrl = searchParams.get("q") || "";
-  const zodiacFromUrl = searchParams.get("zodiac") || "";
 
-  const selectedZodiac = zodiacSigns[zodiacFromUrl] || null;
+  const selectedZodiac = zodiac ? zodiacSigns[zodiac] : null;
+
+  if (zodiac && !selectedZodiac) {
+    return <Navigate to="/404" replace />;
+  }
 
   const [searchInput, setSearchInput] = useState(queryFromUrl);
   const [suggestions, setSuggestions] = useState([]);
 
+  /*
+   * Keep search input synchronized with URL.
+   */
   useEffect(() => {
     setSearchInput(queryFromUrl);
   }, [queryFromUrl]);
 
+  /*
+   * Local suggestion search.
+   * Later this can be replaced with API request.
+   */
   useEffect(() => {
     const query = searchInput.trim();
 
@@ -77,51 +95,57 @@ export default function StarKnowledge() {
     return () => clearTimeout(timer);
   }, [searchInput]);
 
+  /*
+   * Main filtering:
+   * 1. Search
+   * 2. Zodiac
+   */
   const filteredPeople = useMemo(() => {
-    return people.filter((person) => {
-      const matchesSearch = matchesPerson(
-        person,
-        queryFromUrl
-      );
+    return people
+      .filter((person) => {
+        const matchesSearch = matchesPerson(person, queryFromUrl);
 
-      const matchesZodiac =
-        !selectedZodiac ||
-        person.zodiac === selectedZodiac.key;
+        const matchesZodiac =
+          !selectedZodiac || person.zodiac === selectedZodiac.key;
 
-      return matchesSearch && matchesZodiac;
-    });
+        return matchesSearch && matchesZodiac;
+      })
+      .sort((a, b) => a.nameFa.localeCompare(b.nameFa, "fa"));
   }, [queryFromUrl, selectedZodiac]);
 
+  /*
+   * Search Submit
+   *
+   * Keep current zodiac path and
+   * only update ?q=...
+   */
   const handleSearchSubmit = () => {
     const query = normalizeSearchText(searchInput);
 
-    const nextParams = {};
-
     if (query) {
-      nextParams.q = query;
+      setSearchParams({ q: query });
+    } else {
+      setSearchParams({});
     }
-
-    if (zodiacFromUrl) {
-      nextParams.zodiac = zodiacFromUrl;
-    }
-
-    setSearchParams(nextParams);
   };
 
+  /*
+   * Clicking a suggestion opens PersonDetail.
+   */
   const handleSuggestionClick = (person) => {
-    navigate(`/star-knowledge/${person.slug}`);
+    navigate(`/star-knowledge/person/${person.slug}`);
   };
 
   const hasSearch = queryFromUrl.trim().length > 0;
 
   return (
     <PageShell>
+      {/* =========================
+          Hero
+      ========================= */}
 
       {selectedZodiac ? (
-        <PageHero
-          backgroundImage={heroImage}
-          variant="zodiac"
-        >
+        <PageHero backgroundImage={heroImage} variant="zodiac">
           <ZodiacHeroContent zodiac={selectedZodiac} />
         </PageHero>
       ) : (
@@ -133,6 +157,9 @@ export default function StarKnowledge() {
       )}
 
       <div className="star-knowledge__content">
+        {/* =========================
+            Search
+        ========================= */}
 
         <section className="search-box__content">
           <SearchBox
@@ -144,11 +171,15 @@ export default function StarKnowledge() {
           />
         </section>
 
+        {/* =========================
+            People
+        ========================= */}
+
         <PersonList
           people={filteredPeople}
           title={
             selectedZodiac
-              ? `زایچه‌های صورت فلکی ${selectedZodiac.name}`
+              ? `زایچه‌های ${selectedZodiac.name}`
               : hasSearch
                 ? "نتایج جستجو"
                 : "همه زایچه‌ها"
@@ -157,12 +188,14 @@ export default function StarKnowledge() {
 
         <hr />
 
+        {/* =========================
+            Zodiac Filter
+        ========================= */}
+
         <section className="zodiac-filter">
           <ZodiacFilter />
         </section>
-
       </div>
-
     </PageShell>
   );
 }

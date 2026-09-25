@@ -31,7 +31,7 @@ export default function PersonCard({ person }) {
       </div>
 
       <Link
-        to={`/star-knowledge/${person.slug}`}
+        to={`/star-knowledge/person/${person.slug}`}
         className="person-card__action"
         aria-label={`مشاهده ${person.name}`}
       >

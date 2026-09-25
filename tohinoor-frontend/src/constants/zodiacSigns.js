@@ -46,10 +46,10 @@ export const zodiacSigns = {
     id: 1,
     key: "aries",
 
-    name: "حمل",
+    name: "قوچ",
     nameEng: "Aries",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "حمل",
+    nameSanskrit: "مشا",
 
     image: ariesImage,
     icon: ariesIcon,
@@ -64,10 +64,10 @@ export const zodiacSigns = {
     id: 2,
     key: "taurus",
 
-    name: "ثور",
+    name: "گاو",
     nameEng: "Taurus",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "ثور",
+    nameSanskrit: "وری‌شابها",
 
     image: taurusImage,
     icon: taurusIcon,
@@ -82,10 +82,10 @@ export const zodiacSigns = {
     id: 3,
     key: "gemini",
 
-    name: "جوزا",
+    name: "دوپیکر",
     nameEng: "Gemini",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "جوزا",
+    nameSanskrit: "میت‌هونا",
 
     image: geminiImage,
     icon: geminiIcon,
@@ -100,10 +100,10 @@ export const zodiacSigns = {
     id: 4,
     key: "cancer",
 
-    name: "سرطان",
+    name: "خرچنگ",
     nameEng: "Cancer",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "سرطان",
+    nameSanskrit: "کاتاکا/کارکا",
 
     image: cancerImage,
     icon: cancerIcon,
@@ -118,10 +118,10 @@ export const zodiacSigns = {
     id: 5,
     key: "leo",
 
-    name: "اسد",
+    name: "شیر",
     nameEng: "Leo",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "اسد",
+    nameSanskrit: "سیمها",
 
     image: leoImage,
     icon: leoIcon,
@@ -136,10 +136,10 @@ export const zodiacSigns = {
     id: 6,
     key: "virgo",
 
-    name: "سنبله",
+    name: "خوشه",
     nameEng: "Virgo",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "سنبله",
+    nameSanskrit: "کانیا",
 
     image: virgoImage,
     icon: virgoIcon,
@@ -154,10 +154,10 @@ export const zodiacSigns = {
     id: 7,
     key: "libra",
 
-    name: "میزان",
+    name: "تراز",
     nameEng: "Libra",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "میزان",
+    nameSanskrit: "تولا",
 
     image: libraImage,
     icon: libraIcon,
@@ -172,10 +172,10 @@ export const zodiacSigns = {
     id: 8,
     key: "scorpio",
 
-    name: "عقرب",
-    nameEng: "Scorpio",
-    nameArabic: null,
-    nameSanskrit: null,
+    name: "کژدم",
+    nameEng: "Scorpion",
+    nameArabic: "عقرب",
+    nameSanskrit: "وریش‌چیکا",
 
     image: scorpioImage,
     icon: scorpioIcon,
@@ -190,10 +190,10 @@ export const zodiacSigns = {
     id: 9,
     key: "sagittarius",
 
-    name: "قوس",
+    name: "کمان",
     nameEng: "Sagittarius",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "قوس",
+    nameSanskrit: "دانوس",
 
     image: sagittariusImage,
     icon: sagittariusIcon,
@@ -208,10 +208,10 @@ export const zodiacSigns = {
     id: 10,
     key: "capricorn",
 
-    name: "جدی",
+    name: "بز",
     nameEng: "Capricorn",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "جدی",
+    nameSanskrit: "ماکارا",
 
     image: capricornImage,
     icon: capricornIcon,
@@ -226,10 +226,10 @@ export const zodiacSigns = {
     id: 11,
     key: "aquarius",
 
-    name: "دلو",
+    name: "آبریزان",
     nameEng: "Aquarius",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "دلو",
+    nameSanskrit: "کومبا",
 
     image: aquariusImage,
     icon: aquariusIcon,
@@ -244,10 +244,10 @@ export const zodiacSigns = {
     id: 12,
     key: "pisces",
 
-    name: "حوت",
+    name: "دو ماهی",
     nameEng: "Pisces",
-    nameArabic: null,
-    nameSanskrit: null,
+    nameArabic: "حوت",
+    nameSanskrit: "مینا",
 
     image: piscesImage,
     icon: piscesIcon,

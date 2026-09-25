@@ -1,0 +1,365 @@
+.birth-accuracies-page {
+    padding: 0 0 2rem;
+}
+
+/* --------------------------------
+   Page Header
+-------------------------------- */
+
+.birth-accuracies-page-header {
+    margin-bottom: 1.25rem;
+}
+
+.birth-accuracies-page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.birth-accuracies-page-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #212529;
+}
+
+.birth-accuracies-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.birth-accuracies-breadcrumb a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.birth-accuracies-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.birth-accuracies-breadcrumb span {
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Card
+-------------------------------- */
+
+.birth-accuracies-card {
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.3rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.birth-accuracies-card-header {
+    min-height: 66px;
+    padding: 0.85rem 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    border-bottom: 1px solid #d7d7d7;
+    background: #fff;
+}
+
+.birth-accuracies-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #212529;
+}
+
+.birth-accuracies-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+
+    min-height: 36px;
+    padding: 0.35rem 0.8rem;
+
+    border: 1px solid #0d6efd;
+    border-radius: 0.25rem;
+
+    background: #0d6efd;
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.birth-accuracies-add-button:hover:not(:disabled) {
+    background: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.birth-accuracies-add-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   Table
+-------------------------------- */
+
+.birth-accuracies-card-body {
+    padding: 0;
+}
+
+.birth-accuracies-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.birth-accuracies-table {
+    width: 100%;
+    min-width: 1000px;
+    margin: 0;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.birth-accuracies-table thead th {
+    height: 46px;
+    padding: 0.65rem 0.7rem;
+
+    background: #6c757d;
+    color: #fff;
+
+    border: 1px solid #cfd3d7;
+
+    font-size: 0.88rem;
+    font-weight: 600;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.birth-accuracies-table tbody td {
+    min-height: 46px;
+    padding: 0.55rem 0.7rem;
+
+    border: 1px solid #d8dce0;
+
+    color: #212529;
+    font-size: 0.87rem;
+
+    vertical-align: middle;
+}
+
+.birth-accuracies-table tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.birth-accuracies-table tbody tr:nth-child(even) {
+    background: #fff;
+}
+
+.birth-accuracies-table tbody tr:hover {
+    background: #e9ecef;
+}
+
+.birth-accuracies-table .col-number {
+    width: 65px;
+}
+
+.birth-accuracies-table .col-code {
+    width: 100px;
+}
+
+.birth-accuracies-table .col-english {
+    width: 190px;
+}
+
+.birth-accuracies-table .col-description {
+    width: 28%;
+}
+
+.birth-accuracies-table .col-actions {
+    width: 190px;
+}
+
+.birth-accuracy-code {
+    /* text-align: left !important; */
+    font-family: monospace;
+}
+
+.birth-accuracy-name {
+    font-weight: 500;
+}
+
+.birth-accuracy-name-eng {
+    color: #555;
+    /* text-align: left !important; */
+}
+
+.birth-accuracy-description {
+    color: #6c757d;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Actions
+-------------------------------- */
+
+.birth-accuracy-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+.birth-accuracy-edit-button,
+.birth-accuracy-delete-button {
+    min-width: 78px;
+    min-height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+
+    padding: 0.25rem 0.55rem;
+
+    border-radius: 0.25rem;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.birth-accuracy-edit-button {
+    background: #ffc107;
+    border: 1px solid #ffc107;
+    color: #212529;
+}
+
+.birth-accuracy-edit-button:hover:not(:disabled) {
+    background: #ffca2c;
+    border-color: #ffca2c;
+}
+
+.birth-accuracy-delete-button {
+    background: #dc3545;
+    border: 1px solid #dc3545;
+    color: #fff;
+}
+
+.birth-accuracy-delete-button:hover:not(:disabled) {
+    background: #bb2d3b;
+    border-color: #b02a37;
+}
+
+.birth-accuracy-edit-button:disabled,
+.birth-accuracy-delete-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   States
+-------------------------------- */
+
+.birth-accuracies-state {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.75rem;
+
+    color: #6c757d;
+}
+
+.birth-accuracies-state i {
+    font-size: 2rem;
+}
+
+.birth-accuracies-error {
+    min-height: 160px;
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    color: #dc3545;
+}
+
+.birth-accuracies-error button {
+    border: 1px solid #dc3545;
+    background: transparent;
+    color: #dc3545;
+
+    border-radius: 0.25rem;
+
+    padding: 0.35rem 0.75rem;
+
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.birth-accuracies-error button:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* --------------------------------
+   Form
+-------------------------------- */
+
+.birth-accuracies-form-wrapper {
+    margin-bottom: 1.25rem;
+}
+
+.birth-accuracy-form-card {
+    overflow: hidden;
+}
+
+.birth-accuracy-form-card .card-footer {
+    background: var(--bs-tertiary-bg);
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 991.98px) {
+    .birth-accuracies-page-title h1 {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .birth-accuracies-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .birth-accuracies-add-button {
+        width: 100%;
+    }
+}

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import "./PersonDetail.css";
 
 import PageShellT from "../../components/layout/PageShellT";
@@ -13,11 +13,7 @@ export default function PersonDetail() {
   const person = people.find((p) => p.slug === slug);
 
   if (!person) {
-    return (
-      <PageShellT>
-        <p className="person-detail__not-found">فردی با این مشخصات یافت نشد.</p>
-      </PageShellT>
-    );
+    return <Navigate to="/404" replace />;
   }
 
   return (

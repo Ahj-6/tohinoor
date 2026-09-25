@@ -1,0 +1,359 @@
+.chart-types-page {
+    padding: 0 0 2rem;
+}
+
+/* --------------------------------
+   Page Header
+-------------------------------- */
+
+.chart-types-page-header {
+    margin-bottom: 1.25rem;
+}
+
+.chart-types-page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.chart-types-page-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #212529;
+}
+
+.chart-types-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.chart-types-breadcrumb a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.chart-types-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.chart-types-breadcrumb span {
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Card
+-------------------------------- */
+
+.chart-types-card {
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.3rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+}
+
+.chart-types-card-header {
+    min-height: 66px;
+    padding: 0.85rem 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    border-bottom: 1px solid #d7d7d7;
+    background: #fff;
+}
+
+.chart-types-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #212529;
+}
+
+.chart-types-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+
+    min-height: 36px;
+    padding: 0.35rem 0.8rem;
+
+    border: 1px solid #0d6efd;
+    border-radius: 0.25rem;
+
+    background: #0d6efd;
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.chart-types-add-button:hover:not(:disabled) {
+    background: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.chart-types-add-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   Table
+-------------------------------- */
+
+.chart-types-card-body {
+    padding: 0;
+}
+
+.chart-types-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.chart-types-table {
+    width: 100%;
+    margin: 0;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.chart-types-table thead th {
+    height: 46px;
+    padding: 0.65rem 0.75rem;
+
+    background: #6c757d;
+    color: #fff;
+
+    border: 1px solid #cfd3d7;
+
+    font-size: 0.92rem;
+    font-weight: 600;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.chart-types-table tbody td {
+    min-height: 46px;
+    padding: 0.55rem 0.75rem;
+
+    border: 1px solid #d8dce0;
+
+    color: #212529;
+    font-size: 0.9rem;
+
+    vertical-align: middle;
+}
+
+.chart-types-table tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.chart-types-table tbody tr:nth-child(even) {
+    background: #fff;
+}
+
+.chart-types-table tbody tr:hover {
+    background: #e9ecef;
+}
+
+.chart-types-table .col-number {
+    width: 75px;
+}
+
+.chart-types-table .col-english {
+    width: 200px;
+}
+
+.chart-types-table .col-description {
+    width: 34%;
+}
+
+.chart-types-table .col-actions {
+    width: 190px;
+}
+
+.chart-type-name {
+    font-weight: 500;
+}
+
+.chart-type-name-eng {
+    color: #555;
+    text-align: left !important;
+}
+
+.chart-type-description {
+    color: #6c757d;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Actions
+-------------------------------- */
+
+.chart-type-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+.chart-type-edit-button,
+.chart-type-delete-button {
+    min-width: 78px;
+    min-height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+
+    padding: 0.25rem 0.55rem;
+
+    border-radius: 0.25rem;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.chart-type-edit-button {
+    background: #ffc107;
+    border: 1px solid #ffc107;
+    color: #212529;
+}
+
+.chart-type-edit-button:hover:not(:disabled) {
+    background: #ffca2c;
+    border-color: #ffca2c;
+}
+
+.chart-type-delete-button {
+    background: #dc3545;
+    border: 1px solid #dc3545;
+    color: #fff;
+}
+
+.chart-type-delete-button:hover:not(:disabled) {
+    background: #bb2d3b;
+    border-color: #b02a37;
+}
+
+.chart-type-edit-button:disabled,
+.chart-type-delete-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   States
+-------------------------------- */
+
+.chart-types-state {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.75rem;
+
+    color: #6c757d;
+}
+
+.chart-types-state i {
+    font-size: 2rem;
+}
+
+.chart-types-error {
+    min-height: 160px;
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    color: #dc3545;
+}
+
+.chart-types-error button {
+    border: 1px solid #dc3545;
+    background: transparent;
+    color: #dc3545;
+
+    border-radius: 0.25rem;
+
+    padding: 0.35rem 0.75rem;
+
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.chart-types-error button:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* --------------------------------
+   Form
+-------------------------------- */
+
+.chart-types-form-wrapper {
+    margin-bottom: 1.25rem;
+}
+
+.chart-type-form-card {
+    overflow: hidden;
+}
+
+.chart-type-form-card .card-footer {
+    background: var(--bs-tertiary-bg);
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 991.98px) {
+    .chart-types-page-title h1 {
+        font-size: 1.7rem;
+    }
+
+    .chart-types-table {
+        min-width: 850px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .chart-types-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .chart-types-add-button {
+        width: 100%;
+    }
+}

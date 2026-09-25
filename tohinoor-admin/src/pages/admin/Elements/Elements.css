@@ -1,0 +1,360 @@
+.elements-page {
+    padding: 0 0 2rem;
+}
+
+/* --------------------------------
+   Page Header
+-------------------------------- */
+
+.elements-page-header {
+    margin-bottom: 1.25rem;
+}
+
+.elements-page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.elements-page-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #212529;
+}
+
+.elements-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.elements-breadcrumb a {
+    color: var(--card-border-top);
+    text-decoration: none;
+}
+
+.elements-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.elements-breadcrumb span {
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Card
+-------------------------------- */
+
+.elements-card {
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.3rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    overflow: hidden;
+    border-top: 3px solid var(--card-border-top);
+}
+
+.elements-card-header {
+    min-height: 66px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid #d7d7d7;
+    background: #fff;
+}
+
+.elements-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #212529;
+}
+
+.elements-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+
+    min-height: 36px;
+    padding: 0.35rem 0.8rem;
+
+    border: 1px solid var(--card-border-top);
+    border-radius: 0.25rem;
+
+    background: var(--card-border-top);
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.elements-add-button:hover:not(:disabled) {
+    background: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.elements-add-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.element-form-card-insert{
+    border-top: 3px solid var(--card-border-top) ;
+}
+.element-form-card-edit{
+    border: 1px solid #ffc107;
+    border-top: 5px solid #ffc107;
+}
+/* --------------------------------
+   Table
+-------------------------------- */
+
+.elements-card-body {
+    padding: 0;
+}
+
+.elements-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.elements-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+}
+
+.elements-table thead th {
+    height: 46px;
+    padding: 0.65rem 0.75rem;
+
+    background: #6c757d;
+    color: #fff;
+
+    border: 1px solid #cfd3d7;
+
+    font-size: 0.92rem;
+    font-weight: 600;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.elements-table tbody td {
+    min-height: 46px;
+    padding: 0.55rem 0.75rem;
+
+    border: 1px solid #d8dce0;
+
+    color: #212529;
+    font-size: 0.9rem;
+
+    vertical-align: middle;
+    text-align: right;
+    /* border: 2px solid green; */
+
+}
+
+.elements-table tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.elements-table tbody tr:nth-child(even) {
+    background: #fff;
+}
+
+.elements-table tbody tr:hover {
+    background: #e9ecef;
+}
+
+.col-number {
+    width: 75px;
+}
+
+.col-english {
+    width: 190px;
+}
+
+.col-description {
+    width: 34%;
+}
+
+.col-actions {
+    width: 190px;
+}
+
+.element-name {
+    font-weight: 500;
+}
+
+.element-name-eng {
+    color: #555;
+    /* text-align: left !important; */
+}
+
+.element-description {
+    color: #6c757d;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Actions
+-------------------------------- */
+
+.element-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+}
+
+.element-edit-button,
+.element-delete-button {
+    min-width: 78px;
+    min-height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+
+    padding: 0.25rem 0.55rem;
+
+    border-radius: 0.25rem;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    cursor: pointer;
+    transition: 0.15s ease;
+}
+
+.element-edit-button {
+    background: #ffc107;
+    border: 1px solid #ffc107;
+    /* color: white; */
+}
+
+.element-edit-button:hover:not(:disabled) {
+    background: #ffca2c;
+    border-color: #ffca2c;
+}
+
+.element-delete-button {
+    background: #dc3545;
+    border: 1px solid #dc3545;
+    color: #fff;
+}
+
+.element-delete-button:hover:not(:disabled) {
+    background: #bb2d3b;
+    border-color: #b02a37;
+}
+
+.element-edit-button:disabled,
+.element-delete-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   States
+-------------------------------- */
+
+.elements-state {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.75rem;
+
+    color: #6c757d;
+}
+
+.elements-state i {
+    font-size: 2rem;
+}
+
+.elements-error {
+    min-height: 160px;
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    color: #dc3545;
+}
+
+.elements-error button {
+    border: 1px solid #dc3545;
+    background: transparent;
+    color: #dc3545;
+
+    border-radius: 0.25rem;
+
+    padding: 0.35rem 0.75rem;
+
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.elements-error button:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* --------------------------------
+   Form wrapper
+-------------------------------- */
+
+.elements-form-wrapper {
+    margin-bottom: 1.25rem;
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 991.98px) {
+    .elements-page-title h1 {
+        font-size: 1.7rem;
+    }
+
+    .elements-table {
+        min-width: 850px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .elements-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .elements-add-button {
+        width: 100%;
+    }
+}
