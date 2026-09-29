@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 import ElementForm from "./ElementForm.jsx";
 
@@ -111,11 +112,13 @@ export default function ElementsList() {
           <h1>عناصر</h1>
 
           <div className="elements-breadcrumb">
-            <a href="/admin">داشبورد</a>
+            <Link to="/admin">داشبورد</Link>
+            {/* <a href="/admin">داشبورد</a> */}
 
             <span>/</span>
 
-            <a href="/admin/astrology">استرولوژی</a>
+            <Link to="/admin/astrology">استرولوژی</Link>
+            {/* <a href="/admin/astrology">استرولوژی</a> */}
 
             <span>/</span>
 

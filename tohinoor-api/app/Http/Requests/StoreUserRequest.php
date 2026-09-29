@@ -44,7 +44,7 @@ class StoreUserRequest extends FormRequest
 
             'status' => ['sometimes', 'boolean'],
 
-            'last_login_at' => ['nullable', 'date'],
+            // 'last_login_at' => ['nullable', 'date'],
         ];
     }
 }

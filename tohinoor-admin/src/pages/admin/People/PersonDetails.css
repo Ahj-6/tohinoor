@@ -1,0 +1,402 @@
+.person-details-page {
+    padding-bottom: 2rem;
+}
+
+.person-details-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.person-details-breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.88rem;
+    color: #6c757d;
+}
+
+.person-details-breadcrumb a {
+    color: #4f46e5;
+    text-decoration: none;
+}
+
+.person-details-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.person-details-header h1 {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.person-details-card {
+    margin-bottom: 1.25rem;
+    padding: 1.35rem;
+    background: #fff;
+    border: 1px solid #e2e6ea;
+    border-radius: 0.85rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgb(180, 142, 16, 0.5);
+    border-top: 4px solid rgb(180, 142, 16, 0.5);
+}
+
+.person-details-hero {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    min-height: 250px;
+}
+
+.person-details-hero__image {
+    flex: 0 0 190px;
+    width: 190px;
+    height: 220px;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 3px solid #c9a45c;
+    background: #f8f9fa;
+}
+
+.person-details-hero__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.person-details-hero__no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #adb5bd;
+    font-size: 4rem;
+}
+
+.person-details-hero__content {
+    flex: 1;
+}
+
+.person-details-status {
+    margin-bottom: 0.75rem;
+}
+
+.person-details-hero__content h2 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.person-details-name-eng {
+    margin-top: 0.35rem;
+    color: #6c757d;
+    font-size: 1rem;
+    direction: ltr;
+    text-align: right;
+}
+
+.person-details-quick-info {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.person-details-quick-info div {
+    padding: 0.8rem 1rem;
+    border-radius: 0.6rem;
+    background: #f8f9fa;
+    box-shadow: 2px 2px 5px gray;
+}
+
+.person-info-item{
+    /* box-shadow: 2px 2px 2px gray; */
+}
+
+.person-details-quick-info span,
+.person-info-item span {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: #6c757d;
+    font-size: 0.78rem;
+}
+
+.person-details-quick-info strong,
+.person-info-item strong {
+    display: block;
+    color: #212529;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.person-details-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 1.15rem;
+}
+
+.person-details-section-title i {
+    color: #4f46e5;
+    font-size: 1.2rem;
+}
+
+.person-details-section-title h2 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+
+.person-details-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.person-info-item {
+    padding: 1rem;
+    border: 1px solid #edf0f2;
+    border-radius: 0.65rem;
+    background: #fafbfc;
+}
+
+.person-info-item small {
+    display: block;
+    margin-top: 0.25rem;
+    color: #6c757d;
+}
+
+.person-details-card--astrology {
+    border-top: 3px solid #4f46e5;
+}
+
+.person-details-biography {
+    padding: 1rem;
+    border-radius: 0.65rem;
+    background: #f8f9fa;
+    line-height: 2;
+}
+
+.person-details-biography p {
+    margin: 0;
+    white-space: pre-line;
+}
+
+.person-details-muted {
+    color: #adb5bd;
+}
+
+.person-details-link-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #edf0f2;
+}
+
+.person-details-link-row > span:first-child {
+    font-weight: 600;
+    color: #495057;
+}
+
+.person-details-link-row a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #4f46e5;
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.person-details-link-row a:hover {
+    text-decoration: underline;
+}
+
+.person-details-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.15rem;
+}
+
+.person-details-section-header .person-details-section-title {
+    margin-bottom: 0;
+}
+
+.person-details-empty {
+    padding: 2.5rem 1rem;
+    text-align: center;
+    border: 1px dashed #d7dce1;
+    border-radius: 0.75rem;
+    background: #fafbfc;
+}
+
+.person-details-empty__icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-size: 1.7rem;
+}
+
+.person-details-empty h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.person-details-empty p {
+    margin: 0.55rem 0 1.25rem;
+    color: #6c757d;
+}
+
+.person-details-charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.person-detail-chart {
+    overflow: hidden;
+    border: 1px solid #e2e6ea;
+    border-radius: 0.75rem;
+    background: #fff;
+}
+
+.person-detail-chart__image {
+    height: 360px;
+    background: #f8f9fa;
+}
+
+.person-detail-chart__image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+}
+
+.person-detail-chart__no-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #adb5bd;
+    font-size: 2.5rem;
+}
+
+.person-detail-chart__body {
+    padding: 0.9rem 1rem;
+    border-top: 1px solid #edf0f2;
+}
+
+.person-detail-chart__body h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.person-detail-chart__body small {
+    display: block;
+    margin-top: 0.2rem;
+    color: #6c757d;
+}
+
+.person-details-footer {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+}
+
+.person-details-state {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #6c757d;
+}
+
+@media (max-width: 991.98px) {
+    .person-details-hero {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .person-details-hero__image {
+        width: 160px;
+        height: 190px;
+    }
+
+    .person-details-quick-info,
+    .person-details-grid,
+    .person-details-charts-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .person-details-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .person-details-header .btn {
+        width: 100%;
+    }
+
+    .person-details-hero__content h2 {
+        font-size: 1.5rem;
+    }
+
+    .person-details-quick-info,
+    .person-details-grid,
+    .person-details-charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .person-details-section-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .person-details-section-header .btn {
+        width: 100%;
+    }
+
+    .person-details-link-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .person-details-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .person-details-footer .btn {
+        width: 100%;
+    }
+}
+
+.person-details-warning {
+    margin-bottom: 1.25rem;
+    border-radius: 0.75rem;
+}

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 const emptyForm = {
   name: "",
   name_eng: "",
-  image: "",
+  image: null,
 
   gender_id: "",
   birth_date: "",
@@ -65,6 +65,7 @@ export default function PersonForm({
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
+  const [imagePreview, setImagePreview] = useState("");
 
   const isEditing = Boolean(person);
 
@@ -83,19 +84,27 @@ export default function PersonForm({
       setForm({
         name: person.name || "",
         name_eng: person.name_eng || "",
-        image: person.image || "",
+        image: null,
 
         gender_id: person.gender_id ? String(person.gender_id) : "",
 
         birth_date: formatBirthDateForDisplay(
-          person.birth_date ? String(person.birth_date).substring(0, 10) : "",
+          person.birth_date
+            ? String(person.birth_date).substring(0, 10)
+            : "",
         ),
 
-        birth_time: person.birth_time ? String(person.birth_time) : "",
+        birth_time: person.birth_time
+          ? String(person.birth_time)
+          : "",
 
-        country_id: person.country_id ? String(person.country_id) : "",
+        country_id: person.country_id
+          ? String(person.country_id)
+          : "",
 
-        city_id: person.city_id ? String(person.city_id) : "",
+        city_id: person.city_id
+          ? String(person.city_id)
+          : "",
 
         time_zone: person.time_zone || "",
 
@@ -110,32 +119,61 @@ export default function PersonForm({
         biography: person.biography || "",
         wikipedia_url: person.wikipedia_url || "",
 
-        status: person.status === undefined ? true : Boolean(person.status),
+        status:
+          person.status === undefined
+            ? true
+            : Boolean(person.status),
       });
+
+      setImagePreview(person.image_url || "");
     } else {
       setForm(emptyForm);
+      setImagePreview("");
     }
 
     setErrors({});
   }, [person]);
 
-  const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+  useEffect(() => {
+    return () => {
+      if (
+        imagePreview &&
+        imagePreview.startsWith("blob:")
+      ) {
+        URL.revokeObjectURL(imagePreview);
+      }
+    };
+  }, [imagePreview]);
 
-    const nextValue = type === "checkbox" ? checked : value;
+  const handleChange = (event) => {
+    const {
+      name,
+      value,
+      type,
+      checked,
+    } = event.target;
+
+    const nextValue =
+      type === "checkbox"
+        ? checked
+        : value;
 
     setForm((current) => ({
       ...current,
       [name]: nextValue,
 
-      ...(name === "country_id" ? { city_id: "" } : {}),
+      ...(name === "country_id"
+        ? { city_id: "" }
+        : {}),
     }));
 
     setErrors((current) => ({
       ...current,
       [name]: undefined,
 
-      ...(name === "country_id" ? { city_id: undefined } : {}),
+      ...(name === "country_id"
+        ? { city_id: undefined }
+        : {}),
     }));
   };
 
@@ -144,11 +182,50 @@ export default function PersonForm({
       return null;
     }
 
-    return errors[field].map((error, index) => (
-      <div className="invalid-feedback" key={index}>
+    const fieldErrors = Array.isArray(errors[field])
+      ? errors[field]
+      : [errors[field]];
+
+    return fieldErrors.map((error, index) => (
+      <div
+        className="invalid-feedback"
+        key={index}
+      >
         {error}
       </div>
     ));
+  };
+
+  const handleImageChange = (event) => {
+    const file =
+      event.target.files?.[0] || null;
+
+    if (
+      imagePreview &&
+      imagePreview.startsWith("blob:")
+    ) {
+      URL.revokeObjectURL(imagePreview);
+    }
+
+    setForm((current) => ({
+      ...current,
+      image: file,
+    }));
+
+    setErrors((current) => ({
+      ...current,
+      image: undefined,
+    }));
+
+    if (file) {
+      setImagePreview(
+        URL.createObjectURL(file),
+      );
+    } else {
+      setImagePreview(
+        person?.image_url || "",
+      );
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -157,40 +234,126 @@ export default function PersonForm({
     setSaving(true);
     setErrors({});
 
-    const payload = {
-      name: form.name,
-      name_eng: form.name_eng,
-      image: form.image || null,
+    const formData = new FormData();
 
-      gender_id: form.gender_id || null,
+    formData.append(
+      "name",
+      form.name,
+    );
 
-      birth_date: normalizeBirthDateForApi(form.birth_date),
-      birth_time: form.birth_time || null,
+    formData.append(
+      "name_eng",
+      form.name_eng,
+    );
 
-      country_id: form.country_id || null,
-      city_id: form.city_id || null,
+    if (form.image) {
+      formData.append(
+        "image",
+        form.image,
+      );
+    }
 
-      time_zone: form.time_zone || null,
+    if (form.gender_id) {
+      formData.append(
+        "gender_id",
+        form.gender_id,
+      );
+    }
 
-      zodiac_sign_id: form.zodiac_sign_id || null,
-      birth_accuracy_id: form.birth_accuracy_id || null,
+    const birthDate =
+      normalizeBirthDateForApi(
+        form.birth_date,
+      );
 
-      biography: form.biography || null,
-      wikipedia_url: form.wikipedia_url || null,
+    if (birthDate) {
+      formData.append(
+        "birth_date",
+        birthDate,
+      );
+    }
 
-      status: Boolean(form.status),
-    };
+    if (form.birth_time) {
+      formData.append(
+        "birth_time",
+        form.birth_time,
+      );
+    }
+
+    if (form.country_id) {
+      formData.append(
+        "country_id",
+        form.country_id,
+      );
+    }
+
+    if (form.city_id) {
+      formData.append(
+        "city_id",
+        form.city_id,
+      );
+    }
+
+    if (form.time_zone) {
+      formData.append(
+        "time_zone",
+        form.time_zone,
+      );
+    }
+
+    if (form.zodiac_sign_id) {
+      formData.append(
+        "zodiac_sign_id",
+        form.zodiac_sign_id,
+      );
+    }
+
+    if (form.birth_accuracy_id) {
+      formData.append(
+        "birth_accuracy_id",
+        form.birth_accuracy_id,
+      );
+    }
+
+    if (form.biography) {
+      formData.append(
+        "biography",
+        form.biography,
+      );
+    }
+
+    if (form.wikipedia_url) {
+      formData.append(
+        "wikipedia_url",
+        form.wikipedia_url,
+      );
+    }
+
+    formData.append(
+      "status",
+      form.status ? "1" : "0",
+    );
+
+    // Laravel method spoofing for PUT + FormData
+    if (isEditing && person?.id) {
+      formData.append(
+        "_method",
+        "PUT",
+      );
+    }
 
     try {
-      const savedPerson = await savePerson(payload);
+      const savedPerson =
+        await savePerson(formData);
 
       onSaved(savedPerson);
 
       if (!isEditing) {
         setForm(emptyForm);
+        setImagePreview("");
       }
     } catch (error) {
-      const validationErrors = error?.response?.data?.errors;
+      const validationErrors =
+        error?.response?.data?.errors;
 
       if (validationErrors) {
         setErrors(validationErrors);
@@ -210,19 +373,23 @@ export default function PersonForm({
     <div className="card shadow-sm person-form-card">
       <div className="card-header">
         <h3 className="card-title mb-0">
-          {isEditing ? "ویرایش فرد" : "افزودن فرد جدید"}
+          {isEditing
+            ? "ویرایش فرد"
+            : "افزودن فرد جدید"}
         </h3>
       </div>
 
       <form onSubmit={handleSubmit}>
         <div className="card-body">
           {errors.general && (
-            <div className="alert alert-danger">{errors.general}</div>
+            <div className="alert alert-danger">
+              {errors.general}
+            </div>
           )}
 
           {/* =========================
-                        اطلاعات اصلی
-                    ========================== */}
+                اطلاعات اصلی
+          ========================== */}
 
           <div className="person-form-section">
             <div className="person-form-section-title">
@@ -231,9 +398,13 @@ export default function PersonForm({
             </div>
 
             <div className="row g-3">
+
               {/* Name */}
               <div className="col-12 col-md-6">
-                <label htmlFor="person-name" className="form-label">
+                <label
+                  htmlFor="person-name"
+                  className="form-label"
+                >
                   نام
                 </label>
 
@@ -241,7 +412,11 @@ export default function PersonForm({
                   id="person-name"
                   type="text"
                   name="name"
-                  className={`form-control ${errors.name ? "is-invalid" : ""}`}
+                  className={`form-control ${
+                    errors.name
+                      ? "is-invalid"
+                      : ""
+                  }`}
                   value={form.name}
                   onChange={handleChange}
                   maxLength={150}
@@ -253,7 +428,10 @@ export default function PersonForm({
 
               {/* English Name */}
               <div className="col-12 col-md-6">
-                <label htmlFor="person-name-eng" className="form-label">
+                <label
+                  htmlFor="person-name-eng"
+                  className="form-label"
+                >
                   نام انگلیسی
                 </label>
 
@@ -262,13 +440,14 @@ export default function PersonForm({
                   type="text"
                   name="name_eng"
                   className={`form-control ${
-                    errors.name_eng ? "is-invalid" : ""
+                    errors.name_eng
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.name_eng}
                   onChange={handleChange}
                   maxLength={150}
                   disabled={saving}
-                  // dir="ltr"
                 />
 
                 {renderError("name_eng")}
@@ -276,31 +455,47 @@ export default function PersonForm({
 
               {/* Image */}
               <div className="col-12">
-                <label htmlFor="person-image" className="form-label">
-                  مسیر تصویر
+                <label
+                  htmlFor="person-image"
+                  className="form-label"
+                >
+                  تصویر فرد
                 </label>
 
                 <input
                   id="person-image"
-                  type="text"
-                  name="image"
-                  className={`form-control ${errors.image ? "is-invalid" : ""}`}
-                  value={form.image}
-                  onChange={handleChange}
-                  maxLength={255}
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                  className={`form-control ${
+                    errors.image
+                      ? "is-invalid"
+                      : ""
+                  }`}
+                  onChange={handleImageChange}
                   disabled={saving}
-                  dir="ltr"
-                  placeholder="image.jpg"
                 />
 
+                <div className="form-text">
+                  فرمت‌های مجاز: JPG، PNG، WEBP — حداکثر ۵ مگابایت
+                </div>
+
                 {renderError("image")}
+
+                {imagePreview && (
+                  <div className="person-image-preview">
+                    <img
+                      src={imagePreview}
+                      alt="پیش‌نمایش تصویر فرد"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* =========================
-                        اطلاعات تولد
-                    ========================== */}
+                اطلاعات تولد
+          ========================== */}
 
           <div className="person-form-section">
             <div className="person-form-section-title">
@@ -309,9 +504,13 @@ export default function PersonForm({
             </div>
 
             <div className="row g-3">
+
               {/* Gender */}
               <div className="col-12 col-md-4">
-                <label htmlFor="person-gender" className="form-label">
+                <label
+                  htmlFor="person-gender"
+                  className="form-label"
+                >
                   جنسیت
                 </label>
 
@@ -319,16 +518,23 @@ export default function PersonForm({
                   id="person-gender"
                   name="gender_id"
                   className={`form-select ${
-                    errors.gender_id ? "is-invalid" : ""
+                    errors.gender_id
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.gender_id}
                   onChange={handleChange}
                   disabled={saving}
                 >
-                  <option value="">انتخاب جنسیت</option>
+                  <option value="">
+                    انتخاب جنسیت
+                  </option>
 
                   {genders.map((gender) => (
-                    <option key={gender.id} value={gender.id}>
+                    <option
+                      key={gender.id}
+                      value={gender.id}
+                    >
                       {gender.name}
                     </option>
                   ))}
@@ -339,7 +545,10 @@ export default function PersonForm({
 
               {/* Birth Date */}
               <div className="col-12 col-md-4">
-                <label htmlFor="person-birth-date" className="form-label">
+                <label
+                  htmlFor="person-birth-date"
+                  className="form-label"
+                >
                   تاریخ تولد
                 </label>
 
@@ -348,11 +557,16 @@ export default function PersonForm({
                   type="text"
                   name="birth_date"
                   className={`form-control ${
-                    errors.birth_date ? "is-invalid" : ""
+                    errors.birth_date
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.birth_date}
                   onChange={(event) => {
-                    const value = formatBirthDateForDisplay(event.target.value);
+                    const value =
+                      formatBirthDateForDisplay(
+                        event.target.value,
+                      );
 
                     setForm((current) => ({
                       ...current,
@@ -368,7 +582,6 @@ export default function PersonForm({
                   maxLength={14}
                   placeholder="YYYY / MM / DD"
                   disabled={saving}
-                  // dir="ltr"
                 />
 
                 {renderError("birth_date")}
@@ -376,7 +589,10 @@ export default function PersonForm({
 
               {/* Birth Time */}
               <div className="col-12 col-md-4">
-                <label htmlFor="person-birth-time" className="form-label">
+                <label
+                  htmlFor="person-birth-time"
+                  className="form-label"
+                >
                   ساعت تولد
                 </label>
 
@@ -385,13 +601,13 @@ export default function PersonForm({
                   type="text"
                   name="birth_time"
                   className={`form-control ${
-                    errors.birth_time ? "is-invalid" : ""
+                    errors.birth_time
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.birth_time}
                   onChange={handleChange}
                   disabled={saving}
-                  // dir="ltr"
-                  
                 />
 
                 {renderError("birth_time")}
@@ -399,7 +615,10 @@ export default function PersonForm({
 
               {/* Country */}
               <div className="col-12 col-md-4">
-                <label htmlFor="person-country" className="form-label">
+                <label
+                  htmlFor="person-country"
+                  className="form-label"
+                >
                   کشور تولد
                 </label>
 
@@ -407,16 +626,23 @@ export default function PersonForm({
                   id="person-country"
                   name="country_id"
                   className={`form-select ${
-                    errors.country_id ? "is-invalid" : ""
+                    errors.country_id
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.country_id}
                   onChange={handleChange}
                   disabled={saving}
                 >
-                  <option value="">انتخاب کشور</option>
+                  <option value="">
+                    انتخاب کشور
+                  </option>
 
                   {countries.map((country) => (
-                    <option key={country.id} value={country.id}>
+                    <option
+                      key={country.id}
+                      value={country.id}
+                    >
                       {country.name_eng}
                     </option>
                   ))}
@@ -427,7 +653,10 @@ export default function PersonForm({
 
               {/* City */}
               <div className="col-12 col-md-4">
-                <label htmlFor="person-city" className="form-label">
+                <label
+                  htmlFor="person-city"
+                  className="form-label"
+                >
                   شهر تولد
                 </label>
 
@@ -435,11 +664,16 @@ export default function PersonForm({
                   id="person-city"
                   name="city_id"
                   className={`form-select ${
-                    errors.city_id ? "is-invalid" : ""
+                    errors.city_id
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.city_id}
                   onChange={handleChange}
-                  disabled={saving || !form.country_id}
+                  disabled={
+                    saving ||
+                    !form.country_id
+                  }
                 >
                   <option value="">
                     {form.country_id
@@ -448,7 +682,10 @@ export default function PersonForm({
                   </option>
 
                   {filteredCities.map((city) => (
-                    <option key={city.id} value={city.id}>
+                    <option
+                      key={city.id}
+                      value={city.id}
+                    >
                       {city.name_eng}
                     </option>
                   ))}
@@ -459,7 +696,10 @@ export default function PersonForm({
 
               {/* Time Zone */}
               <div className="col-12 col-md-4">
-                <label htmlFor="person-time-zone" className="form-label">
+                <label
+                  htmlFor="person-time-zone"
+                  className="form-label"
+                >
                   منطقه زمانی
                 </label>
 
@@ -468,13 +708,14 @@ export default function PersonForm({
                   type="text"
                   name="time_zone"
                   className={`form-control ${
-                    errors.time_zone ? "is-invalid" : ""
+                    errors.time_zone
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.time_zone}
                   onChange={handleChange}
                   maxLength={255}
                   disabled={saving}
-                  // dir="ltr"
                 />
 
                 {renderError("time_zone")}
@@ -482,7 +723,10 @@ export default function PersonForm({
 
               {/* Zodiac Sign */}
               <div className="col-12 col-md-6">
-                <label htmlFor="person-zodiac-sign" className="form-label">
+                <label
+                  htmlFor="person-zodiac-sign"
+                  className="form-label"
+                >
                   طالع فرد
                 </label>
 
@@ -490,19 +734,29 @@ export default function PersonForm({
                   id="person-zodiac-sign"
                   name="zodiac_sign_id"
                   className={`form-select ${
-                    errors.zodiac_sign_id ? "is-invalid" : ""
+                    errors.zodiac_sign_id
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.zodiac_sign_id}
                   onChange={handleChange}
                   disabled={saving}
                 >
-                  <option value="">انتخاب نشانه زودیاک</option>
+                  <option value="">
+                    انتخاب نشانه زودیاک
+                  </option>
 
-                  {zodiacSigns.map((zodiacSign) => (
-                    <option key={zodiacSign.id} value={zodiacSign.id}>
-                      {zodiacSign.id}- {zodiacSign.name_eng}
-                    </option>
-                  ))}
+                  {zodiacSigns.map(
+                    (zodiacSign) => (
+                      <option
+                        key={zodiacSign.id}
+                        value={zodiacSign.id}
+                      >
+                        {zodiacSign.id} -{" "}
+                        {zodiacSign.name_eng}
+                      </option>
+                    ),
+                  )}
                 </select>
 
                 {renderError("zodiac_sign_id")}
@@ -510,7 +764,10 @@ export default function PersonForm({
 
               {/* Birth Accuracy */}
               <div className="col-12 col-md-6">
-                <label htmlFor="person-birth-accuracy" className="form-label">
+                <label
+                  htmlFor="person-birth-accuracy"
+                  className="form-label"
+                >
                   دقت اطلاعات تولد
                 </label>
 
@@ -518,29 +775,42 @@ export default function PersonForm({
                   id="person-birth-accuracy"
                   name="birth_accuracy_id"
                   className={`form-select ${
-                    errors.birth_accuracy_id ? "is-invalid" : ""
+                    errors.birth_accuracy_id
+                      ? "is-invalid"
+                      : ""
                   }`}
-                  value={form.birth_accuracy_id}
+                  value={
+                    form.birth_accuracy_id
+                  }
                   onChange={handleChange}
                   disabled={saving}
                 >
-                  <option value="">انتخاب دقت تولد</option>
+                  <option value="">
+                    انتخاب دقت تولد
+                  </option>
 
-                  {birthAccuracies.map((accuracy) => (
-                    <option key={accuracy.id} value={accuracy.id}>
-                      {accuracy.code}
-                    </option>
-                  ))}
+                  {birthAccuracies.map(
+                    (accuracy) => (
+                      <option
+                        key={accuracy.id}
+                        value={accuracy.id}
+                      >
+                        {accuracy.code}
+                      </option>
+                    ),
+                  )}
                 </select>
 
-                {renderError("birth_accuracy_id")}
+                {renderError(
+                  "birth_accuracy_id",
+                )}
               </div>
             </div>
           </div>
 
           {/* =========================
-                        اطلاعات تکمیلی
-                    ========================== */}
+                اطلاعات تکمیلی
+          ========================== */}
 
           <div className="person-form-section">
             <div className="person-form-section-title">
@@ -549,9 +819,13 @@ export default function PersonForm({
             </div>
 
             <div className="row g-3">
+
               {/* Biography */}
               <div className="col-12">
-                <label htmlFor="person-biography" className="form-label">
+                <label
+                  htmlFor="person-biography"
+                  className="form-label"
+                >
                   زندگی‌نامه / توضیحات
                 </label>
 
@@ -559,7 +833,9 @@ export default function PersonForm({
                   id="person-biography"
                   name="biography"
                   className={`form-control ${
-                    errors.biography ? "is-invalid" : ""
+                    errors.biography
+                      ? "is-invalid"
+                      : ""
                   }`}
                   rows="6"
                   value={form.biography}
@@ -572,7 +848,10 @@ export default function PersonForm({
 
               {/* Wikipedia */}
               <div className="col-12">
-                <label htmlFor="person-wikipedia" className="form-label">
+                <label
+                  htmlFor="person-wikipedia"
+                  className="form-label"
+                >
                   لینک ویکی‌پدیا
                 </label>
 
@@ -581,7 +860,9 @@ export default function PersonForm({
                   type="url"
                   name="wikipedia_url"
                   className={`form-control ${
-                    errors.wikipedia_url ? "is-invalid" : ""
+                    errors.wikipedia_url
+                      ? "is-invalid"
+                      : ""
                   }`}
                   value={form.wikipedia_url}
                   onChange={handleChange}
@@ -607,7 +888,10 @@ export default function PersonForm({
                     disabled={saving}
                   />
 
-                  <label htmlFor="person-status" className="form-check-label">
+                  <label
+                    htmlFor="person-status"
+                    className="form-check-label"
+                  >
                     فرد فعال است
                   </label>
                 </div>
@@ -619,7 +903,15 @@ export default function PersonForm({
         </div>
 
         <div className="card-footer d-flex gap-2">
-          <button type="submit" className={isEditing ? "btn btn-warning" : "btn btn-primary"} disabled={saving}>
+          <button
+            type="submit"
+            className={
+              isEditing
+                ? "btn btn-warning"
+                : "btn btn-primary"
+            }
+            disabled={saving}
+          >
             {saving ? (
               <>
                 <span
@@ -631,7 +923,9 @@ export default function PersonForm({
             ) : (
               <>
                 <i className="bi bi-check-lg me-1" />
-                {isEditing ? "ذخیره تغییرات" : "افزودن فرد"}
+                {isEditing
+                  ? "ذخیره تغییرات"
+                  : "افزودن فرد"}
               </>
             )}
           </button>

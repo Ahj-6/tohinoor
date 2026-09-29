@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 import NatureForm from "./NatureForm.jsx";
 
@@ -110,11 +111,13 @@ export default function NaturesList() {
           <h1>طبیعت‌ها</h1>
 
           <div className="natures-breadcrumb">
-            <a href="/admin">داشبورد</a>
+            <Link to="/admin">داشبورد</Link>
+            {/* <a href="/admin">داشبورد</a> */}
 
             <span>/</span>
 
-            <a href="/admin/astrology">استرولوژی</a>
+            <Link to="/admin/astrology">استرولوژی</Link>
+            {/* <a href="/admin/astrology">استرولوژی</a> */}
 
             <span>/</span>
 

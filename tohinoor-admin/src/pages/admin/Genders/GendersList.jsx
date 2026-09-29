@@ -1,326 +1,249 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
-import GenderForm from './GenderForm.jsx';
+import GenderForm from "./GenderForm.jsx";
 
 import {
-    createGender,
-    deleteGender,
-    getGenders,
-    updateGender,
-} from '../../../services/genderService.js';
+  createGender,
+  deleteGender,
+  getGenders,
+  updateGender,
+} from "../../../services/genderService.js";
 
-import './Genders.css';
+import "./Genders.css";
 
 export default function GendersList() {
-    const [genders, setGenders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [loadError, setLoadError] = useState('');
+  const [genders, setGenders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-    const [editingGender, setEditingGender] = useState(null);
-    const [deletingId, setDeletingId] = useState(null);
+  const [editingGender, setEditingGender] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
-    const loadGenders = useCallback(async () => {
-        setLoading(true);
-        setLoadError('');
+  const loadGenders = useCallback(async () => {
+    setLoading(true);
+    setLoadError("");
 
-        try {
-            const data = await getGenders();
-            setGenders(data);
-        } catch (error) {
-            setLoadError(
-                error?.response?.data?.message ||
-                'دریافت اطلاعات جنسیت‌ها با خطا مواجه شد.',
-            );
-        } finally {
-            setLoading(false);
-        }
-    }, []);
+    try {
+      const data = await getGenders();
+      setGenders(data);
+    } catch (error) {
+      setLoadError(
+        error?.response?.data?.message ||
+          "دریافت اطلاعات جنسیت‌ها با خطا مواجه شد.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-    useEffect(() => {
-        loadGenders();
-    }, [loadGenders]);
+  useEffect(() => {
+    loadGenders();
+  }, [loadGenders]);
 
-    const handleSaved = (savedGender) => {
-        setGenders((current) => {
-            const exists = current.some(
-                (item) => item.id === savedGender.id,
-            );
+  const handleSaved = (savedGender) => {
+    setGenders((current) => {
+      const exists = current.some((item) => item.id === savedGender.id);
 
-            if (exists) {
-                return current.map((item) =>
-                    item.id === savedGender.id
-                        ? savedGender
-                        : item,
-                );
-            }
+      if (exists) {
+        return current.map((item) =>
+          item.id === savedGender.id ? savedGender : item,
+        );
+      }
 
-            return [...current, savedGender];
-        });
+      return [...current, savedGender];
+    });
 
+    setEditingGender(null);
+  };
+
+  const handleDelete = async (id) => {
+    const gender = genders.find((item) => item.id === id);
+
+    const confirmed = window.confirm(
+      `آیا از حذف «${gender?.name || "این جنسیت"}» اطمینان دارید؟`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingId(id);
+
+    try {
+      await deleteGender(id);
+
+      setGenders((current) => current.filter((item) => item.id !== id));
+
+      if (editingGender?.id === id) {
         setEditingGender(null);
-    };
+      }
+    } catch (error) {
+      window.alert(
+        error?.response?.data?.message || "حذف جنسیت با خطا مواجه شد.",
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
-    const handleDelete = async (id) => {
-        const gender = genders.find(
-            (item) => item.id === id,
-        );
+  const saveGender = async (payload) => {
+    if (editingGender?.id) {
+      return updateGender(editingGender.id, payload);
+    }
 
-        const confirmed = window.confirm(
-            `آیا از حذف «${gender?.name || 'این جنسیت'}» اطمینان دارید؟`,
-        );
+    return createGender(payload);
+  };
 
-        if (!confirmed) {
-            return;
-        }
+  const startCreate = () => {
+    setEditingGender({
+      id: null,
+      name: "",
+      name_eng: "",
+    });
+  };
 
-        setDeletingId(id);
+  return (
+    <div className="genders-page">
+      {/* Page Header */}
+      <div className="genders-page-header">
+        <div className="genders-page-title">
+          <h1>جنسیت‌ها</h1>
 
-        try {
-            await deleteGender(id);
+          <div className="genders-breadcrumb">
+            <Link to="/admin">داشبورد</Link>
+            {/* <a href="/admin">داشبورد</a> */}
 
-            setGenders((current) =>
-                current.filter((item) => item.id !== id),
-            );
+            <span>/</span>
 
-            if (editingGender?.id === id) {
-                setEditingGender(null);
-            }
-        } catch (error) {
-            window.alert(
-                error?.response?.data?.message ||
-                'حذف جنسیت با خطا مواجه شد.',
-            );
-        } finally {
-            setDeletingId(null);
-        }
-    };
+            <Link to="/admin/astrology">استرولوژی</Link>
+            {/* <a href="/admin/astrology">استرولوژی</a> */}
 
-    const saveGender = async (payload) => {
-        if (editingGender?.id) {
-            return updateGender(
-                editingGender.id,
-                payload,
-            );
-        }
+            <span>/</span>
 
-        return createGender(payload);
-    };
+            <span>جنسیت‌ها</span>
+          </div>
+        </div>
+      </div>
 
-    const startCreate = () => {
-        setEditingGender({
-            id: null,
-            name: '',
-            name_eng: '',
-        });
-    };
+      {/* Form */}
+      {editingGender && (
+        <div className="genders-form-wrapper">
+          <GenderForm
+            gender={editingGender.id ? editingGender : null}
+            saveGender={saveGender}
+            onSaved={handleSaved}
+            onCancel={() => setEditingGender(null)}
+          />
+        </div>
+      )}
 
-    return (
-        <div className="genders-page">
+      {/* Main Card */}
+      <div className="genders-card">
+        <div className="genders-card-header">
+          <div className="genders-card-title">نمایش جنسیت‌ها</div>
 
-            {/* Page Header */}
-            <div className="genders-page-header">
-                <div className="genders-page-title">
-                    <h1>جنسیت‌ها</h1>
+          <button
+            type="button"
+            className="genders-add-button"
+            onClick={startCreate}
+            disabled={Boolean(editingGender)}
+          >
+            <i className="bi bi-plus-lg" />
+            <span>افزودن جنسیت</span>
+          </button>
+        </div>
 
-                    <div className="genders-breadcrumb">
-                        <a href="/admin">
-                            داشبورد
-                        </a>
+        <div className="genders-card-body">
+          {loading ? (
+            <div className="genders-state">
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              />
 
-                        <span>/</span>
-
-                        <a href="/admin/astrology">
-                            استرولوژی
-                        </a>
-
-                        <span>/</span>
-
-                        <span>جنسیت‌ها</span>
-                    </div>
-                </div>
+              <span>در حال دریافت اطلاعات...</span>
             </div>
+          ) : loadError ? (
+            <div className="genders-error">
+              <span>{loadError}</span>
 
-            {/* Form */}
-            {editingGender && (
-                <div className="genders-form-wrapper">
-                    <GenderForm
-                        gender={
-                            editingGender.id
-                                ? editingGender
-                                : null
-                        }
-                        saveGender={saveGender}
-                        onSaved={handleSaved}
-                        onCancel={() =>
-                            setEditingGender(null)
-                        }
-                    />
-                </div>
-            )}
+              <button type="button" onClick={loadGenders}>
+                تلاش مجدد
+              </button>
+            </div>
+          ) : genders.length === 0 ? (
+            <div className="genders-state">
+              <i className="bi bi-inbox" />
 
-            {/* Main Card */}
-            <div className="genders-card">
+              <span>هنوز جنسیتی ثبت نشده است.</span>
+            </div>
+          ) : (
+            <div className="genders-table-wrapper">
+              <table className="genders-table">
+                <thead>
+                  <tr>
+                    <th className="col-number">ردیف</th>
 
-                <div className="genders-card-header">
+                    <th>نام جنسیت</th>
 
-                    <div className="genders-card-title">
-                        نمایش جنسیت‌ها
-                    </div>
+                    <th className="col-english">نام انگلیسی</th>
 
-                    <button
-                        type="button"
-                        className="genders-add-button"
-                        onClick={startCreate}
-                        disabled={Boolean(editingGender)}
-                    >
-                        <i className="bi bi-plus-lg" />
-                        <span>افزودن جنسیت</span>
-                    </button>
+                    <th className="col-actions">عملیات</th>
+                  </tr>
+                </thead>
 
-                </div>
+                <tbody>
+                  {genders.map((gender, index) => (
+                    <tr key={gender.id}>
+                      <td className="text-center">{index + 1}</td>
 
-                <div className="genders-card-body">
+                      <td className="gender-name">{gender.name}</td>
 
-                    {loading ? (
-                        <div className="genders-state">
-                            <span
+                      <td className="gender-name-eng" dir="ltr">
+                        {gender.name_eng}
+                      </td>
+
+                      <td>
+                        <div className="gender-actions">
+                          <button
+                            type="button"
+                            className="gender-edit-button"
+                            onClick={() => setEditingGender(gender)}
+                            disabled={deletingId !== null}
+                          >
+                            <i className="bi bi-pencil" />
+                            <span>ویرایش</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            className="gender-delete-button"
+                            onClick={() => handleDelete(gender.id)}
+                            disabled={deletingId === gender.id}
+                          >
+                            {deletingId === gender.id ? (
+                              <span
                                 className="spinner-border spinner-border-sm"
                                 aria-hidden="true"
-                            />
-
-                            <span>
-                                در حال دریافت اطلاعات...
-                            </span>
+                              />
+                            ) : (
+                              <>
+                                <i className="bi bi-trash" />
+                                <span>حذف</span>
+                              </>
+                            )}
+                          </button>
                         </div>
-                    ) : loadError ? (
-                        <div className="genders-error">
-                            <span>{loadError}</span>
-
-                            <button
-                                type="button"
-                                onClick={loadGenders}
-                            >
-                                تلاش مجدد
-                            </button>
-                        </div>
-                    ) : genders.length === 0 ? (
-                        <div className="genders-state">
-                            <i className="bi bi-inbox" />
-
-                            <span>
-                                هنوز جنسیتی ثبت نشده است.
-                            </span>
-                        </div>
-                    ) : (
-                        <div className="genders-table-wrapper">
-                            <table className="genders-table">
-
-                                <thead>
-                                    <tr>
-                                        <th className="col-number">
-                                            ردیف
-                                        </th>
-
-                                        <th>
-                                            نام جنسیت
-                                        </th>
-
-                                        <th className="col-english">
-                                            نام انگلیسی
-                                        </th>
-
-                                        <th className="col-actions">
-                                            عملیات
-                                        </th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {genders.map(
-                                        (gender, index) => (
-                                            <tr key={gender.id}>
-
-                                                <td className="text-center">
-                                                    {index + 1}
-                                                </td>
-
-                                                <td className="gender-name">
-                                                    {gender.name}
-                                                </td>
-
-                                                <td
-                                                    className="gender-name-eng"
-                                                    dir="ltr"
-                                                >
-                                                    {gender.name_eng}
-                                                </td>
-
-                                                <td>
-                                                    <div className="gender-actions">
-
-                                                        <button
-                                                            type="button"
-                                                            className="gender-edit-button"
-                                                            onClick={() =>
-                                                                setEditingGender(
-                                                                    gender,
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                deletingId !==
-                                                                null
-                                                            }
-                                                        >
-                                                            <i className="bi bi-pencil" />
-                                                            <span>
-                                                                ویرایش
-                                                            </span>
-                                                        </button>
-
-                                                        <button
-                                                            type="button"
-                                                            className="gender-delete-button"
-                                                            onClick={() =>
-                                                                handleDelete(
-                                                                    gender.id,
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                deletingId ===
-                                                                gender.id
-                                                            }
-                                                        >
-                                                            {deletingId ===
-                                                            gender.id ? (
-                                                                <span
-                                                                    className="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"
-                                                                />
-                                                            ) : (
-                                                                <>
-                                                                    <i className="bi bi-trash" />
-                                                                    <span>
-                                                                        حذف
-                                                                    </span>
-                                                                </>
-                                                            )}
-                                                        </button>
-
-                                                    </div>
-                                                </td>
-
-                                            </tr>
-                                        ),
-                                    )}
-                                </tbody>
-
-                            </table>
-                        </div>
-                    )}
-
-                </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 }

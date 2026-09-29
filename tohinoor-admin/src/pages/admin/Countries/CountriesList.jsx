@@ -1,326 +1,252 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
-import CountryForm from './CountryForm.jsx';
+import CountryForm from "./CountryForm.jsx";
 
 import {
-    createCountry,
-    deleteCountry,
-    getCountries,
-    updateCountry,
-} from '../../../services/countryService.js';
+  createCountry,
+  deleteCountry,
+  getCountries,
+  updateCountry,
+} from "../../../services/countryService.js";
 
-import './Countries.css';
+import "./Countries.css";
 
 export default function CountriesList() {
-    const [countries, setCountries] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [loadError, setLoadError] = useState('');
+  const [countries, setCountries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-    const [editingCountry, setEditingCountry] = useState(null);
-    const [deletingId, setDeletingId] = useState(null);
+  const [editingCountry, setEditingCountry] = useState(null);
+  const [deletingId, setDeletingId] = useState(null);
 
-    const loadCountries = useCallback(async () => {
-        setLoading(true);
-        setLoadError('');
+  const loadCountries = useCallback(async () => {
+    setLoading(true);
+    setLoadError("");
 
-        try {
-            const data = await getCountries();
-            setCountries(data);
-        } catch (error) {
-            setLoadError(
-                error?.response?.data?.message ||
-                'دریافت اطلاعات کشورها با خطا مواجه شد.',
-            );
-        } finally {
-            setLoading(false);
-        }
-    }, []);
+    try {
+      const data = await getCountries();
+      setCountries(data);
+    } catch (error) {
+      setLoadError(
+        error?.response?.data?.message ||
+          "دریافت اطلاعات کشورها با خطا مواجه شد.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-    useEffect(() => {
-        loadCountries();
-    }, [loadCountries]);
+  useEffect(() => {
+    loadCountries();
+  }, [loadCountries]);
 
-    const handleSaved = (savedCountry) => {
-        setCountries((current) => {
-            const exists = current.some(
-                (item) => item.id === savedCountry.id,
-            );
+  const handleSaved = (savedCountry) => {
+    setCountries((current) => {
+      const exists = current.some((item) => item.id === savedCountry.id);
 
-            if (exists) {
-                return current.map((item) =>
-                    item.id === savedCountry.id
-                        ? savedCountry
-                        : item,
-                );
-            }
+      if (exists) {
+        return current.map((item) =>
+          item.id === savedCountry.id ? savedCountry : item,
+        );
+      }
 
-            return [...current, savedCountry];
-        });
+      return [...current, savedCountry];
+    });
 
+    setEditingCountry(null);
+  };
+
+  const handleDelete = async (id) => {
+    const country = countries.find((item) => item.id === id);
+
+    const confirmed = window.confirm(
+      `آیا از حذف «${country?.name || "این کشور"}» اطمینان دارید؟`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingId(id);
+
+    try {
+      await deleteCountry(id);
+
+      setCountries((current) => current.filter((item) => item.id !== id));
+
+      if (editingCountry?.id === id) {
         setEditingCountry(null);
-    };
+      }
+    } catch (error) {
+      window.alert(
+        error?.response?.data?.message || "حذف کشور با خطا مواجه شد.",
+      );
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
-    const handleDelete = async (id) => {
-        const country = countries.find(
-            (item) => item.id === id,
-        );
+  const saveCountry = async (payload) => {
+    if (editingCountry?.id) {
+      return updateCountry(editingCountry.id, payload);
+    }
 
-        const confirmed = window.confirm(
-            `آیا از حذف «${country?.name || 'این کشور'}» اطمینان دارید؟`,
-        );
+    return createCountry(payload);
+  };
 
-        if (!confirmed) {
-            return;
-        }
+  const startCreate = () => {
+    setEditingCountry({
+      id: null,
+      name: "",
+      name_eng: "",
+    });
+  };
 
-        setDeletingId(id);
+  return (
+    <div className="countries-page">
+      {/* Page Header */}
+      <div className="countries-page-header">
+        <div className="countries-page-title">
+          <h1>کشورها</h1>
 
-        try {
-            await deleteCountry(id);
+          <div className="countries-breadcrumb">
+            <Link to="/admin">داشبورد</Link>
+            {/* <a href="/admin">داشبورد</a> */}
 
-            setCountries((current) =>
-                current.filter((item) => item.id !== id),
-            );
+            <span>/</span>
 
-            if (editingCountry?.id === id) {
-                setEditingCountry(null);
-            }
-        } catch (error) {
-            window.alert(
-                error?.response?.data?.message ||
-                'حذف کشور با خطا مواجه شد.',
-            );
-        } finally {
-            setDeletingId(null);
-        }
-    };
+            <Link to="/admin/astrology">استرولوژی</Link>
+            {/* <a href="/admin/astrology">استرولوژی</a> */}
 
-    const saveCountry = async (payload) => {
-        if (editingCountry?.id) {
-            return updateCountry(
-                editingCountry.id,
-                payload,
-            );
-        }
+            <span>/</span>
 
-        return createCountry(payload);
-    };
+            <span>کشورها</span>
+          </div>
+        </div>
+      </div>
 
-    const startCreate = () => {
-        setEditingCountry({
-            id: null,
-            name: '',
-            name_eng: '',
-        });
-    };
+      {/* Form */}
+      {editingCountry && (
+        <div className="countries-form-wrapper">
+          <CountryForm
+            country={editingCountry.id ? editingCountry : null}
+            saveCountry={saveCountry}
+            onSaved={handleSaved}
+            onCancel={() => setEditingCountry(null)}
+          />
+        </div>
+      )}
 
-    return (
-        <div className="countries-page">
+      {/* Main Card */}
+      <div className="countries-card">
+        <div className="countries-card-header">
+          <div className="countries-card-title">نمایش کشورها</div>
 
-            {/* Page Header */}
-            <div className="countries-page-header">
-                <div className="countries-page-title">
-                    <h1>کشورها</h1>
+          <button
+            type="button"
+            className="countries-add-button"
+            onClick={startCreate}
+            disabled={Boolean(editingCountry)}
+          >
+            <i className="bi bi-plus-lg" />
+            <span>افزودن کشور</span>
+          </button>
+        </div>
 
-                    <div className="countries-breadcrumb">
-                        <a href="/admin">
-                            داشبورد
-                        </a>
+        <div className="countries-card-body">
+          {loading ? (
+            <div className="countries-state">
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              />
 
-                        <span>/</span>
-
-                        <a href="/admin/astrology">
-                            استرولوژی
-                        </a>
-
-                        <span>/</span>
-
-                        <span>کشورها</span>
-                    </div>
-                </div>
+              <span>در حال دریافت اطلاعات...</span>
             </div>
+          ) : loadError ? (
+            <div className="countries-error">
+              <span>{loadError}</span>
 
-            {/* Form */}
-            {editingCountry && (
-                <div className="countries-form-wrapper">
-                    <CountryForm
-                        country={
-                            editingCountry.id
-                                ? editingCountry
-                                : null
-                        }
-                        saveCountry={saveCountry}
-                        onSaved={handleSaved}
-                        onCancel={() =>
-                            setEditingCountry(null)
-                        }
-                    />
-                </div>
-            )}
+              <button type="button" onClick={loadCountries}>
+                تلاش مجدد
+              </button>
+            </div>
+          ) : countries.length === 0 ? (
+            <div className="countries-state">
+              <i className="bi bi-inbox" />
 
-            {/* Main Card */}
-            <div className="countries-card">
+              <span>هنوز کشوری ثبت نشده است.</span>
+            </div>
+          ) : (
+            <div className="countries-table-wrapper">
+              <table className="countries-table">
+                <thead>
+                  <tr>
+                    <th className="col-number">ردیف</th>
 
-                <div className="countries-card-header">
+                    <th>نام کشور</th>
 
-                    <div className="countries-card-title">
-                        نمایش کشورها
-                    </div>
+                    <th className="col-english">نام انگلیسی</th>
 
-                    <button
-                        type="button"
-                        className="countries-add-button"
-                        onClick={startCreate}
-                        disabled={Boolean(editingCountry)}
-                    >
-                        <i className="bi bi-plus-lg" />
-                        <span>افزودن کشور</span>
-                    </button>
+                    <th className="col-actions">عملیات</th>
+                  </tr>
+                </thead>
 
-                </div>
+                <tbody>
+                  {countries.map((country, index) => (
+                    <tr key={country.id}>
+                      <td className="text-center">{index + 1}</td>
 
-                <div className="countries-card-body">
+                      <td className="country-name">{country.name}</td>
 
-                    {loading ? (
-                        <div className="countries-state">
-                            <span
+                      <td
+                        className="country-name-eng"
+                        // dir="ltr"
+                      >
+                        {country.name_eng}
+                      </td>
+
+                      <td>
+                        <div className="country-actions">
+                          <button
+                            type="button"
+                            className="country-edit-button"
+                            onClick={() => setEditingCountry(country)}
+                            disabled={deletingId !== null}
+                          >
+                            <i className="bi bi-pencil" />
+                            <span>ویرایش</span>
+                          </button>
+
+                          <button
+                            type="button"
+                            className="country-delete-button"
+                            onClick={() => handleDelete(country.id)}
+                            disabled={deletingId === country.id}
+                          >
+                            {deletingId === country.id ? (
+                              <span
                                 className="spinner-border spinner-border-sm"
                                 aria-hidden="true"
-                            />
-
-                            <span>
-                                در حال دریافت اطلاعات...
-                            </span>
+                              />
+                            ) : (
+                              <>
+                                <i className="bi bi-trash" />
+                                <span>حذف</span>
+                              </>
+                            )}
+                          </button>
                         </div>
-                    ) : loadError ? (
-                        <div className="countries-error">
-                            <span>{loadError}</span>
-
-                            <button
-                                type="button"
-                                onClick={loadCountries}
-                            >
-                                تلاش مجدد
-                            </button>
-                        </div>
-                    ) : countries.length === 0 ? (
-                        <div className="countries-state">
-                            <i className="bi bi-inbox" />
-
-                            <span>
-                                هنوز کشوری ثبت نشده است.
-                            </span>
-                        </div>
-                    ) : (
-                        <div className="countries-table-wrapper">
-                            <table className="countries-table">
-
-                                <thead>
-                                    <tr>
-                                        <th className="col-number">
-                                            ردیف
-                                        </th>
-
-                                        <th>
-                                            نام کشور
-                                        </th>
-
-                                        <th className="col-english">
-                                            نام انگلیسی
-                                        </th>
-
-                                        <th className="col-actions">
-                                            عملیات
-                                        </th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    {countries.map(
-                                        (country, index) => (
-                                            <tr key={country.id}>
-
-                                                <td className="text-center">
-                                                    {index + 1}
-                                                </td>
-
-                                                <td className="country-name">
-                                                    {country.name}
-                                                </td>
-
-                                                <td
-                                                    className="country-name-eng"
-                                                    // dir="ltr"
-                                                >
-                                                    {country.name_eng}
-                                                </td>
-
-                                                <td>
-                                                    <div className="country-actions">
-
-                                                        <button
-                                                            type="button"
-                                                            className="country-edit-button"
-                                                            onClick={() =>
-                                                                setEditingCountry(
-                                                                    country,
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                deletingId !==
-                                                                null
-                                                            }
-                                                        >
-                                                            <i className="bi bi-pencil" />
-                                                            <span>
-                                                                ویرایش
-                                                            </span>
-                                                        </button>
-
-                                                        <button
-                                                            type="button"
-                                                            className="country-delete-button"
-                                                            onClick={() =>
-                                                                handleDelete(
-                                                                    country.id,
-                                                                )
-                                                            }
-                                                            disabled={
-                                                                deletingId ===
-                                                                country.id
-                                                            }
-                                                        >
-                                                            {deletingId ===
-                                                            country.id ? (
-                                                                <span
-                                                                    className="spinner-border spinner-border-sm"
-                                                                    aria-hidden="true"
-                                                                />
-                                                            ) : (
-                                                                <>
-                                                                    <i className="bi bi-trash" />
-                                                                    <span>
-                                                                        حذف
-                                                                    </span>
-                                                                </>
-                                                            )}
-                                                        </button>
-
-                                                    </div>
-                                                </td>
-
-                                            </tr>
-                                        ),
-                                    )}
-                                </tbody>
-
-                            </table>
-                        </div>
-                    )}
-
-                </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 }

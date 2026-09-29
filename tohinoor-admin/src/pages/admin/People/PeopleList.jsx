@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import PersonForm from "./PersonForm.jsx";
 
@@ -15,10 +15,14 @@ import { getCountries } from "../../../services/countryService.js";
 import { getCities } from "../../../services/cityService.js";
 import { getZodiacSigns } from "../../../services/zodiacSignService.js";
 import { getBirthAccuracies } from "../../../services/birthAccuracyService.js";
+import { getPlanets } from "../../../services/planetService.js";
 
 import "./People.css";
 
 export default function PeopleList() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [people, setPeople] = useState([]);
 
   const [genders, setGenders] = useState([]);
@@ -26,9 +30,12 @@ export default function PeopleList() {
   const [cities, setCities] = useState([]);
   const [zodiacSigns, setZodiacSigns] = useState([]);
   const [birthAccuracies, setBirthAccuracies] = useState([]);
+  const [planets, setPlanets] = useState([]);
 
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+
+  const [loadWarnings, setLoadWarnings] = useState([]);
 
   const [editingPerson, setEditingPerson] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
@@ -36,43 +43,123 @@ export default function PeopleList() {
   const loadData = useCallback(async () => {
     setLoading(true);
     setLoadError("");
+    setLoadWarnings([]);
 
-    try {
-      const [
-        peopleData,
-        gendersData,
-        countriesData,
-        citiesData,
-        zodiacSignsData,
-        birthAccuraciesData,
-      ] = await Promise.all([
-        getPeople(),
-        getGenders(),
-        getCountries(),
-        getCities(),
-        getZodiacSigns(),
-        getBirthAccuracies(),
-      ]);
+    const results = await Promise.allSettled([
+      getPeople(),
+      getGenders(),
+      getCountries(),
+      getCities(),
+      getZodiacSigns(),
+      getBirthAccuracies(),
+      getPlanets(),
+    ]);
 
-      setPeople(peopleData);
-      setGenders(gendersData);
-      setCountries(countriesData);
-      setCities(citiesData);
-      setZodiacSigns(zodiacSignsData);
-      setBirthAccuracies(birthAccuraciesData);
-    } catch (error) {
+    const [
+      peopleResult,
+      gendersResult,
+      countriesResult,
+      citiesResult,
+      zodiacSignsResult,
+      birthAccuraciesResult,
+      planetsResult,
+    ] = results;
+
+    // -----------------------------
+    // People = اطلاعات اصلی صفحه
+    // -----------------------------
+    if (peopleResult.status === "rejected") {
+      console.error("People API error:", peopleResult.reason);
+
       setLoadError(
-        error?.response?.data?.message ||
+        peopleResult.reason?.response?.data?.message ||
           "دریافت اطلاعات افراد با خطا مواجه شد.",
       );
-    } finally {
+
       setLoading(false);
+      return;
     }
+
+    setPeople(peopleResult.value || []);
+
+    // -----------------------------
+    // Reference data
+    // -----------------------------
+    const warnings = [];
+
+    if (planetsResult.status === "fulfilled") {
+      setPlanets(planetsResult.value || []);
+    } else {
+      console.error("Planets API error:", planetsResult.reason);
+      setPlanets([]);
+      warnings.push("سیاره‌ها");
+    }
+
+    if (gendersResult.status === "fulfilled") {
+      setGenders(gendersResult.value || []);
+    } else {
+      console.error("Genders API error:", gendersResult.reason);
+      setGenders([]);
+      warnings.push("جنسیت‌ها");
+    }
+
+    if (countriesResult.status === "fulfilled") {
+      setCountries(countriesResult.value || []);
+    } else {
+      console.error("Countries API error:", countriesResult.reason);
+      setCountries([]);
+      warnings.push("کشورها");
+    }
+
+    if (citiesResult.status === "fulfilled") {
+      setCities(citiesResult.value || []);
+    } else {
+      console.error("Cities API error:", citiesResult.reason);
+      setCities([]);
+      warnings.push("شهرها");
+    }
+
+    if (zodiacSignsResult.status === "fulfilled") {
+      setZodiacSigns(zodiacSignsResult.value || []);
+    } else {
+      console.error("Zodiac Signs API error:", zodiacSignsResult.reason);
+      setZodiacSigns([]);
+      warnings.push("نشانه‌های زودیاک");
+    }
+
+    if (birthAccuraciesResult.status === "fulfilled") {
+      setBirthAccuracies(birthAccuraciesResult.value || []);
+    } else {
+      console.error(
+        "Birth Accuracies API error:",
+        birthAccuraciesResult.reason,
+      );
+      setBirthAccuracies([]);
+      warnings.push("دقت اطلاعات تولد");
+    }
+
+    setLoadWarnings(warnings);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  useEffect(() => {
+    const editPerson = location.state?.editPerson;
+
+    if (!editPerson) {
+      return;
+    }
+
+    setEditingPerson(editPerson);
+
+    navigate(location.pathname, {
+      replace: true,
+      state: null,
+    });
+  }, [location.state, location.pathname, navigate]);
 
   const findName = (items, id) => {
     if (!id) {
@@ -82,20 +169,12 @@ export default function PeopleList() {
     return items.find((item) => Number(item.id) === Number(id))?.name || "—";
   };
 
-  const formatBirthDate = (value) => {
-    if (!value) {
+  const findCode = (items, id) => {
+    if (!id) {
       return "—";
     }
 
-    return String(value).substring(0, 10);
-  };
-
-  const formatBirthTime = (value) => {
-    if (!value) {
-      return "—";
-    }
-
-    return String(value).substring(0, 8);
+    return items.find((item) => Number(item.id) === Number(id))?.code || "—";
   };
 
   const handleSaved = (savedPerson) => {
@@ -157,7 +236,7 @@ export default function PeopleList() {
       id: null,
       name: "",
       name_eng: "",
-      image: "",
+      image: null,
       gender_id: "",
       birth_date: "",
       birth_time: "",
@@ -180,10 +259,8 @@ export default function PeopleList() {
           <h1>افراد</h1>
 
           <div className="people-breadcrumb">
-            <a href="/admin">داشبورد</a>
-
+            <Link to="/admin">داشبورد</Link>
             <span>/</span>
-
             <span>افراد</span>
           </div>
         </div>
@@ -223,19 +300,34 @@ export default function PeopleList() {
         </div>
 
         <div className="people-card-body">
+          {loadWarnings.length > 0 && !loading && (
+            <div className="alert alert-warning m-3 mb-0">
+              <div className="d-flex align-items-start gap-2">
+                <i className="bi bi-exclamation-triangle" />
+
+                <div>
+                  <strong>بخشی از اطلاعات مرجع در دسترس نیست.</strong>
+
+                  <div className="mt-1">
+                    موارد زیر با خطا دریافت شدند: {loadWarnings.join("، ")}
+                  </div>
+
+                  <div className="mt-1">لیست افراد همچنان قابل نمایش است.</div>
+                </div>
+              </div>
+            </div>
+          )}
           {loading ? (
             <div className="people-state">
               <span
                 className="spinner-border spinner-border-sm"
                 aria-hidden="true"
               />
-
               <span>در حال دریافت اطلاعات...</span>
             </div>
           ) : loadError ? (
             <div className="people-error">
               <span>{loadError}</span>
-
               <button type="button" onClick={loadData}>
                 تلاش مجدد
               </button>
@@ -243,7 +335,6 @@ export default function PeopleList() {
           ) : people.length === 0 ? (
             <div className="people-state">
               <i className="bi bi-inbox" />
-
               <span>هنوز فردی ثبت نشده است.</span>
             </div>
           ) : (
@@ -252,110 +343,111 @@ export default function PeopleList() {
                 <thead>
                   <tr>
                     <th className="col-number">ردیف</th>
-
+                    <th className="col-image">تصویر</th>
                     <th>نام</th>
-
-                    <th className="col-english">نام انگلیسی</th>
-
-                    <th>جنسیت</th>
-
-                    {/* <th>کشور</th> */}
-
-                    {/* <th>شهر</th> */}
-
-                    <th className="col-birth">تاریخ تولد</th>
-
                     <th className="col-status">وضعیت</th>
-
+                    <th>طالع</th>
+                    <th>سیاره حکمران</th>
+                    <th className="col-birth">دقت اطلاعات</th>
                     <th className="col-actions">عملیات</th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {people.map((person, index) => (
-                    <tr key={person.id}>
-                      <td className="text-center">{index + 1}</td>
+                  {people.map((person, index) => {
+                    const zodiac = zodiacSigns.find(
+                      (item) => Number(item.id) === Number(person.zodiac_sign_id)
+                    );
 
-                      <td className="person-name">{person.name}</td>
+                    const rulerPlanetName = zodiac?.ruler_planet_id
+                      ? findName(planets, zodiac.ruler_planet_id)
+                      : zodiac?.planet_id
+                      ? findName(planets, zodiac.planet_id)
+                      : "—";
 
-                      <td className="person-name-eng" dir="ltr">
-                        {person.name_eng}
-                      </td>
+                    return (
+                      <tr key={person.id}>
+                        {/* ID */}
+                        <td className="text-center">{index + 1}</td>
 
-                      <td>{findName(genders, person.gender_id)}</td>
+                        {/* IMAGE */}
+                        <td className="person-image-cell">
+                          {person.image_url ? (
+                            <img
+                              src={person.image_url}
+                              alt={person.name}
+                              className="person-list-image"
+                            />
+                          ) : (
+                            <div className="person-list-image person-list-image--empty">
+                              <i className="bi bi-person" />
+                            </div>
+                          )}
+                        </td>
 
-                      {/* <td>{findName(countries, person.country_id)}</td> */}
+                        {/* NAME */}
+                        <td className="person-name">{person.name}</td>
 
-                      {/* <td>{findName(cities, person.city_id)}</td> */}
+                        {/* STATUS */}
+                        <td className="text-center">
+                          {person.status ? (
+                            <span className="person-status person-status--active">
+                              فعال
+                            </span>
+                          ) : (
+                            <span className="person-status person-status--inactive">
+                              غیرفعال
+                            </span>
+                          )}
+                        </td>
 
-                      <td
-                        // dir="ltr"
-                        className="person-birth"
-                      >
-                        <div>{formatBirthDate(person.birth_date)}</div>
+                        {/* ZODIAC SIGN */}
+                        <td>
+                          {findName(zodiacSigns, person.zodiac_sign_id)}
+                        </td>
 
-                        {person.birth_time && (
-                          <small>{formatBirthTime(person.birth_time)}</small>
-                        )}
-                      </td>
+                        {/* RULER PLANET */}
+                        <td>{rulerPlanetName}</td>
 
-                      <td className="text-center">
-                        {person.status ? (
-                          <span className="person-status person-status--active">
-                            فعال
-                          </span>
-                        ) : (
-                          <span className="person-status person-status--inactive">
-                            غیرفعال
-                          </span>
-                        )}
-                      </td>
+                        {/* BIRTH ACCURACY CODE */}
+                        <td className="text-center">
+                          {findCode(birthAccuracies, person.birth_accuracy_id)}
+                        </td>
 
-                      <td>
-                        <div className="person-actions">
-                          <Link
-                            to={`/admin/people/${person.id}/charts`}
-                            className="person-chart-button"
-                          >
-                            <i className="bi bi-bar-chart-line" />
+                        {/* ACTIONS */}
+                        <td>
+                          <div className="person-actions">
+                            <Link
+                              to={`/admin/people/${person.id}`}
+                              className="person-view-button"
+                            >
+                              <i className="bi bi-eye" />
+                              <span>نمایش</span>
+                            </Link>
 
-                            <span>چارت‌ها</span>
-                          </Link>
-
-                          <button
-                            type="button"
-                            className="person-edit-button"
-                            onClick={() => setEditingPerson(person)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="person-delete-button"
-                            onClick={() => handleDelete(person.id)}
-                            disabled={deletingId === person.id}
-                          >
-                            {deletingId === person.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                            <button
+                              type="button"
+                              className="person-delete-button"
+                              onClick={() => handleDelete(person.id)}
+                              disabled={deletingId === person.id}
+                            >
+                              {deletingId === person.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

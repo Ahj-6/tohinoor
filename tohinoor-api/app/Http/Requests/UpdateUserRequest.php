@@ -17,7 +17,11 @@ class UpdateUserRequest extends FormRequest
         $user = $this->route('user');
 
         return [
-            'full_name' => ['required', 'string', 'max:150'],
+            'full_name' => [
+                'required',
+                'string',
+                'max:150',
+            ],
 
             'username' => [
                 'required',
@@ -45,9 +49,10 @@ class UpdateUserRequest extends FormRequest
                 Rule::exists('roles', 'id')->whereNull('deleted_at'),
             ],
 
-            'status' => ['sometimes', 'boolean'],
-
-            'last_login_at' => ['nullable', 'date'],
+            'status' => [
+                'sometimes',
+                'boolean',
+            ],
         ];
     }
 }

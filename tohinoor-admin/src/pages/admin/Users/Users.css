@@ -1,0 +1,586 @@
+.users-page {
+    padding: 0 0 2rem;
+}
+
+/* --------------------------------
+   Page Header
+-------------------------------- */
+
+.users-page-header {
+    margin-bottom: 1.25rem;
+}
+
+.users-page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.users-page-title h1 {
+    margin: 0;
+
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.4;
+
+    color: #212529;
+}
+
+.users-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.users-breadcrumb a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.users-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.users-breadcrumb span {
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Main Card
+-------------------------------- */
+
+.users-card {
+    background: #fff;
+
+    border: 1px solid #d9d9d9;
+    border-radius: 0.3rem;
+
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.12);
+
+    overflow: hidden;
+}
+
+.users-card-header {
+    min-height: 66px;
+
+    padding: 0.85rem 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    border-bottom: 1px solid #d7d7d7;
+
+    background: #fff;
+}
+
+.users-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+
+    color: #212529;
+}
+
+.users-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.3rem;
+
+    min-height: 36px;
+
+    padding: 0.35rem 0.8rem;
+
+    border: 1px solid #0d6efd;
+    border-radius: 0.25rem;
+
+    background: #0d6efd;
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.users-add-button:hover:not(:disabled) {
+    background: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+.users-add-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   Card Body
+-------------------------------- */
+
+.users-card-body {
+    padding: 0;
+}
+
+/* --------------------------------
+   Table
+-------------------------------- */
+
+.users-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.users-table {
+    width: 100%;
+    min-width: 1050px;
+
+    margin: 0;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.users-table thead th {
+    height: 46px;
+
+    padding: 0.65rem 0.65rem;
+
+    background: #6c757d;
+    color: #fff;
+
+    border: 1px solid #cfd3d7;
+
+    font-size: 0.86rem;
+    font-weight: 600;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.users-table tbody td {
+    min-height: 46px;
+
+    padding: 0.55rem 0.65rem;
+
+    border: 1px solid #d8dce0;
+
+    color: #212529;
+
+    font-size: 0.84rem;
+
+    vertical-align: middle;
+    /* border: 1px solid red; */
+}
+
+.users-table tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.users-table tbody tr:nth-child(even) {
+    background: #fff;
+}
+
+.users-table tbody tr:hover {
+    background: #e9ecef;
+}
+
+/* --------------------------------
+   Table Columns
+-------------------------------- */
+
+.users-table .col-number {
+    width: 60px;
+}
+
+.users-table .col-full-name {
+    width: 190px;
+}
+
+.users-table .col-username {
+    width: 150px;
+}
+
+.users-table .col-email {
+    width: 210px;
+}
+
+.users-table .col-role {
+    width: 120px;
+}
+
+.users-table .col-status {
+    width: 100px;
+}
+
+.users-table .col-last-login {
+    width: 180px;
+}
+
+.users-table .col-actions {
+    width: 180px;
+}
+
+/* --------------------------------
+   User Fields
+-------------------------------- */
+
+.user-full-name {
+    font-weight: 500;
+}
+
+.user-username {
+    direction: ltr;
+    text-align: left !important;
+}
+
+.user-email {
+    direction: ltr;
+    text-align: left !important;
+    word-break: break-word;
+}
+
+.user-last-login {
+    direction: ltr;
+    text-align: left !important;
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Role
+-------------------------------- */
+
+.user-role {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 70px;
+
+    padding: 0.25rem 0.5rem;
+
+    border-radius: 999px;
+
+    background: #e2e3e5;
+    color: #41464b;
+
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* --------------------------------
+   Status
+-------------------------------- */
+
+.user-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 64px;
+
+    padding: 0.25rem 0.5rem;
+
+    border-radius: 999px;
+
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.user-status--active {
+    background: #d1e7dd;
+    color: #0f5132;
+}
+
+.user-status--inactive {
+    background: #f8d7da;
+    color: #842029;
+}
+
+/* --------------------------------
+   Actions
+-------------------------------- */
+
+.users-table__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.45rem;
+}
+
+.user-edit-button,
+.user-delete-button {
+    min-width: 78px;
+    min-height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.25rem;
+
+    padding: 0.25rem 0.55rem;
+
+    border-radius: 0.25rem;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.user-edit-button {
+    background: #ffc107;
+    border: 1px solid #ffc107;
+
+    color: #212529;
+}
+
+.user-edit-button:hover:not(:disabled) {
+    background: #ffca2c;
+    border-color: #ffca2c;
+}
+
+.user-delete-button {
+    background: #dc3545;
+    border: 1px solid #dc3545;
+
+    color: #fff;
+}
+
+.user-delete-button:hover:not(:disabled) {
+    background: #bb2d3b;
+    border-color: #b02a37;
+}
+
+.user-edit-button:disabled,
+.user-delete-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --------------------------------
+   States
+-------------------------------- */
+
+.users-state {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.75rem;
+
+    color: #6c757d;
+}
+
+.users-state i {
+    font-size: 2rem;
+}
+
+.users-error {
+    min-height: 160px;
+
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    color: #dc3545;
+}
+
+.users-error button {
+    border: 1px solid #dc3545;
+
+    background: transparent;
+    color: #dc3545;
+
+    border-radius: 0.25rem;
+
+    padding: 0.35rem 0.75rem;
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.users-error button:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 991.98px) {
+    .users-page-title h1 {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .users-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .users-add-button {
+        width: 100%;
+    }
+}
+
+
+/* --------------------------------
+   User Form
+-------------------------------- */
+
+.user-form-card {
+    overflow: hidden;
+}
+
+.user-form-body {
+    padding: 1.25rem;
+}
+
+.user-form-section {
+    padding-bottom: 1.5rem;
+
+    margin-bottom: 1.5rem;
+
+    border-bottom: 1px solid #e1e5ea;
+}
+
+.user-form-section:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+
+    border-bottom: 0;
+}
+
+.user-form-section-title {
+    display: flex;
+    align-items: center;
+
+    gap: 0.5rem;
+
+    margin-bottom: 1rem;
+
+    color: #343a40;
+
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.user-form-section-title i {
+    color: var(--bs-primary);
+
+    font-size: 1.05rem;
+}
+
+.user-form-card .form-label {
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.user-form-card .form-control,
+.user-form-card .form-select {
+    min-height: 38px;
+
+    font-size: 0.88rem;
+}
+
+.user-form-card .form-check {
+    padding-top: 0.5rem;
+}
+
+.user-form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 0.5rem;
+
+    padding: 1rem 1.25rem;
+
+    border-top: 1px solid #d7d7d7;
+
+    background: var(--bs-tertiary-bg);
+}
+
+.user-password-field {
+    position: relative;
+}
+
+.user-password-field .form-control {
+    padding-right: 2.75rem;
+}
+
+.user-password-toggle {
+    position: absolute;
+
+    top: 50%;
+    right: 0.65rem;
+
+    transform: translateY(-50%);
+
+    width: 28px;
+    height: 28px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+    color: #6c757d;
+
+    cursor: pointer;
+}
+
+.user-password-toggle:hover {
+    color: #212529;
+}
+
+.user-password-toggle .bi {
+    font-size: 1rem;
+}
+
+@media (max-width: 575.98px) {
+    .user-form-body {
+        padding: 1rem;
+    }
+
+    .user-form-footer {
+        padding: 1rem;
+
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .user-form-footer .btn {
+        width: 100%;
+    }
+}

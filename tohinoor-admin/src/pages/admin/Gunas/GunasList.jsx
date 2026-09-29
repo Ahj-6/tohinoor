@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 
 import GunaForm from "./GunaForm.jsx";
 
@@ -110,11 +111,13 @@ export default function GunasList() {
           <h1>گوناها</h1>
 
           <div className="gunas-breadcrumb">
-            <a href="/admin">داشبورد</a>
+            <Link to="/admin">داشبورد</Link>
+            {/* <a href="/admin">داشبورد</a> */}
 
             <span>/</span>
 
-            <a href="/admin/astrology">استرولوژی</a>
+            <Link to="/admin/astrology">استرولوژی</Link>
+            {/* <a href="/admin/astrology">استرولوژی</a> */}
 
             <span>/</span>
 

@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Api\ElementController;
 use App\Http\Controllers\Api\NatureController;
 use App\Http\Controllers\Api\GunaController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\QualityController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PlanetController;
@@ -25,41 +25,122 @@ use App\Http\Controllers\Api\MoviePeopleController;
 use App\Http\Controllers\Api\SampleAnalysisController;
 
 
-Route::apiResource('users', UserController::class);
+/*
+|--------------------------------------------------------------------------
+| AUTHENTICATION
+|--------------------------------------------------------------------------
+*/
+
+// برای پاسخ JSON در درخواست‌های احراز هویت‌نشده
+Route::get('login', function () {
+    return response()->json([
+        'message' => 'Unauthenticated.',
+    ], 401);
+})->name('login');
 
 Route::post('login', [AuthController::class, 'login']);
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('me', [AuthController::class, 'me']);
     Route::post('logout', [AuthController::class, 'logout']);
 });
 
-// ASTROLOGY
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN ONLY
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+
+    // USERS
+    Route::apiResource('users', UserController::class);
+
+    // ROLES
+    Route::apiResource('roles', RoleController::class);
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| ASTROLOGY
+|--------------------------------------------------------------------------
+*/
+
 Route::apiResource('elements', ElementController::class);
 Route::apiResource('natures', NatureController::class);
 Route::apiResource('gunas', GunaController::class);
 Route::apiResource('qualities', QualityController::class);
-Route::apiResource('roles', RoleController::class);
 Route::apiResource('planets', PlanetController::class);
-Route::apiResource('zodiac-signs', ZodiacSignController::class)->parameters(['zodiac-signs' => 'zodiacSign',]);
-Route::apiResource('chart-types', ChartTypeController::class)->parameters(['chart-types' => 'chartType',]);
 
-// PEOPLE AND LOCATION
+Route::apiResource('zodiac-signs', ZodiacSignController::class)
+    ->parameters([
+        'zodiac-signs' => 'zodiacSign',
+    ]);
+
+Route::apiResource('chart-types', ChartTypeController::class)
+    ->parameters([
+        'chart-types' => 'chartType',
+    ]);
+
+
+/*
+|--------------------------------------------------------------------------
+| PEOPLE AND LOCATION
+|--------------------------------------------------------------------------
+*/
+
 Route::apiResource('countries', CountryController::class);
+
 Route::apiResource('cities', CityController::class);
-Route::apiResource('birth-accuracies', BirthAccuracyController::class)->parameters(['birth-accuracies' => 'birthAccuracy',]);
+
+Route::apiResource('birth-accuracies', BirthAccuracyController::class)
+    ->parameters([
+        'birth-accuracies' => 'birthAccuracy',
+    ]);
+
 Route::apiResource('genders', GenderController::class);
+
 Route::apiResource('people', PersonController::class);
+
 Route::apiResource('charts', ChartController::class);
 
-// BOOKs
+
+/*
+|--------------------------------------------------------------------------
+| BOOKS
+|--------------------------------------------------------------------------
+*/
+
 Route::apiResource('books', BookController::class);
-Route::put('books/{book}/people', [BookPeopleController::class, 'sync']);
 
-// MOVIEs
+Route::put(
+    'books/{book}/people',
+    [BookPeopleController::class, 'sync']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| MOVIES
+|--------------------------------------------------------------------------
+*/
+
 Route::apiResource('movies', MovieController::class);
-Route::put('movies/{movie}/people', [MoviePeopleController::class, 'sync']);
 
-// SAMPLE ANALYSIS
+Route::put(
+    'movies/{movie}/people',
+    [MoviePeopleController::class, 'sync']
+);
+
+
+/*
+|--------------------------------------------------------------------------
+| SAMPLE ANALYSES
+|--------------------------------------------------------------------------
+*/
+
 Route::apiResource('sample-analyses', SampleAnalysisController::class)
     ->parameters([
         'sample-analyses' => 'sampleAnalysis',

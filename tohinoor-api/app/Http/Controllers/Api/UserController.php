@@ -31,7 +31,16 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
+        $data = $request->validated();
+
+        if (
+            array_key_exists('password', $data)
+            && blank($data['password'])
+        ) {
+            unset($data['password']);
+        }
+
+        $user->update($data);
 
         return new UserResource($user->fresh());
     }

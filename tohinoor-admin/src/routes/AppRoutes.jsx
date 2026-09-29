@@ -18,7 +18,10 @@ import CitiesList from "../pages/admin/Cities/CitiesList.jsx";
 import BirthAccuraciesList from "../pages/admin/BirthAccuracies/BirthAccuraciesList.jsx";
 import GendersList from "../pages/admin/Genders/GendersList.jsx";
 import PeopleList from "../pages/admin/People/PeopleList.jsx";
-import ChartsList from '../pages/admin/Charts/ChartsList.jsx';
+import ChartsList from "../pages/admin/Charts/ChartsList.jsx";
+import PersonDetails from "../pages/admin/People/PersonDetails.jsx";
+import UsersList from "../pages/admin/Users/UsersList.jsx";
+import UserForm from "../pages/admin/Users/UserForm.jsx";
 
 export default function AppRoutes() {
   return (
@@ -46,10 +49,16 @@ export default function AppRoutes() {
         <Route path="chart-types" element={<ChartTypesList />} />{" "}
         <Route path="countries" element={<CountriesList />} />{" "}
         <Route path="cities" element={<CitiesList />} />
-        <Route path="birth-accuracies" element={<BirthAccuraciesList />} />{" "}
+        <Route path="birth-accuracies" element={<BirthAccuraciesList />} />{" "}        
         <Route path="genders" element={<GendersList />} />{" "}
+        
         <Route path="people" element={<PeopleList />} />
+        <Route path="people/:personId" element={<PersonDetails />} />
         <Route path="people/:personId/charts" element={<ChartsList />} />
+        
+        <Route path="users" element={<UsersList />} />
+        <Route path="users/new" element={<UserForm />} />
+        <Route path="users/:id/edit" element={<UserForm />} />
       </Route>
 
       {/* Fallback */}

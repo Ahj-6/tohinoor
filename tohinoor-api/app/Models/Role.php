@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Role extends Model
@@ -31,9 +32,8 @@ class Role extends Model
     |--------------------------------------------------------------------------
     */
 
-    // بعد از ساخت User فعال می‌کنیم:
-    // public function users()
-    // {
-    //     return $this->hasMany(User::class);
-    // }
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class);
+    }
 }
