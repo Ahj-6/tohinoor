@@ -10,6 +10,11 @@ export async function getPerson(id) {
     return response.data.data;
 }
 
+export async function getPersonBySlug(slug) {
+    const response = await api.get(`/people/${encodeURIComponent(slug)}`);
+    return response.data.data;
+}
+
 export async function createPerson(payload) {
     const response = await api.post("/people", payload);
     return response.data.data;

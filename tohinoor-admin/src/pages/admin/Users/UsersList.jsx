@@ -110,11 +110,6 @@ export default function UsersList() {
 
           <p className="users-page__description">مدیریت کاربران سیستم</p>
         </div>
-
-        <button type="button" className="btn btn-primary" onClick={handleAdd}>
-          <i className="bi bi-person-plus me-1"></i>
-          افزودن کاربر
-        </button>
       </div>
 
       {error && <div className="alert alert-danger">{error}</div>}
@@ -122,6 +117,11 @@ export default function UsersList() {
       <div className="card users-card">
         <div className="card-header">
           <h3 className="card-title">فهرست کاربران</h3>
+          
+          <button type="button" className="btn btn-primary" onClick={handleAdd}>
+            <i className="bi bi-person-plus me-1"></i>
+            افزودن کاربر
+          </button>
         </div>
 
         <div className="card-body p-0">

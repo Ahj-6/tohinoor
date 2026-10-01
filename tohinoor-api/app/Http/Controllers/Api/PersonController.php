@@ -14,7 +14,12 @@ class PersonController extends Controller
 {
     public function index()
     {
-        $people = Person::ordered()->get();
+        $people = Person::with([
+            'zodiacSign',
+            'birthAccuracy',
+        ])
+            ->ordered()
+            ->get();
 
         return PersonResource::collection($people);
     }
@@ -35,6 +40,7 @@ class PersonController extends Controller
         try {
             $person = Person::create([
                 ...$validated,
+                'slug' => Person::generateUniqueSlug($validated['name_eng']),
                 'image' => $imagePath,
             ]);
         } catch (Throwable $exception) {
@@ -48,8 +54,21 @@ class PersonController extends Controller
         return new PersonResource($person);
     }
 
-    public function show(Person $person)
+    public function show(string $identifier)
     {
+        $person = ctype_digit($identifier)
+            ? Person::findOrFail((int) $identifier)
+            : Person::where('slug', $identifier)->firstOrFail();
+
+        $person->load([
+            'gender',
+            'country',
+            'city',
+            'zodiacSign',
+            'birthAccuracy',
+            'charts.chartType',
+        ]);
+
         return new PersonResource($person);
     }
 

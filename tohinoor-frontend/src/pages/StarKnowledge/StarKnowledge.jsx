@@ -16,11 +16,11 @@ import ZodiacHeroContent from "../../components/page/ZodiacHeroContent/ZodiacHer
 import heroImage from "../../assets/images/backgrounds/star-knowledge.jpg";
 
 import SearchBox from "../../components/common/SearchBox/SearchBox";
-import { people } from "../../data/people";
 import PersonList from "../../components/StarKnowledge/PersonList";
 import ZodiacFilter from "../../components/StarKnowledge/ZodiacFilter";
 
 import { zodiacSigns } from "../../constants/zodiacSigns";
+import { getPeople } from "../../services/peopleService";
 
 function normalizeSearchText(value = "") {
   return value
@@ -38,44 +38,79 @@ function matchesPerson(person, query) {
     return true;
   }
 
-  return [person.name, person.nameFa, person.slug].some((value) =>
-    normalizeSearchText(value).includes(search),
+  return [person.name, person.nameFa, person.name_eng, person.slug].some(
+    (value) => normalizeSearchText(value).includes(search),
   );
 }
 
 export default function StarKnowledge() {
   const navigate = useNavigate();
-
-  // Zodiac comes from URL path:
-  // /star-knowledge/aries
   const { zodiac } = useParams();
-
-  // Search still comes from query string:
-  // /star-knowledge/aries?q=tesla
   const [searchParams, setSearchParams] = useSearchParams();
 
   const queryFromUrl = searchParams.get("q") || "";
 
   const selectedZodiac = zodiac ? zodiacSigns[zodiac] : null;
 
-  if (zodiac && !selectedZodiac) {
-    return <Navigate to="/404" replace />;
-  }
+  const [people, setPeople] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   const [searchInput, setSearchInput] = useState(queryFromUrl);
   const [suggestions, setSuggestions] = useState([]);
 
   /*
-   * Keep search input synchronized with URL.
-   */
+  |--------------------------------------------------------------------------
+  | Validate zodiac route
+  |--------------------------------------------------------------------------
+  */
+
+  if (zodiac && !selectedZodiac) {
+    return <Navigate to="/404" replace />;
+  }
+
+  /*
+  |--------------------------------------------------------------------------
+  | Fetch people from API
+  |--------------------------------------------------------------------------
+  */
+
+  useEffect(() => {
+    const fetchPeople = async () => {
+      try {
+        setLoading(true);
+        setLoadError(false);
+
+        const data = await getPeople();
+
+        setPeople(data || []);
+      } catch (error) {
+        console.error("Error fetching people:", error);
+        setLoadError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPeople();
+  }, []);
+
+  /*
+  |--------------------------------------------------------------------------
+  | Sync search input with URL
+  |--------------------------------------------------------------------------
+  */
+
   useEffect(() => {
     setSearchInput(queryFromUrl);
   }, [queryFromUrl]);
 
   /*
-   * Local suggestion search.
-   * Later this can be replaced with API request.
-   */
+  |--------------------------------------------------------------------------
+  | Search suggestions
+  |--------------------------------------------------------------------------
+  */
+
   useEffect(() => {
     const query = searchInput.trim();
 
@@ -93,32 +128,39 @@ export default function StarKnowledge() {
     }, 250);
 
     return () => clearTimeout(timer);
-  }, [searchInput]);
+  }, [searchInput, people]);
 
   /*
-   * Main filtering:
-   * 1. Search
-   * 2. Zodiac
-   */
+  |--------------------------------------------------------------------------
+  | Filter people
+  |--------------------------------------------------------------------------
+  */
+
   const filteredPeople = useMemo(() => {
     return people
       .filter((person) => {
         const matchesSearch = matchesPerson(person, queryFromUrl);
 
         const matchesZodiac =
-          !selectedZodiac || person.zodiac === selectedZodiac.key;
+          !selectedZodiac ||
+          person.zodiac?.slug === selectedZodiac.key;
 
         return matchesSearch && matchesZodiac;
       })
-      .sort((a, b) => a.nameFa.localeCompare(b.nameFa, "fa"));
-  }, [queryFromUrl, selectedZodiac]);
+      .sort((a, b) =>
+        (a.nameFa || a.name || "").localeCompare(
+          b.nameFa || b.name || "",
+          "fa",
+        ),
+      );
+  }, [people, queryFromUrl, selectedZodiac]);
 
   /*
-   * Search Submit
-   *
-   * Keep current zodiac path and
-   * only update ?q=...
-   */
+  |--------------------------------------------------------------------------
+  | Search submit
+  |--------------------------------------------------------------------------
+  */
+
   const handleSearchSubmit = () => {
     const query = normalizeSearchText(searchInput);
 
@@ -130,8 +172,11 @@ export default function StarKnowledge() {
   };
 
   /*
-   * Clicking a suggestion opens PersonDetail.
-   */
+  |--------------------------------------------------------------------------
+  | Suggestion click
+  |--------------------------------------------------------------------------
+  */
+
   const handleSuggestionClick = (person) => {
     navigate(`/star-knowledge/person/${person.slug}`);
   };
@@ -140,10 +185,6 @@ export default function StarKnowledge() {
 
   return (
     <PageShell>
-      {/* =========================
-          Hero
-      ========================= */}
-
       {selectedZodiac ? (
         <PageHero backgroundImage={heroImage} variant="zodiac">
           <ZodiacHeroContent zodiac={selectedZodiac} />
@@ -157,10 +198,6 @@ export default function StarKnowledge() {
       )}
 
       <div className="star-knowledge__content">
-        {/* =========================
-            Search
-        ========================= */}
-
         <section className="search-box__content">
           <SearchBox
             value={searchInput}
@@ -171,26 +208,32 @@ export default function StarKnowledge() {
           />
         </section>
 
-        {/* =========================
-            People
-        ========================= */}
-
-        <PersonList
-          people={filteredPeople}
-          title={
-            selectedZodiac
-              ? `زایچه‌های ${selectedZodiac.name}`
-              : hasSearch
-                ? "نتایج جستجو"
-                : "همه زایچه‌ها"
-          }
-        />
+        {loading ? (
+          <section className="person-list">
+            <p className="person-list__empty">
+              در حال دریافت اطلاعات افراد...
+            </p>
+          </section>
+        ) : loadError ? (
+          <section className="person-list">
+            <p className="person-list__empty">
+              دریافت اطلاعات افراد با خطا مواجه شد.
+            </p>
+          </section>
+        ) : (
+          <PersonList
+            people={filteredPeople}
+            title={
+              selectedZodiac
+                ? `زایچه‌های ${selectedZodiac.name}`
+                : hasSearch
+                  ? "نتایج جستجو"
+                  : "همه زایچه‌ها"
+            }
+          />
+        )}
 
         <hr />
-
-        {/* =========================
-            Zodiac Filter
-        ========================= */}
 
         <section className="zodiac-filter">
           <ZodiacFilter />

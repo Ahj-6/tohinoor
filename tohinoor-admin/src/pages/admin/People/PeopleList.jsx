@@ -301,7 +301,7 @@ export default function PeopleList() {
 
         <div className="people-card-body">
           {loadWarnings.length > 0 && !loading && (
-            <div className="alert alert-warning m-3 mb-0">
+            <div className="alert alert-warning m-3">
               <div className="d-flex align-items-start gap-2">
                 <i className="bi bi-exclamation-triangle" />
 
@@ -418,7 +418,8 @@ export default function PeopleList() {
                         <td>
                           <div className="person-actions">
                             <Link
-                              to={`/admin/people/${person.id}`}
+                              // to={`/admin/people/${person.id}`}
+                              to={`/admin/people/${person.slug}`}
                               className="person-view-button"
                             >
                               <i className="bi bi-eye" />

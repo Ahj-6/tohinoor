@@ -1,15 +1,14 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext.jsx";
 
 function LinkItem({ to, icon, children, onNavigate }) {
   return (
     <li className="nav-item">
       <NavLink
         to={to}
-        end={to === '/admin'}
+        end={to === "/admin"}
         onClick={onNavigate}
-        className={({ isActive }) =>
-          `nav-link${isActive ? ' active' : ''}`
-        }
+        className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}
       >
         <i className={`nav-icon bi ${icon}`} />
         <p>{children}</p>
@@ -19,9 +18,10 @@ function LinkItem({ to, icon, children, onNavigate }) {
 }
 
 export default function Sidebar() {
+  const { isAdmin } = useAuth();
   const closeOnNavigate = () => {
     if (window.innerWidth < 992) {
-      document.body.classList.remove('sidebar-open');
+      document.body.classList.remove("sidebar-open");
     }
   };
 
@@ -37,22 +37,14 @@ export default function Sidebar() {
           className="brand-link text-decoration-none"
           onClick={closeOnNavigate}
         >
-          <span className="brand-text fw-light">
-            TOHINOOR ADMIN
-          </span>
+          <span className="brand-text fw-light">TOHINOOR ADMIN</span>
         </NavLink>
       </div>
 
       {/* Sidebar Menu */}
       <div className="sidebar-wrapper">
-        <nav
-          className="mt-2"
-          aria-label="منوی اصلی پنل"
-        >
-          <ul
-            className="nav sidebar-menu flex-column"
-            role="menu"
-          >
+        <nav className="mt-2" aria-label="منوی اصلی پنل">
+          <ul className="nav sidebar-menu flex-column" role="menu">
             {/* 1. Dashboard */}
             <LinkItem
               to="/admin"
@@ -61,7 +53,6 @@ export default function Sidebar() {
             >
               داشبورد
             </LinkItem>
-
             {/* 2. Astrology */}
             <LinkItem
               to="/admin/astrology"
@@ -70,7 +61,6 @@ export default function Sidebar() {
             >
               استرولوژی
             </LinkItem>
-
             {/* 3. People */}
             <LinkItem
               to="/admin/people"
@@ -79,7 +69,6 @@ export default function Sidebar() {
             >
               افراد
             </LinkItem>
-
             {/* 4. Books */}
             <LinkItem
               to="/admin/books"
@@ -88,7 +77,6 @@ export default function Sidebar() {
             >
               کتاب‌ها
             </LinkItem>
-
             {/* 5. Movies */}
             <LinkItem
               to="/admin/movies"
@@ -97,7 +85,6 @@ export default function Sidebar() {
             >
               فیلم‌ها
             </LinkItem>
-
             {/* 6. Member Samples */}
             <LinkItem
               to="/admin/sample-analyses"
@@ -106,24 +93,27 @@ export default function Sidebar() {
             >
               نمونه کار اعضا
             </LinkItem>
+            {isAdmin && (
+              <>
+                {/* 7. Users */}
+                <LinkItem
+                  to="/admin/users"
+                  icon="bi-person-gear"
+                  onNavigate={closeOnNavigate}
+                >
+                  کاربران
+                </LinkItem>
 
-            {/* 7. Users */}
-            <LinkItem
-              to="/admin/users"
-              icon="bi-person-gear"
-              onNavigate={closeOnNavigate}
-            >
-              کاربران
-            </LinkItem>
-
-            {/* 8. Roles */}
-            <LinkItem
-              to="/admin/roles"
-              icon="bi-shield-lock"
-              onNavigate={closeOnNavigate}
-            >
-              نقش‌ها
-            </LinkItem>
+                {/* 8. Roles */}
+                <LinkItem
+                  to="/admin/roles"
+                  icon="bi-shield-lock"
+                  onNavigate={closeOnNavigate}
+                >
+                  نقش‌ها
+                </LinkItem>
+              </>
+            )}
           </ul>
         </nav>
       </div>

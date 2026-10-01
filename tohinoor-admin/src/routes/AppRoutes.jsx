@@ -39,6 +39,7 @@ export default function AppRoutes() {
         }
       >
         <Route index element={<Dashboard />} />
+        {/* ASTROLOGY */}
         <Route path="astrology" element={<Astrology />} />
         <Route path="elements" element={<ElementsList />} />
         <Route path="natures" element={<NaturesList />} />
@@ -49,13 +50,13 @@ export default function AppRoutes() {
         <Route path="chart-types" element={<ChartTypesList />} />{" "}
         <Route path="countries" element={<CountriesList />} />{" "}
         <Route path="cities" element={<CitiesList />} />
-        <Route path="birth-accuracies" element={<BirthAccuraciesList />} />{" "}        
+        <Route path="birth-accuracies" element={<BirthAccuraciesList />} />{" "}
         <Route path="genders" element={<GendersList />} />{" "}
-        
+        {/* PEOPLE */}
         <Route path="people" element={<PeopleList />} />
-        <Route path="people/:personId" element={<PersonDetails />} />
-        <Route path="people/:personId/charts" element={<ChartsList />} />
-        
+        <Route path="people/:personSlug" element={<PersonDetails />} />
+        <Route path="people/:personSlug/charts" element={<ChartsList />} />
+        {/* USERS */}
         <Route path="users" element={<UsersList />} />
         <Route path="users/new" element={<UserForm />} />
         <Route path="users/:id/edit" element={<UserForm />} />

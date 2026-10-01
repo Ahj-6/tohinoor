@@ -5,14 +5,14 @@ import {
   getPersonCharts,
   deleteChart,
 } from "../../../services/chartService.js";
-import { getPeople } from "../../../services/peopleService.js";
+import { getPersonBySlug } from "../../../services/peopleService.js";
 import { getChartTypes } from "../../../services/chartTypeService.js";
 
 import ChartForm from "./ChartForm.jsx";
 import "./Charts.css";
 
 export default function ChartsList() {
-  const { personId } = useParams();
+  const { personSlug } = useParams();
   const navigate = useNavigate();
 
   const [person, setPerson] = useState(null);
@@ -30,25 +30,32 @@ export default function ChartsList() {
       setLoading(true);
       setError("");
 
-      const [people, personCharts, types] = await Promise.all([
-        getPeople(),
-        getPersonCharts(personId),
+      // --------------------------------
+      // دریافت فرد و انواع چارت
+      // --------------------------------
+
+      const [currentPerson, types] = await Promise.all([
+        getPersonBySlug(personSlug),
         getChartTypes(),
       ]);
-
-      const currentPerson = people.find(
-        (item) => Number(item.id) === Number(personId),
-      );
 
       if (!currentPerson) {
         setError("فرد مورد نظر پیدا نشد.");
         setPerson(null);
+        setCharts([]);
+        setChartTypes([]);
         return;
       }
 
+      // --------------------------------
+      // دریافت چارت‌های همین فرد
+      // --------------------------------
+
+      const personCharts = await getPersonCharts(currentPerson.id);
+
       setPerson(currentPerson);
-      setCharts(personCharts);
-      setChartTypes(types);
+      setCharts(personCharts || []);
+      setChartTypes(types || []);
     } catch (requestError) {
       console.error(requestError);
       setError("دریافت اطلاعات چارت‌ها با خطا مواجه شد.");
@@ -59,7 +66,7 @@ export default function ChartsList() {
 
   useEffect(() => {
     loadData();
-  }, [personId]);
+  }, [personSlug]);
 
   const chartTypeMap = useMemo(() => {
     return new Map(chartTypes.map((item) => [Number(item.id), item]));

@@ -24,9 +24,21 @@ class ChartResource extends JsonResource
         return [
             'id' => $this->id,
             'person_id' => $this->person_id,
+
             'chart_type_id' => $this->chart_type_id,
+
             'image' => $this->image,
             'image_url' => $imageUrl,
+
+            'chart_type' => $this->whenLoaded(
+                'chartType',
+                fn () => [
+                    'id' => $this->chartType->id,
+                    'name' => $this->chartType->name,
+                    'name_eng' => $this->chartType->name_eng,
+                    'description' => $this->chartType->description,
+                ]
+            ),
         ];
     }
 }

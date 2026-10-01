@@ -18,3 +18,6 @@ export const getRoleName = (roleId) => {
 
 export const isAdminPanelRole = (roleId) =>
   roleId === ROLE_IDS.ADMIN || roleId === ROLE_IDS.OPERATOR;
+
+export const isAdminRole = (roleId) =>
+  roleId === ROLE_IDS.ADMIN;

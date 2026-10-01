@@ -1,164 +1,138 @@
 import {
-    createContext,
-    useCallback,
-    useContext,
-    useMemo,
-    useState,
-} from 'react';
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 
-import api from '../services/api.js';
-import { getRoleName, isAdminPanelRole } from './roles.js';
+import api from "../services/api.js";
+import { getRoleName, isAdminPanelRole, isAdminRole } from "./roles.js";
 
-const TOKEN_KEY = 'tohinoor_token';
-const USER_KEY = 'tohinoor_user';
+const TOKEN_KEY = "tohinoor_token";
+const USER_KEY = "tohinoor_user";
 
 const AuthContext = createContext(null);
 
 const readStoredUser = () => {
-    try {
-        const raw = sessionStorage.getItem(USER_KEY);
+  try {
+    const raw = sessionStorage.getItem(USER_KEY);
 
-        return raw ? JSON.parse(raw) : null;
-    } catch {
-        sessionStorage.removeItem(USER_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    sessionStorage.removeItem(USER_KEY);
 
-        return null;
-    }
+    return null;
+  }
 };
 
 export function AuthProvider({ children }) {
-    const [user, setUser] = useState(readStoredUser);
+  const [user, setUser] = useState(readStoredUser);
 
-    const clearAuth = useCallback(() => {
-        sessionStorage.removeItem(TOKEN_KEY);
-        sessionStorage.removeItem(USER_KEY);
+  const clearAuth = useCallback(() => {
+    sessionStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(USER_KEY);
 
-        setUser(null);
-    }, []);
+    setUser(null);
+  }, []);
 
-    const storeAuth = useCallback((nextUser, token) => {
-        sessionStorage.setItem(TOKEN_KEY, token);
-        sessionStorage.setItem(
-            USER_KEY,
-            JSON.stringify(nextUser),
-        );
+  const storeAuth = useCallback((nextUser, token) => {
+    sessionStorage.setItem(TOKEN_KEY, token);
+    sessionStorage.setItem(USER_KEY, JSON.stringify(nextUser));
 
-        setUser(nextUser);
-    }, []);
+    setUser(nextUser);
+  }, []);
 
-    const login = useCallback(
-        async (username, password) => {
-            const response = await api.post('/login', {
-                username,
-                password,
-            });
+  const login = useCallback(
+    async (username, password) => {
+      const response = await api.post("/login", {
+        username,
+        password,
+      });
 
-            const {
-                token,
-                user: nextUser,
-            } = response.data;
+      const { token, user: nextUser } = response.data;
 
-            if (!token || !nextUser) {
-                throw new Error(
-                    'پاسخ Login نامعتبر است.',
-                );
-            }
+      if (!token || !nextUser) {
+        throw new Error("پاسخ Login نامعتبر است.");
+      }
 
-            storeAuth(nextUser, token);
+      storeAuth(nextUser, token);
 
-            return nextUser;
-        },
-        [storeAuth],
-    );
+      return nextUser;
+    },
+    [storeAuth],
+  );
 
-    const logout = useCallback(async () => {
-        try {
-            const token =
-                sessionStorage.getItem(TOKEN_KEY);
+  const logout = useCallback(async () => {
+    try {
+      const token = sessionStorage.getItem(TOKEN_KEY);
 
-            if (token) {
-                await api.post('/logout');
-            }
-        } catch {
-            /*
-             * حتی در صورت خطای API،
-             * Session سمت Client باید پاک شود.
-             */
-        } finally {
-            clearAuth();
-        }
-    }, [clearAuth]);
+      if (token) {
+        await api.post("/logout");
+      }
+    } catch {
+      /*
+       * حتی در صورت خطای API،
+       * Session سمت Client باید پاک شود.
+       */
+    } finally {
+      clearAuth();
+    }
+  }, [clearAuth]);
 
-    const refreshUser = useCallback(async () => {
-        const storedUser = readStoredUser();
-        const token = sessionStorage.getItem(TOKEN_KEY);
+  const refreshUser = useCallback(async () => {
+    const storedUser = readStoredUser();
+    const token = sessionStorage.getItem(TOKEN_KEY);
 
-        if (!token || !storedUser) {
-            clearAuth();
+    if (!token || !storedUser) {
+      clearAuth();
 
-            return null;
-        }
+      return null;
+    }
 
-        setUser(storedUser);
+    setUser(storedUser);
 
-        return storedUser;
-    }, [clearAuth]);
+    return storedUser;
+  }, [clearAuth]);
 
-    const roleName = user
-        ? getRoleName(user.role_id)
-        : null;
+  const roleName = user ? getRoleName(user.role_id) : null;
 
-    const canAccessAdminPanel = user
-        ? isAdminPanelRole(user.role_id)
-        : false;
+  const canAccessAdminPanel = user ? isAdminPanelRole(user.role_id) : false;
 
-    const value = useMemo(
-        () => ({
-            user,
+  const isAdmin = user ? isAdminRole(user.role_id) : false;
 
-            /*
-             * فعلاً Authentication از روی
-             * Session موجود در Browser مشخص می‌شود.
-             */
-            loading: false,
+  const value = useMemo(
+    () => ({
+      user,
 
-            isAuthenticated: Boolean(
-                user &&
-                sessionStorage.getItem(TOKEN_KEY),
-            ),
+      /*
+       * فعلاً Authentication از روی
+       * Session موجود در Browser مشخص می‌شود.
+       */
+      loading: false,
 
-            roleName,
-            canAccessAdminPanel,
+      isAuthenticated: Boolean(user && sessionStorage.getItem(TOKEN_KEY)),
 
-            login,
-            logout,
-            refreshUser,
-        }),
-        [
-            user,
-            roleName,
-            canAccessAdminPanel,
-            login,
-            logout,
-            refreshUser,
-        ],
-    );
+      roleName,
+      canAccessAdminPanel,
+      isAdmin,
 
-    return (
-        <AuthContext.Provider value={value}>
-            {children}
-        </AuthContext.Provider>
-    );
+      login,
+      logout,
+      refreshUser,
+    }),
+    [user, roleName, canAccessAdminPanel, isAdmin, login, logout, refreshUser],
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => {
-    const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
 
-    if (!context) {
-        throw new Error(
-            'useAuth must be used inside AuthProvider',
-        );
-    }
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
 
-    return context;
+  return context;
 };

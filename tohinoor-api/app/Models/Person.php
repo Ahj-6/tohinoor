@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,7 @@ class Person extends Model
     protected $fillable = [
         'name',
         'name_eng',
+        'slug',
         'image',
         'gender_id',
         'birth_date',
@@ -44,11 +46,14 @@ class Person extends Model
         return $query->orderBy('id');
     }
 
+
+
     /*
     |--------------------------------------------------------------------------
     | Relationships
     |--------------------------------------------------------------------------
     */
+
 
     public function gender(): BelongsTo
     {
@@ -94,4 +99,25 @@ class Person extends Model
     {
         return $this->hasMany(SampleAnalysis::class);
     }
+
+
+    public static function generateUniqueSlug(string $nameEng): string
+    {
+        $baseSlug = Str::slug($nameEng);
+
+        if ($baseSlug === '') {
+            $baseSlug = 'person';
+        }
+
+        $slug = $baseSlug;
+        $counter = 2;
+
+        while (static::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
 }

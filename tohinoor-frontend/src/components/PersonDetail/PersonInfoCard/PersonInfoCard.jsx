@@ -10,29 +10,44 @@ import IconGlobe from "../../../assets/images/icons/globe.svg?react";
 import IconClock from "../../../assets/images/icons/clock.svg?react";
 
 export default function PersonInfoCard({ person }) {
-  const zodiac = zodiacSigns[person.zodiac];
-  const ZodiacSymbol = zodiac.symbol;
+  const zodiac = Object.values(zodiacSigns).find(
+    (item) => Number(item.id) === Number(person.zodiac?.id),
+  );
+
+  const ZodiacSymbol = zodiac?.symbol;
 
   return (
     <section className="person-info-card">
       <span className="person-info-card__rating">
-        Rate | <span>{person.rating}</span>
+        Rate | <span>{person.birth_accuracy?.code ?? "—"}</span>
       </span>
 
       <div className="person-info-card__body">
         <div className="person-info-card__photo">
-          <img src={person.photo} alt={person.name} />
+          <img
+            src={person.photo}
+            alt={person.nameFa || person.name}
+          />
         </div>
 
-        <div className="person-info-card__text ">
-          <h1 className="person-info-card__name-fa mr-2">{person.nameFa}</h1>
-          <p className="person-info-card__name-en mr-2">{person.name}</p>
+        <div className="person-info-card__text">
+          <h1 className="person-info-card__name-fa mr-2">
+            {person.nameFa}
+          </h1>
+
+          <p className="person-info-card__name-en mr-2">
+            {person.nameEng}
+          </p>
 
           <div className="person-info-card__zodiac-bar">
-            <span className="person-info-card__zodiac-name">{zodiac.name}</span>
+            <span className="person-info-card__zodiac-name">
+              {zodiac?.name ?? "—"}
+            </span>
 
             <span className="person-info-card__zodiac-circle">
-              <ZodiacSymbol className="person-info-card__zodiac-symbol" />
+              {ZodiacSymbol && (
+                <ZodiacSymbol className="person-info-card__zodiac-symbol" />
+              )}
             </span>
           </div>
 
@@ -42,8 +57,11 @@ export default function PersonInfoCard({ person }) {
                 <IconCalendar className="person-info-card__icon" />
                 <b>تاریخ تولد :</b>
               </span>
-              <span className="person-info-card__value--date ">
-                {formatBirthDate(person.birthDate)}
+
+              <span className="person-info-card__value--date">
+                {person.birthDate
+                  ? formatBirthDate(person.birthDate)
+                  : "—"}
               </span>
             </div>
 
@@ -52,12 +70,21 @@ export default function PersonInfoCard({ person }) {
                 <IconPin className="person-info-card__icon" />
                 <b>مکان تولد :</b>
               </span>
+
               <span className="person-info-card__value">
-                {person.birthPlace.country}، {person.birthPlace.city}
+                {person.birthPlace?.country || "—"}
+                {person.birthPlace?.city
+                  ? `، ${person.birthPlace.city}`
+                  : ""}
               </span>
-              <span className="person-info-card__value person-info-card__value--sub">
-                {person.birthPlace.lng} - {person.birthPlace.lat}
-              </span>
+
+              {(person.birthPlace?.lng != null ||
+                person.birthPlace?.lat != null) && (
+                <span className="person-info-card__value person-info-card__value--sub">
+                  {person.birthPlace?.lng ?? "—"} -{" "}
+                  {person.birthPlace?.lat ?? "—"}
+                </span>
+              )}
             </div>
 
             <div className="person-info-card__field">
@@ -65,7 +92,10 @@ export default function PersonInfoCard({ person }) {
                 <IconClock className="person-info-card__icon" />
                 <b>ساعت تولد :</b>
               </span>
-              <span className="person-info-card__value">{person.birthTime}</span>
+
+              <span className="person-info-card__value">
+                {person.birthTime || "—"}
+              </span>
             </div>
 
             <div className="person-info-card__field">
@@ -73,7 +103,10 @@ export default function PersonInfoCard({ person }) {
                 <IconGlobe className="person-info-card__icon" />
                 <b>Timezone :</b>
               </span>
-              <span className="person-info-card__value">{person.timezone}</span>
+
+              <span className="person-info-card__value">
+                {person.timezone || "—"}
+              </span>
             </div>
           </div>
         </div>

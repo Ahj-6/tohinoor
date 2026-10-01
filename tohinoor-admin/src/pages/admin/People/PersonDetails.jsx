@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { getPerson } from "../../../services/peopleService.js";
+// import { getPerson } from "../../../services/peopleService.js";
+import { getPersonBySlug } from "../../../services/peopleService.js";
 import { getGenders } from "../../../services/genderService.js";
 import { getCountries } from "../../../services/countryService.js";
 import { getCities } from "../../../services/cityService.js";
@@ -13,7 +14,7 @@ import { getPersonCharts } from "../../../services/chartService.js";
 import "./PersonDetails.css";
 
 export default function PersonDetails() {
-  const { personId } = useParams();
+  const { personSlug } = useParams();
   const navigate = useNavigate();
 
   const [person, setPerson] = useState(null);
@@ -36,14 +37,13 @@ export default function PersonDetails() {
     setLoadWarnings([]);
 
     const results = await Promise.allSettled([
-      getPerson(personId),
+      getPersonBySlug(personSlug),
       getGenders(),
       getCountries(),
       getCities(),
       getZodiacSigns(),
       getBirthAccuracies(),
       getChartTypes(),
-      getPersonCharts(personId),
     ]);
 
     const [
@@ -54,7 +54,6 @@ export default function PersonDetails() {
       zodiacSignsResult,
       birthAccuraciesResult,
       chartTypesResult,
-      chartsResult,
     ] = results;
 
     // --------------------------------
@@ -71,11 +70,14 @@ export default function PersonDetails() {
           "دریافت اطلاعات فرد با خطا مواجه شد.",
       );
 
+      setCharts([]);
       setLoading(false);
       return;
     }
 
-    setPerson(personResult.value);
+    const personData = personResult.value;
+
+    setPerson(personData);
 
     // --------------------------------
     // اطلاعات مرجع
@@ -131,10 +133,6 @@ export default function PersonDetails() {
       warnings.push("دقت اطلاعات تولد");
     }
 
-    // --------------------------------
-    // چارت‌ها
-    // --------------------------------
-
     if (chartTypesResult.status === "fulfilled") {
       setChartTypes(chartTypesResult.value || []);
     } else {
@@ -144,10 +142,16 @@ export default function PersonDetails() {
       warnings.push("انواع چارت");
     }
 
-    if (chartsResult.status === "fulfilled") {
-      setCharts(chartsResult.value || []);
-    } else {
-      console.error("Charts API error:", chartsResult.reason);
+    // --------------------------------
+    // چارت‌های فرد
+    // --------------------------------
+
+    try {
+      const personCharts = await getPersonCharts(personData.id);
+
+      setCharts(personCharts || []);
+    } catch (error) {
+      console.error("Charts API error:", error);
 
       setCharts([]);
       warnings.push("چارت‌های فرد");
@@ -159,14 +163,14 @@ export default function PersonDetails() {
 
   useEffect(() => {
     loadData();
-  }, [personId]);
+  }, [personSlug]);
 
   const findName = (items, id) => {
     if (!id) {
       return "—";
     }
 
-    return items.find((item) => Number(item.id) === Number(id))?.name || "—";
+    return items.find((item) => Number(item.id) === Number(id))?.name_eng || "—";
   };
 
   const genderName = useMemo(
@@ -282,14 +286,14 @@ export default function PersonDetails() {
           <h1>نمایش جزئیات فرد</h1>
         </div>
 
-        <Link to="/admin/people" className="btn btn-outline-secondary">
+        {/* <Link to="/admin/people" className="btn btn-outline-secondary">
           <i className="bi bi-arrow-right me-1" />
           بازگشت به لیست
-        </Link>
+        </Link> */}
       </div>
 
       {loadWarnings.length > 0 && (
-        <div className="alert alert-warning person-details-warning">
+        <div className="alert alert-warning person-details-warning mb-2">
           <div className="d-flex align-items-start gap-2">
             <i className="bi bi-exclamation-triangle" />
 
@@ -475,7 +479,7 @@ export default function PersonDetails() {
           </div>
 
           <Link
-            to={`/admin/people/${person.id}/charts`}
+            to={`/admin/people/${person.slug}/charts`}
             className="btn btn-primary"
           >
             <i className="bi bi-plus-lg me-1" />
@@ -494,7 +498,7 @@ export default function PersonDetails() {
             <p>برای این فرد می‌توانید تصویر یک یا چند نوع چارت را ثبت کنید.</p>
 
             <Link
-              to={`/admin/people/${person.id}/charts`}
+              to={`/admin/people/${person.slug}/charts`}
               className="btn btn-primary"
             >
               <i className="bi bi-plus-lg me-1" />
