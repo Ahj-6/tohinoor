@@ -58,7 +58,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::apiResource('users', UserController::class);
 
     // ROLES
-    Route::apiResource('roles', RoleController::class);
+    Route::apiResource('roles', RoleController::class)
+        ->except(['destroy']);
 });
 
 

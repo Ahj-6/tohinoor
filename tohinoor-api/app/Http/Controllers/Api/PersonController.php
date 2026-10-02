@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatePersonRequest;
 use App\Http\Resources\PersonResource;
 use App\Models\Person;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Throwable;
 
 class PersonController extends Controller
@@ -111,12 +112,89 @@ class PersonController extends Controller
 
     public function destroy(Person $person)
     {
-        $imagePath = $person->image;
+        $personImagePath = $person->image;
 
-        $person->delete();
+        // --------------------------------
+        // فایل‌های وابسته را قبل از حذف DB ثبت می‌کنیم
+        // --------------------------------
 
-        if ($imagePath) {
-            Storage::disk('public')->delete($imagePath);
+        $charts = $person->charts()
+            ->get(['id', 'image']);
+
+        $sampleAnalyses = $person->sampleAnalyses()
+            ->withTrashed()
+            ->get(['id', 'pdf']);
+
+        try {
+            DB::transaction(function () use (
+                $person,
+                $charts,
+                $sampleAnalyses
+            ) {
+                // --------------------------------
+                // حذف واقعی Chartها
+                // --------------------------------
+
+                foreach ($charts as $chart) {
+                    $chart->delete();
+                }
+
+                // --------------------------------
+                // حذف واقعی Sample Analysisها
+                // حتی اگر قبلاً Soft Deleted باشند
+                // --------------------------------
+
+                foreach ($sampleAnalyses as $analysis) {
+                    $analysis->forceDelete();
+                }
+
+                // --------------------------------
+                // حذف روابط Pivot
+                // --------------------------------
+
+                $person->books()->detach();
+                $person->movies()->detach();
+
+                // --------------------------------
+                // حذف واقعی Person
+                // --------------------------------
+
+                $person->delete();
+            });
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return response()->json([
+                'message' => 'حذف فرد با خطا مواجه شد.',
+            ], 500);
+        }
+
+        // --------------------------------
+        // حذف فایل‌های Chart
+        // --------------------------------
+
+        foreach ($charts as $chart) {
+            if ($chart->image) {
+                Storage::disk('public')->delete($chart->image);
+            }
+        }
+
+        // --------------------------------
+        // حذف PDFهای Sample Analysis
+        // --------------------------------
+
+        foreach ($sampleAnalyses as $analysis) {
+            if ($analysis->pdf) {
+                Storage::disk('public')->delete($analysis->pdf);
+            }
+        }
+
+        // --------------------------------
+        // حذف تصویر خود Person
+        // --------------------------------
+
+        if ($personImagePath) {
+            Storage::disk('public')->delete($personImagePath);
         }
 
         return response()->json([

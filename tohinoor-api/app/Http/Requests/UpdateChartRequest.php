@@ -19,7 +19,7 @@ class UpdateChartRequest extends FormRequest
         return [
             'person_id' => [
                 'required',
-                Rule::exists('people', 'id')->whereNull('deleted_at'),
+                Rule::exists('people', 'id'),
                 Rule::unique('charts', 'person_id')
                     ->where(fn ($query) => $query->where('chart_type_id', $this->chart_type_id))
                     ->ignore($chart?->id),

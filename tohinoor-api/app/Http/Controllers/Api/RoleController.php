@@ -36,12 +36,4 @@ class RoleController extends Controller
         return new RoleResource($role->fresh());
     }
 
-    public function destroy(Role $role)
-    {
-        $role->delete();
-
-        return response()->json([
-            'message' => 'Role deleted successfully.',
-        ]);
-    }
 }

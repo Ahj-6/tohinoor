@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 
+import AdminOnlyRoute from "../auth/AdminOnlyRoute.jsx";
 import ProtectedRoute from "../auth/ProtectedRoute.jsx";
 
 import Login from "../pages/Login/Login.jsx";
@@ -22,6 +23,8 @@ import ChartsList from "../pages/admin/Charts/ChartsList.jsx";
 import PersonDetails from "../pages/admin/People/PersonDetails.jsx";
 import UsersList from "../pages/admin/Users/UsersList.jsx";
 import UserForm from "../pages/admin/Users/UserForm.jsx";
+import RolesList from "../pages/admin/Roles/RolesList.jsx";
+import RoleForm from "../pages/admin/Roles/RoleForm.jsx";
 
 export default function AppRoutes() {
   return (
@@ -51,15 +54,60 @@ export default function AppRoutes() {
         <Route path="countries" element={<CountriesList />} />{" "}
         <Route path="cities" element={<CitiesList />} />
         <Route path="birth-accuracies" element={<BirthAccuraciesList />} />{" "}
-        <Route path="genders" element={<GendersList />} />{" "}
-        {/* PEOPLE */}
+        <Route path="genders" element={<GendersList />} /> {/* PEOPLE */}
         <Route path="people" element={<PeopleList />} />
         <Route path="people/:personSlug" element={<PersonDetails />} />
         <Route path="people/:personSlug/charts" element={<ChartsList />} />
         {/* USERS */}
-        <Route path="users" element={<UsersList />} />
-        <Route path="users/new" element={<UserForm />} />
-        <Route path="users/:id/edit" element={<UserForm />} />
+        <Route
+          path="users"
+          element={
+            <AdminOnlyRoute>
+              <UsersList />
+            </AdminOnlyRoute>
+          }
+        />
+        <Route
+          path="users/new"
+          element={
+            <AdminOnlyRoute>
+              <UserForm />
+            </AdminOnlyRoute>
+          }
+        />
+        <Route
+          path="users/:id/edit"
+          element={
+            <AdminOnlyRoute>
+              <UserForm />
+            </AdminOnlyRoute>
+          }
+        />
+        {/* ROLEs */}
+        <Route
+          path="roles"
+          element={
+            <AdminOnlyRoute>
+              <RolesList />
+            </AdminOnlyRoute>
+          }
+        />
+        <Route
+          path="roles/new"
+          element={
+            <AdminOnlyRoute>
+              <RoleForm />
+            </AdminOnlyRoute>
+          }
+        />
+        <Route
+          path="roles/:id/edit"
+          element={
+            <AdminOnlyRoute>
+              <RoleForm />
+            </AdminOnlyRoute>
+          }
+        />
       </Route>
 
       {/* Fallback */}
