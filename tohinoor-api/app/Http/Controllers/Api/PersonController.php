@@ -25,6 +25,19 @@ class PersonController extends Controller
         return PersonResource::collection($people);
     }
 
+    public function publicIndex()
+    {
+        $people = Person::where('status', true)
+            ->with([
+                'zodiacSign',
+                'birthAccuracy',
+            ])
+            ->ordered()
+            ->get();
+
+        return PersonResource::collection($people);
+    }
+
     public function store(StorePersonRequest $request)
     {
         $validated = $request->validated();
@@ -60,6 +73,28 @@ class PersonController extends Controller
         $person = ctype_digit($identifier)
             ? Person::findOrFail((int) $identifier)
             : Person::where('slug', $identifier)->firstOrFail();
+
+        $person->load([
+            'gender',
+            'country',
+            'city',
+            'zodiacSign',
+            'birthAccuracy',
+            'charts.chartType',
+        ]);
+
+        return new PersonResource($person);
+    }
+
+    public function publicShow(string $identifier)
+    {
+        $person = ctype_digit($identifier)
+            ? Person::where('id', (int) $identifier)
+                ->where('status', true)
+                ->firstOrFail()
+            : Person::where('slug', $identifier)
+                ->where('status', true)
+                ->firstOrFail();
 
         $person->load([
             'gender',

@@ -1,0 +1,357 @@
+.roles-page {
+    padding: 0 0 2rem;
+}
+
+/* --------------------------------
+   Page Header
+-------------------------------- */
+
+.roles-page-header {
+    margin-bottom: 1.25rem;
+}
+
+.roles-page-title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.roles-page-title h1 {
+    margin: 0;
+
+    font-size: 2rem;
+    font-weight: 500;
+    line-height: 1.4;
+
+    color: #212529;
+}
+
+.roles-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.roles-breadcrumb a {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.roles-breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.roles-breadcrumb span {
+    white-space: nowrap;
+}
+
+/* --------------------------------
+   Main Card
+-------------------------------- */
+
+.roles-card {
+    background: #fff;
+
+    border: 1px solid #d9d9d9;
+    border-radius: 0.3rem;
+
+    box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.12);
+
+    overflow: hidden;
+}
+
+.roles-card-header {
+    min-height: 66px;
+
+    padding: 0.85rem 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    border-bottom: 1px solid #d7d7d7;
+
+    background: #fff;
+}
+
+.roles-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+
+    color: #212529;
+}
+
+.roles-add-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.3rem;
+
+    min-height: 36px;
+
+    padding: 0.35rem 0.8rem;
+
+    border: 1px solid #0d6efd;
+    border-radius: 0.25rem;
+
+    background: #0d6efd;
+    color: #fff;
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.roles-add-button:hover {
+    background: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* --------------------------------
+   Card Body
+-------------------------------- */
+
+.roles-card-body {
+    padding: 0;
+}
+
+/* --------------------------------
+   Table
+-------------------------------- */
+
+.roles-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.roles-table {
+    width: 100%;
+    min-width: 850px;
+
+    margin: 0;
+
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.roles-table thead th {
+    height: 46px;
+
+    padding: 0.65rem 0.65rem;
+
+    background: #6c757d;
+    color: #fff;
+
+    border: 1px solid #cfd3d7;
+
+    font-size: 0.86rem;
+    font-weight: 600;
+
+    text-align: right;
+    vertical-align: middle;
+}
+
+.roles-table tbody td {
+    min-height: 46px;
+
+    padding: 0.55rem 0.65rem;
+
+    border: 1px solid #d8dce0;
+
+    color: #212529;
+
+    font-size: 0.84rem;
+
+    vertical-align: middle;
+}
+
+.roles-table tbody tr:nth-child(odd) {
+    background: #f1f1f1;
+}
+
+.roles-table tbody tr:nth-child(even) {
+    background: #fff;
+}
+
+.roles-table tbody tr:hover {
+    background: #e9ecef;
+}
+
+/* --------------------------------
+   Table Columns
+-------------------------------- */
+
+.roles-table .col-number {
+    width: 60px;
+}
+
+.roles-table .col-name {
+    width: 180px;
+}
+
+.roles-table .col-name-eng {
+    width: 180px;
+}
+
+.roles-table .col-description {
+    width: auto;
+}
+
+.roles-table .col-actions {
+    width: 130px;
+}
+
+/* --------------------------------
+   Role Fields
+-------------------------------- */
+
+.role-name {
+    font-weight: 500;
+}
+
+.role-name-eng {
+    direction: ltr;
+    text-align: left !important;
+
+    font-family: monospace;
+    color: #495057;
+}
+
+.role-description {
+    color: #495057;
+
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* --------------------------------
+   Actions
+-------------------------------- */
+
+.roles-table__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.45rem;
+}
+
+.role-edit-button {
+    min-width: 78px;
+    min-height: 32px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.25rem;
+
+    padding: 0.25rem 0.55rem;
+
+    border: 1px solid #ffc107;
+    border-radius: 0.25rem;
+
+    background: #ffc107;
+    color: #212529;
+
+    font-family: inherit;
+    font-size: 0.82rem;
+
+    cursor: pointer;
+
+    transition: 0.15s ease;
+}
+
+.role-edit-button:hover {
+    background: #ffca2c;
+    border-color: #ffca2c;
+}
+
+/* --------------------------------
+   States
+-------------------------------- */
+
+.roles-state {
+    min-height: 220px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.75rem;
+
+    color: #6c757d;
+}
+
+.roles-state i {
+    font-size: 2rem;
+}
+
+.roles-error {
+    min-height: 160px;
+
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 1rem;
+
+    color: #dc3545;
+}
+
+.roles-error button {
+    border: 1px solid #dc3545;
+
+    background: transparent;
+    color: #dc3545;
+
+    border-radius: 0.25rem;
+
+    padding: 0.35rem 0.75rem;
+
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.roles-error button:hover {
+    background: #dc3545;
+    color: #fff;
+}
+
+/* --------------------------------
+   Responsive
+-------------------------------- */
+
+@media (max-width: 991.98px) {
+    .roles-page-title h1 {
+        font-size: 1.7rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .roles-card-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .roles-add-button {
+        width: 100%;
+    }
+}

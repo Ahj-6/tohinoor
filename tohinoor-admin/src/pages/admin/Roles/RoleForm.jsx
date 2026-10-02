@@ -13,15 +13,16 @@ export default function RoleForm() {
 
   const isEdit = Boolean(id);
 
-  const systemRoleNames = ["admin", "operator", "student"];
-
-  const isSystemRole = isEdit && systemRoleNames.includes(form.name_eng);
-
   const [form, setForm] = useState({
     name: "",
     name_eng: "",
     description: "",
   });
+
+  const systemRoleNames = ["admin", "operator", "student"];
+
+  const isSystemRole = isEdit && systemRoleNames.includes(form.name_eng);
+
 
   const [loading, setLoading] = useState(isEdit);
   const [saving, setSaving] = useState(false);

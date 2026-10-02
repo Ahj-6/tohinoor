@@ -80,17 +80,6 @@
     background: #fff;
 }
 
-.card-header{
-     display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.card-header button{
-    margin: 0;
-    margin-right: auto;
-}
-
 .users-card-title {
     font-size: 1rem;
     font-weight: 500;
@@ -191,7 +180,6 @@
     font-size: 0.84rem;
 
     vertical-align: middle;
-    /* border: 1px solid red; */
 }
 
 .users-table tbody tr:nth-child(odd) {
@@ -459,7 +447,6 @@
         width: 100%;
     }
 }
-
 
 /* --------------------------------
    User Form

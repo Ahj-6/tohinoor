@@ -143,7 +143,7 @@ export default function StarKnowledge() {
 
         const matchesZodiac =
           !selectedZodiac ||
-          person.zodiac?.slug === selectedZodiac.key;
+          Number(person.zodiac?.id) === Number(selectedZodiac.id);
 
         return matchesSearch && matchesZodiac;
       })

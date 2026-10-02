@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { getRoles } from "../../../services/roleService.js";
+
+import "./Roles.css";
 
 export default function RolesList() {
   const navigate = useNavigate();
@@ -21,7 +23,10 @@ export default function RolesList() {
     } catch (err) {
       console.error("Error loading roles:", err);
 
-      setError(err?.response?.data?.message || "خطا در دریافت نقش‌ها.");
+      setError(
+        err?.response?.data?.message ||
+          "خطا در دریافت نقش‌ها.",
+      );
     } finally {
       setLoading(false);
     }
@@ -31,79 +36,141 @@ export default function RolesList() {
     loadRoles();
   }, []);
 
+  const handleAdd = () => {
+    navigate("/admin/roles/new");
+  };
+
+  const handleEdit = (role) => {
+    navigate(`/admin/roles/${role.id}/edit`);
+  };
+
   return (
-    <div className="container-fluid py-3">
-      <div className="card">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <h3 className="card-title mb-0">نقش‌ها</h3>
+    <div className="roles-page">
+      {/* Page Header */}
+      <div className="roles-page-header">
+        <div className="roles-page-title">
+          <h1>نقش‌ها</h1>
+
+          <div className="roles-breadcrumb">
+            <Link to="/admin">داشبورد</Link>
+            <span>/</span>
+            <span>نقش‌ها</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Card */}
+      <div className="roles-card">
+        <div className="roles-card-header">
+          <div className="roles-card-title">
+            نمایش نقش‌ها
+          </div>
 
           <button
             type="button"
-            className="btn btn-primary"
-            onClick={() => navigate("/admin/roles/new")}
+            className="roles-add-button"
+            onClick={handleAdd}
           >
-            <i className="bi bi-plus-lg me-1" />
-            افزودن نقش
+            <i className="bi bi-plus-lg" />
+            <span>افزودن نقش</span>
           </button>
         </div>
 
-        <div className="card-body">
-          {loading && (
-            <div className="text-center py-4">در حال دریافت اطلاعات...</div>
-          )}
+        <div className="roles-card-body">
+          {loading ? (
+            <div className="roles-state">
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              />
+              <span>در حال دریافت اطلاعات...</span>
+            </div>
+          ) : error ? (
+            <div className="roles-error">
+              <span>{error}</span>
 
-          {!loading && error && (
-            <div className="alert alert-danger mb-0">{error}</div>
-          )}
-
-          {!loading && !error && (
-            <div className="table-responsive">
-              <table className="table table-striped table-hover align-middle mb-0">
+              <button
+                type="button"
+                onClick={loadRoles}
+              >
+                تلاش مجدد
+              </button>
+            </div>
+          ) : roles.length === 0 ? (
+            <div className="roles-state">
+              <i className="bi bi-inbox" />
+              <span>
+                هیچ نقشی ثبت نشده است.
+              </span>
+            </div>
+          ) : (
+            <div className="roles-table-wrapper">
+              <table className="roles-table">
                 <thead>
                   <tr>
-                    <th>#</th>
-                    <th>نام نقش</th>
-                    <th>نام انگلیسی</th>
-                    <th>توضیحات</th>
-                    <th className="text-center">عملیات</th>
+                    <th className="col-number">
+                      ردیف
+                    </th>
+
+                    <th className="col-name">
+                      نام نقش
+                    </th>
+
+                    <th className="col-name-eng">
+                      نام انگلیسی
+                    </th>
+
+                    <th className="col-description">
+                      توضیحات
+                    </th>
+
+                    <th className="col-actions">
+                      عملیات
+                    </th>
                   </tr>
                 </thead>
 
                 <tbody>
-                  {roles.length === 0 ? (
-                    <tr>
-                      <td colSpan="5" className="text-center py-4">
-                        هیچ نقشی ثبت نشده است.
+                  {roles.map((role, index) => (
+                    <tr key={role.id}>
+                      {/* NUMBER */}
+                      <td className="text-center">
+                        {index + 1}
                       </td>
-                    </tr>
-                  ) : (
-                    roles.map((role, index) => (
-                      <tr key={role.id}>
-                        <td>{index + 1}</td>
 
-                        <td>{role.name}</td>
+                      {/* NAME */}
+                      <td className="role-name">
+                        {role.name || "—"}
+                      </td>
 
-                        <td>
-                          <code>{role.name_eng}</code>
-                        </td>
+                      {/* NAME ENG */}
+                      <td className="role-name-eng">
+                        {role.name_eng || "—"}
+                      </td>
 
-                        <td>{role.description || "-"}</td>
+                      {/* DESCRIPTION */}
+                      <td className="role-description">
+                        {role.description || "—"}
+                      </td>
 
-                        <td className="text-center">
+                      {/* ACTIONS */}
+                      <td>
+                        <div className="roles-table__actions">
                           <button
                             type="button"
-                            className="btn btn-sm btn-warning"
+                            className="role-edit-button"
                             onClick={() =>
-                              navigate(`/admin/roles/${role.id}/edit`)
+                              handleEdit(role)
                             }
                             title="ویرایش"
                           >
                             <i className="bi bi-pencil" />
+                            <span>ویرایش</span>
                           </button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

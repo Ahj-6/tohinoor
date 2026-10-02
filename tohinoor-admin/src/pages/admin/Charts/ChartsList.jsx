@@ -5,7 +5,7 @@ import {
   getPersonCharts,
   deleteChart,
 } from "../../../services/chartService.js";
-import { getPersonBySlug } from "../../../services/peopleService.js";
+import { getAdminPersonBySlug } from "../../../services/adminPeopleService.js";
 import { getChartTypes } from "../../../services/chartTypeService.js";
 
 import ChartForm from "./ChartForm.jsx";
@@ -35,7 +35,7 @@ export default function ChartsList() {
       // --------------------------------
 
       const [currentPerson, types] = await Promise.all([
-        getPersonBySlug(personSlug),
+        getAdminPersonBySlug(personSlug),
         getChartTypes(),
       ]);
 
@@ -97,14 +97,11 @@ export default function ChartsList() {
   };
 
   const handleCancel = () => {
-    setEditingChart(null);
-    setFormOpen(false);
+    navigate(`/admin/people/${person.slug}`);
   };
 
-  const handleSaved = async () => {
-    setFormOpen(false);
-    setEditingChart(null);
-    await loadData();
+  const handleSaved = () => {
+    navigate(`/admin/people/${person.slug}`);
   };
 
   const handleDelete = async (chart) => {
@@ -175,7 +172,10 @@ export default function ChartsList() {
         </div>
 
         <div className="charts-page__actions">
-          <Link to="/admin/people" className="btn btn-outline-secondary">
+          <Link
+            to={`/admin/people/${person.slug}`}
+            className="btn btn-outline-secondary"
+          >
             <i className="bi bi-arrow-right me-1" />
             بازگشت
           </Link>

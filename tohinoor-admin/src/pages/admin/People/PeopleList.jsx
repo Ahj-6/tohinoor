@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import PersonForm from "./PersonForm.jsx";
 
 import {
-  createPerson,
-  deletePerson,
-  getPeople,
-  updatePerson,
-} from "../../../services/peopleService.js";
+  createAdminPerson,
+  deleteAdminPerson,
+  getAdminPeople,
+  updateAdminPerson,
+} from "../../../services/adminPeopleService.js";
 
 import { getGenders } from "../../../services/genderService.js";
 import { getCountries } from "../../../services/countryService.js";
@@ -20,8 +20,6 @@ import { getPlanets } from "../../../services/planetService.js";
 import "./People.css";
 
 export default function PeopleList() {
-  const location = useLocation();
-  const navigate = useNavigate();
 
   const [people, setPeople] = useState([]);
 
@@ -45,15 +43,15 @@ export default function PeopleList() {
     setLoadError("");
     setLoadWarnings([]);
 
-    const results = await Promise.allSettled([
-      getPeople(),
-      getGenders(),
-      getCountries(),
-      getCities(),
-      getZodiacSigns(),
-      getBirthAccuracies(),
-      getPlanets(),
-    ]);
+  const results = await Promise.allSettled([
+    getAdminPeople(),
+    getGenders(),
+    getCountries(),
+    getCities(),
+    getZodiacSigns(),
+    getBirthAccuracies(),
+    getPlanets(),
+  ]);
 
     const [
       peopleResult,
@@ -146,20 +144,6 @@ export default function PeopleList() {
     loadData();
   }, [loadData]);
 
-  useEffect(() => {
-    const editPerson = location.state?.editPerson;
-
-    if (!editPerson) {
-      return;
-    }
-
-    setEditingPerson(editPerson);
-
-    navigate(location.pathname, {
-      replace: true,
-      state: null,
-    });
-  }, [location.state, location.pathname, navigate]);
 
   const findName = (items, id) => {
     if (!id) {
@@ -207,7 +191,7 @@ export default function PeopleList() {
     setDeletingId(id);
 
     try {
-      await deletePerson(id);
+      await deleteAdminPerson(id);
 
       setPeople((current) => current.filter((item) => item.id !== id));
 
@@ -225,10 +209,10 @@ export default function PeopleList() {
 
   const savePerson = async (payload) => {
     if (editingPerson?.id) {
-      return updatePerson(editingPerson.id, payload);
+      return updateAdminPerson(editingPerson.id, payload);
     }
 
-    return createPerson(payload);
+    return createAdminPerson(payload);
   };
 
   const startCreate = () => {

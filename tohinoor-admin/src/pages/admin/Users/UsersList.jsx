@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { getUsers, deleteUser } from "../../../services/userService.js";
+import {
+  getUsers,
+  deleteUser,
+} from "../../../services/userService.js";
+
 import { getRoles } from "../../../services/roleService.js";
 
 import "./Users.css";
@@ -37,7 +41,8 @@ export default function UsersList() {
       console.error("Error loading users:", err);
 
       setError(
-        err?.response?.data?.message || "خطا در دریافت اطلاعات کاربران.",
+        err?.response?.data?.message ||
+          "خطا در دریافت اطلاعات کاربران.",
       );
     } finally {
       setLoading(false);
@@ -45,7 +50,9 @@ export default function UsersList() {
   }
 
   function getRoleName(roleId) {
-    const role = roles.find((item) => item.id === roleId);
+    const role = roles.find(
+      (item) => Number(item.id) === Number(roleId),
+    );
 
     return role?.name_eng || role?.name || "—";
   }
@@ -81,137 +88,218 @@ export default function UsersList() {
       await deleteUser(user.id);
 
       setUsers((currentUsers) =>
-        currentUsers.filter((item) => item.id !== user.id),
+        currentUsers.filter(
+          (item) => item.id !== user.id,
+        ),
       );
     } catch (err) {
       console.error("Error deleting user:", err);
 
-      alert(err?.response?.data?.message || "حذف کاربر انجام نشد.");
+      window.alert(
+        err?.response?.data?.message ||
+          "حذف کاربر انجام نشد.",
+      );
     } finally {
       setDeletingId(null);
     }
   }
 
-  if (loading) {
-    return (
-      <div className="users-page">
-        <div className="users-page__loading">
-          در حال دریافت اطلاعات کاربران...
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="users-page">
-      <div className="users-page__header">
-        <div>
-          <h1 className="users-page__title">کاربران</h1>
+      {/* Page Header */}
+      <div className="users-page-header">
+        <div className="users-page-title">
+          <h1>کاربران</h1>
 
-          <p className="users-page__description">مدیریت کاربران سیستم</p>
+          <div className="users-breadcrumb">
+            <Link to="/admin">داشبورد</Link>
+            <span>/</span>
+            <span>کاربران</span>
+          </div>
         </div>
       </div>
 
-      {error && <div className="alert alert-danger">{error}</div>}
+      {/* Main Card */}
+      <div className="users-card">
+        <div className="users-card-header">
+          <div className="users-card-title">
+            نمایش کاربران
+          </div>
 
-      <div className="card users-card">
-        <div className="card-header">
-          <h3 className="card-title">فهرست کاربران</h3>
-          
-          <button type="button" className="btn btn-primary" onClick={handleAdd}>
-            <i className="bi bi-person-plus me-1"></i>
-            افزودن کاربر
+          <button
+            type="button"
+            className="users-add-button"
+            onClick={handleAdd}
+          >
+            <i className="bi bi-person-plus" />
+            <span>افزودن کاربر</span>
           </button>
         </div>
 
-        <div className="card-body p-0">
-          <div className="table-responsive">
-            <table className="table table-hover align-middle mb-0 users-table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>نام و نام خانوادگی</th>
-                  <th>نام کاربری</th>
-                  <th>ایمیل</th>
-                  <th>نقش</th>
-                  <th>وضعیت</th>
-                  <th>آخرین ورود</th>
-                  <th>عملیات</th>
-                </tr>
-              </thead>
+        <div className="users-card-body">
+          {loading ? (
+            <div className="users-state">
+              <span
+                className="spinner-border spinner-border-sm"
+                aria-hidden="true"
+              />
+              <span>در حال دریافت اطلاعات...</span>
+            </div>
+          ) : error ? (
+            <div className="users-error">
+              <span>{error}</span>
 
-              <tbody>
-                {users.length === 0 ? (
+              <button
+                type="button"
+                onClick={loadData}
+              >
+                تلاش مجدد
+              </button>
+            </div>
+          ) : users.length === 0 ? (
+            <div className="users-state">
+              <i className="bi bi-inbox" />
+              <span>
+                کاربری برای نمایش وجود ندارد.
+              </span>
+            </div>
+          ) : (
+            <div className="users-table-wrapper">
+              <table className="users-table">
+                <thead>
                   <tr>
-                    <td colSpan="8" className="text-center py-4">
-                      کاربری برای نمایش وجود ندارد.
-                    </td>
-                  </tr>
-                ) : (
-                  users.map((user, index) => (
-                    <tr key={user.id}>
-                      <td>{index + 1}</td>
+                    <th className="col-number">
+                      ردیف
+                    </th>
 
-                      <td>
-                        <strong>{user.full_name || "—"}</strong>
+                    <th className="col-full-name">
+                      نام و نام خانوادگی
+                    </th>
+
+                    <th className="col-username">
+                      نام کاربری
+                    </th>
+
+                    <th className="col-email">
+                      ایمیل
+                    </th>
+
+                    <th className="col-role">
+                      نقش
+                    </th>
+
+                    <th className="col-status">
+                      وضعیت
+                    </th>
+
+                    <th className="col-last-login">
+                      آخرین ورود
+                    </th>
+
+                    <th className="col-actions">
+                      عملیات
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {users.map((user, index) => (
+                    <tr key={user.id}>
+                      {/* NUMBER */}
+                      <td className="text-center">
+                        {index + 1}
                       </td>
 
-                      <td>{user.username || "—"}</td>
+                      {/* FULL NAME */}
+                      <td className="user-full-name">
+                        {user.full_name || "—"}
+                      </td>
 
-                      <td>{user.email || "—"}</td>
+                      {/* USERNAME */}
+                      <td className="user-username">
+                        {user.username || "—"}
+                      </td>
 
+                      {/* EMAIL */}
+                      <td className="user-email">
+                        {user.email || "—"}
+                      </td>
+
+                      {/* ROLE */}
                       <td>
-                        <span className="badge bg-secondary">
+                        <span className="user-role">
                           {getRoleName(user.role_id)}
                         </span>
                       </td>
 
-                      <td>
+                      {/* STATUS */}
+                      <td className="text-center">
                         {user.status ? (
-                          <span className="badge bg-success">فعال</span>
+                          <span className="user-status user-status--active">
+                            فعال
+                          </span>
                         ) : (
-                          <span className="badge bg-danger">غیرفعال</span>
+                          <span className="user-status user-status--inactive">
+                            غیرفعال
+                          </span>
                         )}
                       </td>
 
-                      <td>{formatLastLogin(user.last_login_at)}</td>
+                      {/* LAST LOGIN */}
+                      <td className="user-last-login">
+                        {formatLastLogin(
+                          user.last_login_at,
+                        )}
+                      </td>
 
+                      {/* ACTIONS */}
                       <td>
                         <div className="users-table__actions">
                           <button
                             type="button"
-                            className="btn btn-sm btn-outline-primary"
-                            onClick={() => handleEdit(user)}
-                            title="ویرایش"
+                            className="user-edit-button"
+                            onClick={() =>
+                              handleEdit(user)
+                            }
+                            disabled={
+                              deletingId === user.id
+                            }
                           >
-                            <i className="bi bi-pencil"></i>
+                            <i className="bi bi-pencil" />
+                            <span>ویرایش</span>
                           </button>
 
                           <button
                             type="button"
-                            className="btn btn-sm btn-outline-danger"
-                            onClick={() => handleDelete(user)}
-                            disabled={deletingId === user.id}
-                            title="حذف"
+                            className="user-delete-button"
+                            onClick={() =>
+                              handleDelete(user)
+                            }
+                            disabled={
+                              deletingId === user.id
+                            }
                           >
                             {deletingId === user.id ? (
                               <span
                                 className="spinner-border spinner-border-sm"
                                 role="status"
                                 aria-hidden="true"
-                              ></span>
+                              />
                             ) : (
-                              <i className="bi bi-trash"></i>
+                              <>
+                                <i className="bi bi-trash" />
+                                <span>حذف</span>
+                              </>
                             )}
                           </button>
                         </div>
                       </td>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </div>

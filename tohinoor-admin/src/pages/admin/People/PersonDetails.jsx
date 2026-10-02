@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 // import { getPerson } from "../../../services/peopleService.js";
-import { getPersonBySlug } from "../../../services/peopleService.js";
+import { getAdminPersonBySlug } from "../../../services/adminPeopleService.js";
 import { getGenders } from "../../../services/genderService.js";
 import { getCountries } from "../../../services/countryService.js";
 import { getCities } from "../../../services/cityService.js";
@@ -37,7 +37,7 @@ export default function PersonDetails() {
     setLoadWarnings([]);
 
     const results = await Promise.allSettled([
-      getPersonBySlug(personSlug),
+      getAdminPersonBySlug(personSlug),
       getGenders(),
       getCountries(),
       getCities(),
@@ -170,7 +170,9 @@ export default function PersonDetails() {
       return "—";
     }
 
-    return items.find((item) => Number(item.id) === Number(id))?.name_eng || "—";
+    return (
+      items.find((item) => Number(item.id) === Number(id))?.name_eng || "—"
+    );
   };
 
   const genderName = useMemo(
@@ -234,11 +236,7 @@ export default function PersonDetails() {
   };
 
   const handleEdit = () => {
-    navigate("/admin/people", {
-      state: {
-        editPerson: person,
-      },
-    });
+    navigate(`/admin/people/${person.slug}/edit`);
   };
 
   if (loading) {

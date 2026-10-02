@@ -21,6 +21,7 @@ import GendersList from "../pages/admin/Genders/GendersList.jsx";
 import PeopleList from "../pages/admin/People/PeopleList.jsx";
 import ChartsList from "../pages/admin/Charts/ChartsList.jsx";
 import PersonDetails from "../pages/admin/People/PersonDetails.jsx";
+import PersonEdit from "../pages/admin/People/PersonEdit.jsx";
 import UsersList from "../pages/admin/Users/UsersList.jsx";
 import UserForm from "../pages/admin/Users/UserForm.jsx";
 import RolesList from "../pages/admin/Roles/RolesList.jsx";
@@ -57,6 +58,7 @@ export default function AppRoutes() {
         <Route path="genders" element={<GendersList />} /> {/* PEOPLE */}
         <Route path="people" element={<PeopleList />} />
         <Route path="people/:personSlug" element={<PersonDetails />} />
+        <Route path="people/:personSlug/edit" element={<PersonEdit />} />
         <Route path="people/:personSlug/charts" element={<ChartsList />} />
         {/* USERS */}
         <Route

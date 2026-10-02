@@ -103,7 +103,28 @@ Route::apiResource('birth-accuracies', BirthAccuracyController::class)
 
 Route::apiResource('genders', GenderController::class);
 
-Route::apiResource('people', PersonController::class);
+// Route::apiResource('people', PersonController::class);
+/*
+/*
+|--------------------------------------------------------------------------
+| PUBLIC PEOPLE
+|--------------------------------------------------------------------------
+*/
+
+Route::get('people', [PersonController::class, 'publicIndex']);
+Route::get('people/{identifier}', [PersonController::class, 'publicShow']);
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN PEOPLE
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
+
+    Route::apiResource('people', PersonController::class);
+
+});
 
 Route::apiResource('charts', ChartController::class);
 
