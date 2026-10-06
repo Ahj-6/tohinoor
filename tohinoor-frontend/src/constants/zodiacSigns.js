@@ -154,7 +154,7 @@ export const zodiacSigns = {
     id: 7,
     key: "libra",
 
-    name: "تراز",
+    name: "ترازو",
     nameEng: "Libra",
     nameArabic: "میزان",
     nameSanskrit: "تولا",

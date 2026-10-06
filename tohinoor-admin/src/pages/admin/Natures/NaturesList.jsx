@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import NatureForm from "./NatureForm.jsx";
 
@@ -13,6 +15,8 @@ import {
 import "./Natures.css";
 
 export default function NaturesList() {
+  const { isAdmin } = useAuth();
+
   const [natures, setNatures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -139,111 +143,113 @@ export default function NaturesList() {
       )}
 
       {/* Main Card */}
-      <div className="natures-card">
-        <div className="natures-card-header">
-          <div className="natures-card-title">نمایش طبیعت‌ها</div>
+      {!editingNature && (
+        <div className="natures-card">
+          <div className="natures-card-header">
+            <div className="natures-card-title">نمایش طبیعت‌ها</div>
 
-          <button
-            type="button"
-            className="natures-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingNature)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن طبیعت</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="natures-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingNature)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن طبیعت</span>
+            </button>
+          </div>
 
-        <div className="natures-card-body">
-          {loading ? (
-            <div className="natures-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="natures-card-body">
+            {loading ? (
+              <div className="natures-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="natures-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="natures-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadNatures}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : natures.length === 0 ? (
-            <div className="natures-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadNatures}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : natures.length === 0 ? (
+              <div className="natures-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز طبیعتی ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="natures-table-wrapper">
-              <table className="natures-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز طبیعتی ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="natures-table-wrapper">
+                <table className="natures-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام طبیعت</th>
+                      <th>نام طبیعت</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {natures.map((nature, index) => (
-                    <tr key={nature.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="nature-name">{nature.name}</td>
-
-                      <td className="nature-name-eng" dir="ltr">
-                        {nature.name_eng}
-                      </td>
-
-                      <td>
-                        <div className="nature-actions">
-                          <button
-                            type="button"
-                            className="nature-edit-button"
-                            onClick={() => setEditingNature(nature)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="nature-delete-button"
-                            onClick={() => handleDelete(nature.id)}
-                            disabled={deletingId === nature.id}
-                          >
-                            {deletingId === nature.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {natures.map((nature, index) => (
+                      <tr key={nature.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="nature-name">{nature.name}</td>
+
+                        <td className="nature-name-eng" dir="ltr">
+                          {nature.name_eng}
+                        </td>
+
+                        <td>
+                          <div className="nature-actions">
+                            <button
+                              type="button"
+                              className="nature-edit-button"
+                              onClick={() => setEditingNature(nature)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="nature-delete-button"
+                              onClick={() => handleDelete(nature.id)}
+                              disabled={!isAdmin || deletingId === nature.id}
+                            >
+                              {deletingId === nature.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import GenderForm from "./GenderForm.jsx";
 
@@ -13,6 +15,8 @@ import {
 import "./Genders.css";
 
 export default function GendersList() {
+  const { isAdmin } = useAuth();
+
   const [genders, setGenders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -139,111 +143,113 @@ export default function GendersList() {
       )}
 
       {/* Main Card */}
-      <div className="genders-card">
-        <div className="genders-card-header">
-          <div className="genders-card-title">نمایش جنسیت‌ها</div>
+      {!editingGender && (
+        <div className="genders-card">
+          <div className="genders-card-header">
+            <div className="genders-card-title">نمایش جنسیت‌ها</div>
 
-          <button
-            type="button"
-            className="genders-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingGender)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن جنسیت</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="genders-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingGender)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن جنسیت</span>
+            </button>
+          </div>
 
-        <div className="genders-card-body">
-          {loading ? (
-            <div className="genders-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="genders-card-body">
+            {loading ? (
+              <div className="genders-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="genders-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="genders-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadGenders}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : genders.length === 0 ? (
-            <div className="genders-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadGenders}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : genders.length === 0 ? (
+              <div className="genders-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز جنسیتی ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="genders-table-wrapper">
-              <table className="genders-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز جنسیتی ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="genders-table-wrapper">
+                <table className="genders-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام جنسیت</th>
+                      <th>نام جنسیت</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {genders.map((gender, index) => (
-                    <tr key={gender.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="gender-name">{gender.name}</td>
-
-                      <td className="gender-name-eng" dir="ltr">
-                        {gender.name_eng}
-                      </td>
-
-                      <td>
-                        <div className="gender-actions">
-                          <button
-                            type="button"
-                            className="gender-edit-button"
-                            onClick={() => setEditingGender(gender)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="gender-delete-button"
-                            onClick={() => handleDelete(gender.id)}
-                            disabled={deletingId === gender.id}
-                          >
-                            {deletingId === gender.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {genders.map((gender, index) => (
+                      <tr key={gender.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="gender-name">{gender.name}</td>
+
+                        <td className="gender-name-eng" dir="ltr">
+                          {gender.name_eng}
+                        </td>
+
+                        <td>
+                          <div className="gender-actions">
+                            <button
+                              type="button"
+                              className="gender-edit-button"
+                              onClick={() => setEditingGender(gender)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="gender-delete-button"
+                              onClick={() => handleDelete(gender.id)}
+                              disabled={!isAdmin || deletingId === gender.id}
+                            >
+                              {deletingId === gender.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import ZodiacSignForm from "./ZodiacSignForm.jsx";
 
@@ -17,6 +19,8 @@ import { getQualities } from "../../../services/qualityService.js";
 import "./ZodiacSigns.css";
 
 export default function ZodiacSignsList() {
+  const { isAdmin } = useAuth();
+
   const [zodiacSigns, setZodiacSigns] = useState([]);
 
   const [planets, setPlanets] = useState([]);
@@ -50,7 +54,7 @@ export default function ZodiacSignsList() {
     } catch (error) {
       setLoadError(
         error?.response?.data?.message ||
-          "دریافت اطلاعات نشانه‌های زودیاک با خطا مواجه شد.",
+          "دریافت اطلاعات صورفلکی با خطا مواجه شد.",
       );
     } finally {
       setLoading(false);
@@ -108,7 +112,7 @@ export default function ZodiacSignsList() {
       }
     } catch (error) {
       window.alert(
-        error?.response?.data?.message || "حذف نشانه زودیاک با خطا مواجه شد.",
+        error?.response?.data?.message || "حذف صورت‌‌ فلکی با خطا مواجه شد.",
       );
     } finally {
       setDeletingId(null);
@@ -144,7 +148,7 @@ export default function ZodiacSignsList() {
       {/* Page Header */}
       <div className="zodiac-signs-page-header">
         <div className="zodiac-signs-page-title">
-          <h1>نشانه‌های زودیاک</h1>
+          <h1>صور فلکی</h1>
 
           <div className="zodiac-signs-breadcrumb">
             <Link to="/admin">داشبورد</Link>
@@ -157,7 +161,7 @@ export default function ZodiacSignsList() {
 
             <span>/</span>
 
-            <span>نشانه‌های زودیاک</span>
+            <span>صورفلکی</span>
           </div>
         </div>
       </div>
@@ -178,131 +182,135 @@ export default function ZodiacSignsList() {
       )}
 
       {/* Main Card */}
-      <div className="zodiac-signs-card">
-        <div className="zodiac-signs-card-header">
-          <div className="zodiac-signs-card-title">نمایش نشانه‌های زودیاک</div>
+      {!editingZodiacSign && (
+        <div className="zodiac-signs-card">
+          <div className="zodiac-signs-card-header">
+            <div className="zodiac-signs-card-title">نمایش صورفلکی</div>
 
-          <button
-            type="button"
-            className="zodiac-signs-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingZodiacSign)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن نشانه</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="zodiac-signs-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingZodiacSign)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن</span>
+            </button>
+          </div>
 
-        <div className="zodiac-signs-card-body">
-          {loading ? (
-            <div className="zodiac-signs-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="zodiac-signs-card-body">
+            {loading ? (
+              <div className="zodiac-signs-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="zodiac-signs-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="zodiac-signs-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadData}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : zodiacSigns.length === 0 ? (
-            <div className="zodiac-signs-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadData}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : zodiacSigns.length === 0 ? (
+              <div className="zodiac-signs-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز نشانه‌ای ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="zodiac-signs-table-wrapper">
-              <table className="zodiac-signs-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز نشانه‌ای ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="zodiac-signs-table-wrapper">
+                <table className="zodiac-signs-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام</th>
+                      <th>نام</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th>سیاره حکمران</th>
+                      <th>سیاره حکمران</th>
 
-                    <th>عنصر</th>
+                      <th>عنصر</th>
 
-                    <th>کیفیت</th>
+                      <th>کیفیت</th>
 
-                    <th className="col-symbol">نماد</th>
+                      <th className="col-symbol">نماد</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {zodiacSigns.map((zodiacSign, index) => (
-                    <tr key={zodiacSign.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="zodiac-sign-name">{zodiacSign.name}</td>
-
-                      <td className="zodiac-sign-name-eng" dir="ltr">
-                        {zodiacSign.name_eng}
-                      </td>
-
-                      <td>{findName(planets, zodiacSign.planet_id)}</td>
-
-                      <td>{findName(elements, zodiacSign.element_id)}</td>
-
-                      <td>{findName(qualities, zodiacSign.quality_id)}</td>
-
-                      <td className="zodiac-sign-symbol">
-                        {zodiacSign.symbol}
-                      </td>
-
-                      <td>
-                        <div className="zodiac-sign-actions">
-                          <button
-                            type="button"
-                            className="zodiac-sign-edit-button"
-                            onClick={() => setEditingZodiacSign(zodiacSign)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="zodiac-sign-delete-button"
-                            onClick={() => handleDelete(zodiacSign.id)}
-                            disabled={deletingId === zodiacSign.id}
-                          >
-                            {deletingId === zodiacSign.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {zodiacSigns.map((zodiacSign, index) => (
+                      <tr key={zodiacSign.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="zodiac-sign-name">{zodiacSign.name}</td>
+
+                        <td className="zodiac-sign-name-eng" dir="ltr">
+                          {zodiacSign.name_eng}
+                        </td>
+
+                        <td>{findName(planets, zodiacSign.planet_id)}</td>
+
+                        <td>{findName(elements, zodiacSign.element_id)}</td>
+
+                        <td>{findName(qualities, zodiacSign.quality_id)}</td>
+
+                        <td className="zodiac-sign-symbol">
+                          {zodiacSign.symbol}
+                        </td>
+
+                        <td>
+                          <div className="zodiac-sign-actions">
+                            <button
+                              type="button"
+                              className="zodiac-sign-edit-button"
+                              onClick={() => setEditingZodiacSign(zodiacSign)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="zodiac-sign-delete-button"
+                              onClick={() => handleDelete(zodiacSign.id)}
+                              disabled={
+                                !isAdmin || deletingId === zodiacSign.id
+                              }
+                            >
+                              {deletingId === zodiacSign.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

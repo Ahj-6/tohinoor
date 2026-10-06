@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import "./PersonDetail.css";
 
 import PageShellT from "../../components/layout/PageShellT";
@@ -10,6 +10,7 @@ import BioCard from "../../components/PersonDetail/BioCard";
 
 // import { getPersonBySlugOrId } from "../../services/peopleService";
 import { getPersonBySlug } from "../../services/peopleService";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function PersonDetail() {
   const { slug } = useParams();
@@ -63,16 +64,35 @@ export default function PersonDetail() {
   return (
     <PageShellT>
       <div className="person-detail">
+
+        {/* Person */}
         <PersonInfoCard person={person} />
 
+        {/* Charts */}
         {person.charts?.length > 0 && (
           <ChartCard charts={person.charts} />
         )}
 
+        {/* Biography */}
         <BioCard
           paragraphs={person.bio}
           wikipediaUrl={person.wikipedia_url}
         />
+
+        {/* Back Button */}
+        <div className="person-detail__back">
+          <Link
+            to="/star-knowledge"
+            className="person-detail__back-button"
+          >
+            {/* <span className="person-detail__back-icon" aria-hidden="true">
+              ←
+            </span> */}
+            <FaArrowLeft />
+
+            <span>بازگشت به دانش ستارگان</span>
+          </Link>
+        </div>
       </div>
     </PageShellT>
   );

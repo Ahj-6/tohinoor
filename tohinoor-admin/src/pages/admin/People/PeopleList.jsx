@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import PersonForm from "./PersonForm.jsx";
 
@@ -19,7 +21,11 @@ import { getPlanets } from "../../../services/planetService.js";
 
 import "./People.css";
 
+const ITEMS_PER_PAGE = 10;
+
 export default function PeopleList() {
+  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
 
   const [people, setPeople] = useState([]);
 
@@ -37,21 +43,23 @@ export default function PeopleList() {
 
   const [editingPerson, setEditingPerson] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [statusFilter, setStatusFilter] = useState("all");
 
   const loadData = useCallback(async () => {
     setLoading(true);
     setLoadError("");
     setLoadWarnings([]);
 
-  const results = await Promise.allSettled([
-    getAdminPeople(),
-    getGenders(),
-    getCountries(),
-    getCities(),
-    getZodiacSigns(),
-    getBirthAccuracies(),
-    getPlanets(),
-  ]);
+    const results = await Promise.allSettled([
+      getAdminPeople(),
+      getGenders(),
+      getCountries(),
+      getCities(),
+      getZodiacSigns(),
+      getBirthAccuracies(),
+      getPlanets(),
+    ]);
 
     const [
       peopleResult,
@@ -78,7 +86,8 @@ export default function PeopleList() {
       return;
     }
 
-    setPeople(peopleResult.value || []);
+    setPeople(sortPeople(peopleResult.value || []));
+    setCurrentPage(1);
 
     // -----------------------------
     // Reference data
@@ -144,6 +153,47 @@ export default function PeopleList() {
     loadData();
   }, [loadData]);
 
+  const sortPeople = (items) => {
+    return [...items].sort((a, b) =>
+      String(a.name || "").localeCompare(String(b.name || ""), "fa", {
+        sensitivity: "base",
+      }),
+    );
+  };
+
+  const filteredPeople = people.filter((person) => {
+    if (statusFilter === "active") {
+      return Boolean(person.status);
+    }
+
+    if (statusFilter === "inactive") {
+      return !person.status;
+    }
+
+    return true;
+  });
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredPeople.length / ITEMS_PER_PAGE),
+  );
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  const currentPeople = filteredPeople.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE,
+  );
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [statusFilter]);
 
   const findName = (items, id) => {
     if (!id) {
@@ -162,16 +212,30 @@ export default function PeopleList() {
   };
 
   const handleSaved = (savedPerson) => {
+    // بعد از افزودن فرد جدید، مستقیماً به صفحه جزئیات برو
+    if (!editingPerson?.id) {
+      const identifier = savedPerson?.slug || savedPerson?.id;
+
+      if (identifier) {
+        navigate(`/admin/people/${identifier}`, {
+          replace: true,
+        });
+
+        return;
+      }
+    }
+
+    // در حالت ویرایش، فعلاً رفتار قبلی حفظ می‌شود
     setPeople((current) => {
       const exists = current.some((item) => item.id === savedPerson.id);
 
-      if (exists) {
-        return current.map((item) =>
-          item.id === savedPerson.id ? savedPerson : item,
-        );
-      }
+      const nextPeople = exists
+        ? current.map((item) =>
+            item.id === savedPerson.id ? savedPerson : item,
+          )
+        : [...current, savedPerson];
 
-      return [...current, savedPerson];
+      return sortPeople(nextPeople);
     });
 
     setEditingPerson(null);
@@ -268,177 +332,317 @@ export default function PeopleList() {
       )}
 
       {/* Main Card */}
-      <div className="people-card">
-        <div className="people-card-header">
-          <div className="people-card-title">نمایش افراد</div>
+      {!editingPerson && (
+        <div className="people-card">
+          <div className="people-card-header">
+            <div className="people-card-title">نمایش افراد</div>
 
-          <button
-            type="button"
-            className="people-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingPerson)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن فرد</span>
-          </button>
-        </div>
+            <div className="people-card-header-actions">
+              <div className="people-status-filter">
+                <label htmlFor="people-status-filter">وضعیت:</label>
 
-        <div className="people-card-body">
-          {loadWarnings.length > 0 && !loading && (
-            <div className="alert alert-warning m-3">
-              <div className="d-flex align-items-start gap-2">
-                <i className="bi bi-exclamation-triangle" />
-
-                <div>
-                  <strong>بخشی از اطلاعات مرجع در دسترس نیست.</strong>
-
-                  <div className="mt-1">
-                    موارد زیر با خطا دریافت شدند: {loadWarnings.join("، ")}
-                  </div>
-
-                  <div className="mt-1">لیست افراد همچنان قابل نمایش است.</div>
-                </div>
+                <select
+                  id="people-status-filter"
+                  className="form-select"
+                  value={statusFilter}
+                  onChange={(event) => setStatusFilter(event.target.value)}
+                  disabled={Boolean(editingPerson)}
+                >
+                  <option value="all">همه</option>
+                  <option value="active">فعال</option>
+                  <option value="inactive">غیرفعال</option>
+                </select>
               </div>
-            </div>
-          )}
-          {loading ? (
-            <div className="people-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="people-error">
-              <span>{loadError}</span>
-              <button type="button" onClick={loadData}>
-                تلاش مجدد
+
+              <button
+                type="button"
+                className="people-add-button"
+                onClick={startCreate}
+                disabled={Boolean(editingPerson)}
+              >
+                <i className="bi bi-plus-lg" />
+                <span>افزودن فرد</span>
               </button>
             </div>
-          ) : people.length === 0 ? (
-            <div className="people-state">
-              <i className="bi bi-inbox" />
-              <span>هنوز فردی ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="people-table-wrapper">
-              <table className="people-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
-                    <th className="col-image">تصویر</th>
-                    <th>نام</th>
-                    <th className="col-status">وضعیت</th>
-                    <th>طالع</th>
-                    <th>سیاره حکمران</th>
-                    <th className="col-birth">دقت اطلاعات</th>
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
+          </div>
 
-                <tbody>
-                  {people.map((person, index) => {
-                    const zodiac = zodiacSigns.find(
-                      (item) => Number(item.id) === Number(person.zodiac_sign_id)
-                    );
+          <div className="people-card-body">
+            {loadWarnings.length > 0 && !loading && (
+              <div className="alert alert-warning m-3">
+                <div className="d-flex align-items-start gap-2">
+                  <i className="bi bi-exclamation-triangle" />
 
-                    const rulerPlanetName = zodiac?.ruler_planet_id
-                      ? findName(planets, zodiac.ruler_planet_id)
-                      : zodiac?.planet_id
-                      ? findName(planets, zodiac.planet_id)
-                      : "—";
+                  <div>
+                    <strong>بخشی از اطلاعات مرجع در دسترس نیست.</strong>
 
-                    return (
-                      <tr key={person.id}>
-                        {/* ID */}
-                        <td className="text-center">{index + 1}</td>
+                    <div className="mt-1">
+                      موارد زیر با خطا دریافت شدند: {loadWarnings.join("، ")}
+                    </div>
 
-                        {/* IMAGE */}
-                        <td className="person-image-cell">
-                          {person.image_url ? (
-                            <img
-                              src={person.image_url}
-                              alt={person.name}
-                              className="person-list-image"
-                            />
-                          ) : (
-                            <div className="person-list-image person-list-image--empty">
-                              <i className="bi bi-person" />
+                    <div className="mt-1">
+                      لیست افراد همچنان قابل نمایش است.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {loading ? (
+              <div className="people-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="people-error">
+                <span>{loadError}</span>
+                <button type="button" onClick={loadData}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : filteredPeople.length === 0 ? (
+              <div className="people-state">
+                <i className="bi bi-inbox" />
+
+                <span>
+                  {people.length === 0
+                    ? "هنوز فردی ثبت نشده است."
+                    : statusFilter === "active"
+                      ? "فرد فعالی پیدا نشد."
+                      : statusFilter === "inactive"
+                        ? "فرد غیرفعالی پیدا نشد."
+                        : "فردی پیدا نشد."}
+                </span>
+              </div>
+            ) : (
+              <div className="people-table-wrapper">
+                <table className="people-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
+                      <th className="col-image">تصویر</th>
+                      <th>نام</th>
+                      <th className="col-status">وضعیت</th>
+                      <th>طالع</th>
+                      <th>سیاره حکمران</th>
+                      <th className="col-birth">دقت اطلاعات</th>
+                      <th className="col-actions">عملیات</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {currentPeople.map((person, index) => {
+                      const zodiac = zodiacSigns.find(
+                        (item) =>
+                          Number(item.id) === Number(person.zodiac_sign_id),
+                      );
+
+                      const rulerPlanetName = zodiac?.ruler_planet_id
+                        ? findName(planets, zodiac.ruler_planet_id)
+                        : zodiac?.planet_id
+                          ? findName(planets, zodiac.planet_id)
+                          : "—";
+
+                      return (
+                        <tr key={person.id}>
+                          {/* ID */}
+                          <td className="text-center">
+                            {startIndex + index + 1}
+                          </td>
+
+                          {/* IMAGE */}
+                          <td className="person-image-cell">
+                            {person.image_url ? (
+                              <img
+                                src={person.image_url}
+                                alt={person.name}
+                                className="person-list-image"
+                              />
+                            ) : (
+                              <div className="person-list-image person-list-image--empty">
+                                <i className="bi bi-person" />
+                              </div>
+                            )}
+                          </td>
+
+                          {/* NAME */}
+                          <td className="person-name">{person.name}</td>
+
+                          {/* STATUS */}
+                          <td className="text-center">
+                            {person.status ? (
+                              <span className="person-status person-status--active">
+                                فعال
+                              </span>
+                            ) : (
+                              <span className="person-status person-status--inactive">
+                                غیرفعال
+                              </span>
+                            )}
+                          </td>
+
+                          {/* ZODIAC SIGN */}
+                          <td>
+                            {findName(zodiacSigns, person.zodiac_sign_id)}
+                          </td>
+
+                          {/* RULER PLANET */}
+                          <td>{rulerPlanetName}</td>
+
+                          {/* BIRTH ACCURACY CODE */}
+                          <td className="text-center">
+                            {findCode(
+                              birthAccuracies,
+                              person.birth_accuracy_id,
+                            )}
+                          </td>
+
+                          {/* ACTIONS */}
+                          <td>
+                            <div className="person-actions">
+                              <Link
+                                // to={`/admin/people/${person.id}`}
+                                to={`/admin/people/${person.slug}`}
+                                className="person-view-button"
+                              >
+                                <i className="bi bi-eye" />
+                                <span>نمایش</span>
+                              </Link>
+
+                              <button
+                                type="button"
+                                className="person-delete-button"
+                                onClick={() => handleDelete(person.id)}
+                                disabled={!isAdmin || deletingId === person.id}
+                              >
+                                {deletingId === person.id ? (
+                                  <span
+                                    className="spinner-border spinner-border-sm"
+                                    aria-hidden="true"
+                                  />
+                                ) : (
+                                  <>
+                                    <i className="bi bi-trash" />
+                                    <span>حذف</span>
+                                  </>
+                                )}
+                              </button>
                             </div>
-                          )}
-                        </td>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
 
-                        {/* NAME */}
-                        <td className="person-name">{person.name}</td>
+                {filteredPeople.length > ITEMS_PER_PAGE && (
+                  <div className="people-pagination">
+                    {/* <div className="people-pagination-info">
+                      نمایش {startIndex + 1} تا{" "}
+                      {Math.min(
+                        startIndex + ITEMS_PER_PAGE,
+                        filteredPeople.length,
+                      )}{" "}
+                      از {filteredPeople.length} فرد
+                    </div> */}
 
-                        {/* STATUS */}
-                        <td className="text-center">
-                          {person.status ? (
-                            <span className="person-status person-status--active">
-                              فعال
-                            </span>
-                          ) : (
-                            <span className="person-status person-status--inactive">
-                              غیرفعال
-                            </span>
-                          )}
-                        </td>
+                    <nav aria-label="صفحه‌بندی افراد">
+                      <ul className="pagination mb-0 justify-content-center">
+                        <li
+                          className={`page-item ${
+                            currentPage === 1 ? "disabled" : ""
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            className="page-link"
+                            onClick={() => setCurrentPage(1)}
+                            disabled={currentPage === 1}
+                          >
+                            <i className="bi bi-chevron-double-right" />
+                          </button>
+                        </li>
 
-                        {/* ZODIAC SIGN */}
-                        <td>
-                          {findName(zodiacSigns, person.zodiac_sign_id)}
-                        </td>
+                        <li
+                          className={`page-item ${
+                            currentPage === 1 ? "disabled" : ""
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            className="page-link"
+                            onClick={() =>
+                              setCurrentPage((page) => Math.max(1, page - 1))
+                            }
+                            disabled={currentPage === 1}
+                          >
+                            <i className="bi bi-chevron-right" />
+                          </button>
+                        </li>
 
-                        {/* RULER PLANET */}
-                        <td>{rulerPlanetName}</td>
-
-                        {/* BIRTH ACCURACY CODE */}
-                        <td className="text-center">
-                          {findCode(birthAccuracies, person.birth_accuracy_id)}
-                        </td>
-
-                        {/* ACTIONS */}
-                        <td>
-                          <div className="person-actions">
-                            <Link
-                              // to={`/admin/people/${person.id}`}
-                              to={`/admin/people/${person.slug}`}
-                              className="person-view-button"
-                            >
-                              <i className="bi bi-eye" />
-                              <span>نمایش</span>
-                            </Link>
-
+                        {Array.from(
+                          { length: totalPages },
+                          (_, index) => index + 1,
+                        ).map((page) => (
+                          <li
+                            key={page}
+                            className={`page-item ${
+                              currentPage === page ? "active" : ""
+                            }`}
+                          >
                             <button
                               type="button"
-                              className="person-delete-button"
-                              onClick={() => handleDelete(person.id)}
-                              disabled={deletingId === person.id}
+                              className="page-link"
+                              onClick={() => setCurrentPage(page)}
                             >
-                              {deletingId === person.id ? (
-                                <span
-                                  className="spinner-border spinner-border-sm"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <>
-                                  <i className="bi bi-trash" />
-                                  <span>حذف</span>
-                                </>
-                              )}
+                              {page}
                             </button>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
+                          </li>
+                        ))}
+
+                        <li
+                          className={`page-item ${
+                            currentPage === totalPages ? "disabled" : ""
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            className="page-link"
+                            onClick={() =>
+                              setCurrentPage((page) =>
+                                Math.min(totalPages, page + 1),
+                              )
+                            }
+                            disabled={currentPage === totalPages}
+                          >
+                            <i className="bi bi-chevron-left" />
+                          </button>
+                        </li>
+
+                        <li
+                          className={`page-item ${
+                            currentPage === totalPages ? "disabled" : ""
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            className="page-link"
+                            onClick={() => setCurrentPage(totalPages)}
+                            disabled={currentPage === totalPages}
+                          >
+                            <i className="bi bi-chevron-double-left" />
+                          </button>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

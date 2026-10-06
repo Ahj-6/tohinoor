@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import CountryForm from "./CountryForm.jsx";
 
@@ -13,6 +15,8 @@ import {
 import "./Countries.css";
 
 export default function CountriesList() {
+  const { isAdmin } = useAuth();
+
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -26,7 +30,14 @@ export default function CountriesList() {
 
     try {
       const data = await getCountries();
-      setCountries(data);
+
+      const sortedData = [...data].sort((a, b) =>
+        String(a.name || "").localeCompare(String(b.name || ""), "fa", {
+          sensitivity: "base",
+        }),
+      );
+
+      setCountries(sortedData);
     } catch (error) {
       setLoadError(
         error?.response?.data?.message ||
@@ -139,114 +150,116 @@ export default function CountriesList() {
       )}
 
       {/* Main Card */}
-      <div className="countries-card">
-        <div className="countries-card-header">
-          <div className="countries-card-title">نمایش کشورها</div>
+      {!editingCountry && (
+        <div className="countries-card">
+          <div className="countries-card-header">
+            <div className="countries-card-title">نمایش کشورها</div>
 
-          <button
-            type="button"
-            className="countries-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingCountry)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن کشور</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="countries-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingCountry)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن کشور</span>
+            </button>
+          </div>
 
-        <div className="countries-card-body">
-          {loading ? (
-            <div className="countries-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="countries-card-body">
+            {loading ? (
+              <div className="countries-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="countries-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="countries-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadCountries}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : countries.length === 0 ? (
-            <div className="countries-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadCountries}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : countries.length === 0 ? (
+              <div className="countries-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز کشوری ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="countries-table-wrapper">
-              <table className="countries-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز کشوری ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="countries-table-wrapper">
+                <table className="countries-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام کشور</th>
+                      <th>نام کشور</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {countries.map((country, index) => (
-                    <tr key={country.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="country-name">{country.name}</td>
-
-                      <td
-                        className="country-name-eng"
-                        // dir="ltr"
-                      >
-                        {country.name_eng}
-                      </td>
-
-                      <td>
-                        <div className="country-actions">
-                          <button
-                            type="button"
-                            className="country-edit-button"
-                            onClick={() => setEditingCountry(country)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="country-delete-button"
-                            onClick={() => handleDelete(country.id)}
-                            disabled={deletingId === country.id}
-                          >
-                            {deletingId === country.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {countries.map((country, index) => (
+                      <tr key={country.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="country-name">{country.name}</td>
+
+                        <td
+                          className="country-name-eng"
+                          // dir="ltr"
+                        >
+                          {country.name_eng}
+                        </td>
+
+                        <td>
+                          <div className="country-actions">
+                            <button
+                              type="button"
+                              className="country-edit-button"
+                              onClick={() => setEditingCountry(country)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="country-delete-button"
+                              onClick={() => handleDelete(country.id)}
+                              disabled={!isAdmin || deletingId === country.id}
+                            >
+                              {deletingId === country.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

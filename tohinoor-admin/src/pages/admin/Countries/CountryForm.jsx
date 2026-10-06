@@ -186,7 +186,7 @@ export default function CountryForm({
                         )}
                     </button>
 
-                    {isEditing && (
+                    {/* {isEditing && ( */}
                         <button
                             type="button"
                             className="btn btn-secondary"
@@ -195,7 +195,7 @@ export default function CountryForm({
                         >
                             انصراف
                         </button>
-                    )}
+                    {/* )} */}
                 </div>
             </form>
         </div>

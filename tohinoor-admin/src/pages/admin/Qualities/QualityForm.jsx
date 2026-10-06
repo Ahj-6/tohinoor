@@ -184,7 +184,7 @@ export default function QualityForm({
                         )}
                     </button>
 
-                    {isEditing && (
+                    {/* {isEditing && ( */}
                         <button
                             type="button"
                             className="btn btn-secondary"
@@ -193,7 +193,7 @@ export default function QualityForm({
                         >
                             انصراف
                         </button>
-                    )}
+                    {/* )} */}
                 </div>
             </form>
         </div>

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import BirthAccuracyForm from "./BirthAccuracyForm.jsx";
 
@@ -13,6 +15,8 @@ import {
 import "./BirthAccuracies.css";
 
 export default function BirthAccuraciesList() {
+  const { isAdmin } = useAuth();
+
   const [birthAccuracies, setBirthAccuracies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -142,135 +146,141 @@ export default function BirthAccuraciesList() {
       )}
 
       {/* Main Card */}
-      <div className="birth-accuracies-card">
-        <div className="birth-accuracies-card-header">
-          <div className="birth-accuracies-card-title">نمایش دقت‌های تولد</div>
-
-          <button
-            type="button"
-            className="birth-accuracies-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingBirthAccuracy)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن دقت تولد</span>
-          </button>
-        </div>
-
-        <div className="birth-accuracies-card-body">
-          {loading ? (
-            <div className="birth-accuracies-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
-
-              <span>در حال دریافت اطلاعات...</span>
+      {!editingBirthAccuracy && (
+        <div className="birth-accuracies-card">
+          <div className="birth-accuracies-card-header">
+            <div className="birth-accuracies-card-title">
+              نمایش دقت‌های تولد
             </div>
-          ) : loadError ? (
-            <div className="birth-accuracies-error">
-              <span>{loadError}</span>
 
-              <button type="button" onClick={loadBirthAccuracies}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : birthAccuracies.length === 0 ? (
-            <div className="birth-accuracies-state">
-              <i className="bi bi-inbox" />
+            <button
+              type="button"
+              className="birth-accuracies-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingBirthAccuracy)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن دقت تولد</span>
+            </button>
+          </div>
 
-              <span>هنوز دقت تولدی ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="birth-accuracies-table-wrapper">
-              <table className="birth-accuracies-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+          <div className="birth-accuracies-card-body">
+            {loading ? (
+              <div className="birth-accuracies-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-                    <th className="col-code">کد</th>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="birth-accuracies-error">
+                <span>{loadError}</span>
 
-                    <th>نام</th>
+                <button type="button" onClick={loadBirthAccuracies}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : birthAccuracies.length === 0 ? (
+              <div className="birth-accuracies-state">
+                <i className="bi bi-inbox" />
 
-                    <th className="col-english">نام انگلیسی</th>
+                <span>هنوز دقت تولدی ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="birth-accuracies-table-wrapper">
+                <table className="birth-accuracies-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th className="col-description">توضیحات</th>
+                      <th className="col-code">کد</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
+                      <th>نام</th>
 
-                <tbody>
-                  {birthAccuracies.map((birthAccuracy, index) => (
-                    <tr key={birthAccuracy.id}>
-                      <td className="text-center">{index + 1}</td>
+                      <th className="col-english">نام انگلیسی</th>
 
-                      <td
-                        className="birth-accuracy-code"
-                        // dir="ltr"
-                      >
-                        {birthAccuracy.code}
-                      </td>
+                      <th className="col-description">توضیحات</th>
 
-                      <td className="birth-accuracy-name">
-                        {birthAccuracy.name}
-                      </td>
-
-                      <td
-                        className="birth-accuracy-name-eng"
-                        // dir="ltr"
-                      >
-                        {birthAccuracy.name_eng}
-                      </td>
-
-                      <td className="birth-accuracy-description">
-                        {birthAccuracy.description || "—"}
-                      </td>
-
-                      <td>
-                        <div className="birth-accuracy-actions">
-                          <button
-                            type="button"
-                            className="birth-accuracy-edit-button"
-                            onClick={() =>
-                              setEditingBirthAccuracy(birthAccuracy)
-                            }
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="birth-accuracy-delete-button"
-                            onClick={() => handleDelete(birthAccuracy.id)}
-                            disabled={deletingId === birthAccuracy.id}
-                          >
-                            {deletingId === birthAccuracy.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {birthAccuracies.map((birthAccuracy, index) => (
+                      <tr key={birthAccuracy.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td
+                          className="birth-accuracy-code"
+                          // dir="ltr"
+                        >
+                          {birthAccuracy.code}
+                        </td>
+
+                        <td className="birth-accuracy-name">
+                          {birthAccuracy.name}
+                        </td>
+
+                        <td
+                          className="birth-accuracy-name-eng"
+                          // dir="ltr"
+                        >
+                          {birthAccuracy.name_eng}
+                        </td>
+
+                        <td className="birth-accuracy-description">
+                          {birthAccuracy.description || "—"}
+                        </td>
+
+                        <td>
+                          <div className="birth-accuracy-actions">
+                            <button
+                              type="button"
+                              className="birth-accuracy-edit-button"
+                              onClick={() =>
+                                setEditingBirthAccuracy(birthAccuracy)
+                              }
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="birth-accuracy-delete-button"
+                              onClick={() => handleDelete(birthAccuracy.id)}
+                              disabled={
+                                !isAdmin || deletingId === birthAccuracy.id
+                              }
+                            >
+                              {deletingId === birthAccuracy.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

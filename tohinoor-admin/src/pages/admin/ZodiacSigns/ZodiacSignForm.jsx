@@ -117,7 +117,7 @@ export default function ZodiacSignForm({
     <div className="card shadow-sm zodiac-sign-form-card">
       <div className="card-header">
         <h3 className="card-title mb-0">
-          {isEditing ? "ویرایش نشانه زودیاک" : "افزودن نشانه زودیاک جدید"}
+          {isEditing ? "ویرایش صورت فلکی" : "افزودن صورت فلکی جدید"}
         </h3>
       </div>
 
@@ -380,7 +380,7 @@ export default function ZodiacSignForm({
             ) : (
               <>
                 <i className="bi bi-check-lg me-1" />
-                {isEditing ? "ذخیره تغییرات" : "افزودن نشانه"}
+                {isEditing ? "ذخیره تغییرات" : "افزودن"}
               </>
             )}
           </button>

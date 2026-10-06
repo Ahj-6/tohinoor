@@ -108,6 +108,12 @@ export default function CityForm({
     }
   };
 
+  const sortedCountries = [...countries].sort((a, b) =>
+    String(a.name_eng || "").localeCompare(String(b.name_eng || ""), "en", {
+      sensitivity: "base",
+    }),
+  );
+
   return (
     <div className="card shadow-sm city-form-card">
       <div className="card-header">
@@ -140,12 +146,11 @@ export default function CityForm({
                 disabled={saving}
               >
                 <option value="">انتخاب کشور</option>
-
-                {countries.map((country) => (
+                {sortedCountries.map((country) => (
                   <option key={country.id} value={country.id}>
                     {country.name_eng}
                   </option>
-                ))}
+                ))}{" "}
               </select>
 
               {renderError("country_id")}
@@ -258,7 +263,7 @@ export default function CityForm({
             )}
           </button>
 
-          {isEditing && (
+          {/* {isEditing && ( */}
             <button
               type="button"
               className="btn btn-secondary"
@@ -267,7 +272,7 @@ export default function CityForm({
             >
               انصراف
             </button>
-          )}
+          {/* )} */}
         </div>
       </form>
     </div>

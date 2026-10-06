@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import GunaForm from "./GunaForm.jsx";
 
@@ -13,6 +15,8 @@ import {
 import "./Gunas.css";
 
 export default function GunasList() {
+  const { isAdmin } = useAuth();
+
   const [gunas, setGunas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -139,111 +143,113 @@ export default function GunasList() {
       )}
 
       {/* Main Card */}
-      <div className="gunas-card">
-        <div className="gunas-card-header">
-          <div className="gunas-card-title">نمایش گوناها</div>
+      {!editingGuna && (
+        <div className="gunas-card">
+          <div className="gunas-card-header">
+            <div className="gunas-card-title">نمایش گوناها</div>
 
-          <button
-            type="button"
-            className="gunas-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingGuna)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن گونا</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="gunas-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingGuna)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن گونا</span>
+            </button>
+          </div>
 
-        <div className="gunas-card-body">
-          {loading ? (
-            <div className="gunas-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="gunas-card-body">
+            {loading ? (
+              <div className="gunas-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="gunas-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="gunas-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadGunas}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : gunas.length === 0 ? (
-            <div className="gunas-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadGunas}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : gunas.length === 0 ? (
+              <div className="gunas-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز گونایی ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="gunas-table-wrapper">
-              <table className="gunas-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز گونایی ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="gunas-table-wrapper">
+                <table className="gunas-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام گونا</th>
+                      <th>نام گونا</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {gunas.map((guna, index) => (
-                    <tr key={guna.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="guna-name">{guna.name}</td>
-
-                      <td className="guna-name-eng" dir="ltr">
-                        {guna.name_eng}
-                      </td>
-
-                      <td>
-                        <div className="guna-actions">
-                          <button
-                            type="button"
-                            className="guna-edit-button"
-                            onClick={() => setEditingGuna(guna)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="guna-delete-button"
-                            onClick={() => handleDelete(guna.id)}
-                            disabled={deletingId === guna.id}
-                          >
-                            {deletingId === guna.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {gunas.map((guna, index) => (
+                      <tr key={guna.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="guna-name">{guna.name}</td>
+
+                        <td className="guna-name-eng" dir="ltr">
+                          {guna.name_eng}
+                        </td>
+
+                        <td>
+                          <div className="guna-actions">
+                            <button
+                              type="button"
+                              className="guna-edit-button"
+                              onClick={() => setEditingGuna(guna)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="guna-delete-button"
+                              onClick={() => handleDelete(guna.id)}
+                              disabled={!isAdmin || deletingId === guna.id}
+                            >
+                              {deletingId === guna.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

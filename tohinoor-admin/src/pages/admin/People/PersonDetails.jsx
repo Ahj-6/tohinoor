@@ -176,7 +176,9 @@ export default function PersonDetails() {
   };
 
   const genderName = useMemo(
-    () => findName(genders, person?.gender_id),
+    () =>
+      genders.find((item) => Number(item.id) === Number(person?.gender_id))
+        ?.name || "—",
     [genders, person],
   );
 

@@ -37,3 +37,45 @@
 
     font-size:14px;
 }
+
+.section-header__title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-header__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: #b89a68;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+
+    /* border: 2px solid  rgba(214, 166, 82, 0.4); */
+}
+
+.section-header__clear:hover {
+  color: #8f6f3f;
+  background-color: rgba(184, 154, 104, 0.12);
+}
+
+.section-header__clear:active {
+  transform: scale(0.92);
+}

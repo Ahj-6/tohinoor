@@ -150,7 +150,7 @@ export default function GunaForm({ guna, onSaved, onCancel, saveGuna }) {
             )}
           </button>
 
-          {isEditing && (
+          {/* {isEditing && ( */}
             <button
               type="button"
               className="btn btn-secondary"
@@ -159,7 +159,7 @@ export default function GunaForm({ guna, onSaved, onCancel, saveGuna }) {
             >
               انصراف
             </button>
-          )}
+          {/* )} */}
         </div>
       </form>
     </div>

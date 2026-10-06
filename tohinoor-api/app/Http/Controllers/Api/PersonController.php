@@ -9,6 +9,9 @@ use App\Http\Resources\PersonResource;
 use App\Models\Person;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+// use Illuminate\Support\Str;
+// use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\Format;
 use Throwable;
 
 class PersonController extends Controller
@@ -44,14 +47,14 @@ class PersonController extends Controller
 
         $imagePath = null;
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store(
-                'people',
-                'public'
-            );
-        }
-
         try {
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store(
+                    'people',
+                    'public'
+                );
+            }
+
             $person = Person::create([
                 ...$validated,
                 'slug' => Person::generateUniqueSlug($validated['name_eng']),

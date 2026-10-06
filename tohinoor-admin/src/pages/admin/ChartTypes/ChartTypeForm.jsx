@@ -225,7 +225,7 @@ export default function ChartTypeForm({
                         )}
                     </button>
 
-                    {isEditing && (
+                    {/* {isEditing && ( */}
                         <button
                             type="button"
                             className="btn btn-secondary"
@@ -234,7 +234,7 @@ export default function ChartTypeForm({
                         >
                             انصراف
                         </button>
-                    )}
+                    {/* )} */}
                 </div>
             </form>
         </div>

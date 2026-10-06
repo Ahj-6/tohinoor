@@ -563,7 +563,7 @@ export default function PlanetForm({
                         )}
                     </button>
 
-                    {isEditing && (
+                    {/* {isEditing && ( */}
                         <button
                             type="button"
                             className="btn btn-secondary"
@@ -572,7 +572,7 @@ export default function PlanetForm({
                         >
                             انصراف
                         </button>
-                    )}
+                    {/* )} */}
                 </div>
             </form>
         </div>

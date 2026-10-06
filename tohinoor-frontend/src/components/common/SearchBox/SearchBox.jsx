@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
 import "./SearchBox.css";
@@ -14,22 +14,29 @@ export default function SearchBox({
 }) {
   const [isFocused, setIsFocused] = useState(false);
 
+  const inputRef = useRef(null);
+
   const showSuggestions =
     isFocused && value.trim().length > 0 && suggestions.length > 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Hide suggestions after pressing Enter / submitting the search.
+    setIsFocused(false);
+    inputRef.current?.blur();
+
     onSubmit?.();
   };
 
   const handleSuggestionMouseDown = (person) => {
-    // Prevent input blur before the click handler runs.
     onSuggestionClick?.(person);
   };
 
   return (
     <form className="search-box" onSubmit={handleSubmit}>
       <input
+        ref={inputRef}
         type="text"
         value={value}
         placeholder={placeholder}

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import CityForm from "./CityForm.jsx";
 
@@ -15,6 +17,8 @@ import { getCountries } from "../../../services/countryService.js";
 import "./Cities.css";
 
 export default function CitiesList() {
+  const { isAdmin } = useAuth();
+
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
 
@@ -34,8 +38,34 @@ export default function CitiesList() {
         getCountries(),
       ]);
 
-      setCities(citiesData);
       setCountries(countriesData);
+
+      const countryMap = new Map(
+        countriesData.map((country) => [
+          Number(country.id),
+          country.name || "",
+        ]),
+      );
+
+      const sortedCities = [...citiesData].sort((a, b) => {
+        const countryA = countryMap.get(Number(a.country_id)) || "";
+        const countryB = countryMap.get(Number(b.country_id)) || "";
+
+        const countryCompare = countryA.localeCompare(countryB, "fa", {
+          sensitivity: "base",
+        });
+
+        if (countryCompare !== 0) {
+          return countryCompare;
+        }
+
+        // در صورت یکسان بودن کشور، شهرها بر اساس نام مرتب شوند
+        return String(a.name || "").localeCompare(String(b.name || ""), "fa", {
+          sensitivity: "base",
+        });
+      });
+
+      setCities(sortedCities);
     } catch (error) {
       setLoadError(
         error?.response?.data?.message ||
@@ -163,127 +193,129 @@ export default function CitiesList() {
       )}
 
       {/* Main Card */}
-      <div className="cities-card">
-        <div className="cities-card-header">
-          <div className="cities-card-title">نمایش شهرها</div>
+      {!editingCity && (
+        <div className="cities-card">
+          <div className="cities-card-header">
+            <div className="cities-card-title">نمایش شهرها</div>
 
-          <button
-            type="button"
-            className="cities-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingCity)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن شهر</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="cities-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingCity)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن شهر</span>
+            </button>
+          </div>
 
-        <div className="cities-card-body">
-          {loading ? (
-            <div className="cities-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="cities-card-body">
+            {loading ? (
+              <div className="cities-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="cities-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="cities-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadData}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : cities.length === 0 ? (
-            <div className="cities-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadData}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : cities.length === 0 ? (
+              <div className="cities-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز شهری ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="cities-table-wrapper">
-              <table className="cities-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز شهری ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="cities-table-wrapper">
+                <table className="cities-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام شهر</th>
+                      <th>نام شهر</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th>کشور</th>
+                      <th>کشور</th>
 
-                    <th className="col-coordinate">عرض</th>
+                      <th className="col-coordinate">عرض</th>
 
-                    <th className="col-coordinate">طول</th>
+                      <th className="col-coordinate">طول</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {cities.map((city, index) => (
-                    <tr key={city.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="city-name">{city.name}</td>
-
-                      <td className="city-name-eng" dir="ltr">
-                        {city.name_eng}
-                      </td>
-
-                      <td>{findCountryName(city.country_id)}</td>
-
-                      <td className="city-coordinate" dir="ltr">
-                        {city.latitude}
-                      </td>
-
-                      <td className="city-coordinate" dir="ltr">
-                        {city.longitude}
-                      </td>
-
-                      <td>
-                        <div className="city-actions">
-                          <button
-                            type="button"
-                            className="city-edit-button"
-                            onClick={() => setEditingCity(city)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="city-delete-button"
-                            onClick={() => handleDelete(city.id)}
-                            disabled={deletingId === city.id}
-                          >
-                            {deletingId === city.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {cities.map((city, index) => (
+                      <tr key={city.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="city-name">{city.name}</td>
+
+                        <td className="city-name-eng" dir="ltr">
+                          {city.name_eng}
+                        </td>
+
+                        <td>{findCountryName(city.country_id)}</td>
+
+                        <td className="city-coordinate" dir="ltr">
+                          {city.latitude}
+                        </td>
+
+                        <td className="city-coordinate" dir="ltr">
+                          {city.longitude}
+                        </td>
+
+                        <td>
+                          <div className="city-actions">
+                            <button
+                              type="button"
+                              className="city-edit-button"
+                              onClick={() => setEditingCity(city)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="city-delete-button"
+                              onClick={() => handleDelete(city.id)}
+                              disabled={!isAdmin || deletingId === city.id}
+                            >
+                              {deletingId === city.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

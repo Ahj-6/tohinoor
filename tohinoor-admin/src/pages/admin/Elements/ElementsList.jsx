@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import ElementForm from "./ElementForm.jsx";
 
@@ -13,6 +15,8 @@ import {
 import "./Elements.css";
 
 export default function ElementsList() {
+  const { isAdmin } = useAuth();
+
   const [elements, setElements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -140,118 +144,120 @@ export default function ElementsList() {
       )}
 
       {/* Main Card */}
-      <div className="elements-card">
-        {/* Card Header */}
-        <div className="elements-card-header">
-          <div className="elements-card-title">نمایش عناصر</div>
+      {!editingElement && (
+        <div className="elements-card">
+          {/* Card Header */}
+          <div className="elements-card-header">
+            <div className="elements-card-title">نمایش عناصر</div>
 
-          <button
-            type="button"
-            className="elements-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingElement)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن عنصر</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="elements-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingElement)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن عنصر</span>
+            </button>
+          </div>
 
-        {/* Card Body */}
-        <div className="elements-card-body">
-          {loading ? (
-            <div className="elements-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="elements-error">
-              <span>{loadError}</span>
+          {/* Card Body */}
+          <div className="elements-card-body">
+            {loading ? (
+              <div className="elements-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="elements-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadElements}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : elements.length === 0 ? (
-            <div className="elements-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadElements}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : elements.length === 0 ? (
+              <div className="elements-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز عنصری ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="elements-table-wrapper">
-              <table className="elements-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز عنصری ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="elements-table-wrapper">
+                <table className="elements-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام عنصر</th>
+                      <th>نام عنصر</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th className="col-description">توضیحات</th>
+                      <th className="col-description">توضیحات</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {elements.map((element, index) => (
-                    <tr key={element.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="element-name">{element.name}</td>
-
-                      <td className="element-name-eng" dir="ltr">
-                        {element.name_eng}
-                      </td>
-
-                      <td className="element-description">
-                        {element.description || "—"}
-                      </td>
-
-                      <td>
-                        <div className="element-actions">
-                          <button
-                            type="button"
-                            className="element-edit-button"
-                            onClick={() => setEditingElement(element)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="element-delete-button"
-                            onClick={() => handleDelete(element.id)}
-                            disabled={deletingId === element.id}
-                          >
-                            {deletingId === element.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {elements.map((element, index) => (
+                      <tr key={element.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="element-name">{element.name}</td>
+
+                        <td className="element-name-eng" dir="ltr">
+                          {element.name_eng}
+                        </td>
+
+                        <td className="element-description">
+                          {element.description || "—"}
+                        </td>
+
+                        <td>
+                          <div className="element-actions">
+                            <button
+                              type="button"
+                              className="element-edit-button"
+                              onClick={() => setEditingElement(element)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="element-delete-button"
+                              onClick={() => handleDelete(element.id)}
+                              disabled={!isAdmin || deletingId === element.id}
+                            >
+                              {deletingId === element.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

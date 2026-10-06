@@ -1,0 +1,123 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+// use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
+class Person extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'name_eng',
+        'slug',
+        'image',
+        'gender_id',
+        'birth_date',
+        'birth_time',
+        'country_id',
+        'city_id',
+        'time_zone',
+        'zodiac_sign_id',
+        'birth_accuracy_id',
+        'biography',
+        'wikipedia_url',
+        'status',
+    ];
+
+    protected $casts = [
+        'birth_date' => 'date',
+        'status' => 'boolean',
+    ];
+
+    /**
+     * Scope a query to order records by id.
+     */
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query->orderBy('id');
+    }
+
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class);
+    }
+
+    public function zodiacSign(): BelongsTo
+    {
+        return $this->belongsTo(ZodiacSign::class);
+    }
+
+    public function birthAccuracy(): BelongsTo
+    {
+        return $this->belongsTo(BirthAccuracy::class);
+    }
+
+    public function charts(): HasMany
+    {
+        return $this->hasMany(Chart::class);
+    }
+
+    public function books(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'book_people');
+    }
+
+    public function movies(): BelongsToMany
+    {
+        return $this->belongsToMany(Movie::class, 'movie_people');
+    }
+
+    public function sampleAnalyses(): HasMany
+    {
+        return $this->hasMany(SampleAnalysis::class);
+    }
+
+
+    public static function generateUniqueSlug(string $nameEng): string
+    {
+        $baseSlug = Str::slug($nameEng);
+
+        if ($baseSlug === '') {
+            $baseSlug = 'person';
+        }
+
+        $slug = $baseSlug;
+        $counter = 2;
+
+        while (static::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
+        return $slug;
+    }
+
+}

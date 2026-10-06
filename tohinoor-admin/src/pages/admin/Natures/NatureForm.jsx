@@ -150,7 +150,7 @@ export default function NatureForm({ nature, onSaved, onCancel, saveNature }) {
             )}
           </button>
 
-          {isEditing && (
+          {/* {isEditing && ( */}
             <button
               type="button"
               className="btn btn-secondary"
@@ -159,7 +159,7 @@ export default function NatureForm({ nature, onSaved, onCancel, saveNature }) {
             >
               انصراف
             </button>
-          )}
+          {/* )} */}
         </div>
       </form>
     </div>

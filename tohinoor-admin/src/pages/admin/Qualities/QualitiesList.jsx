@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+
+import { useAuth } from "../../../auth/AuthContext.jsx";
 
 import QualityForm from "./QualityForm.jsx";
 
@@ -13,6 +15,8 @@ import {
 import "./Qualities.css";
 
 export default function QualitiesList() {
+  const { isAdmin } = useAuth();
+
   const [qualities, setQualities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
@@ -139,111 +143,113 @@ export default function QualitiesList() {
       )}
 
       {/* Main Card */}
-      <div className="qualities-card">
-        <div className="qualities-card-header">
-          <div className="qualities-card-title">نمایش کیفیت‌ها</div>
+      {!editingQuality && (
+        <div className="qualities-card">
+          <div className="qualities-card-header">
+            <div className="qualities-card-title">نمایش کیفیت‌ها</div>
 
-          <button
-            type="button"
-            className="qualities-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingQuality)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن کیفیت</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="qualities-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingQuality)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن کیفیت</span>
+            </button>
+          </div>
 
-        <div className="qualities-card-body">
-          {loading ? (
-            <div className="qualities-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="qualities-card-body">
+            {loading ? (
+              <div className="qualities-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="qualities-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="qualities-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadQualities}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : qualities.length === 0 ? (
-            <div className="qualities-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadQualities}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : qualities.length === 0 ? (
+              <div className="qualities-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز کیفیتی ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="qualities-table-wrapper">
-              <table className="qualities-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز کیفیتی ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="qualities-table-wrapper">
+                <table className="qualities-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام کیفیت</th>
+                      <th>نام کیفیت</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {qualities.map((quality, index) => (
-                    <tr key={quality.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="quality-name">{quality.name}</td>
-
-                      <td className="quality-name-eng" dir="ltr">
-                        {quality.name_eng}
-                      </td>
-
-                      <td>
-                        <div className="quality-actions">
-                          <button
-                            type="button"
-                            className="quality-edit-button"
-                            onClick={() => setEditingQuality(quality)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="quality-delete-button"
-                            onClick={() => handleDelete(quality.id)}
-                            disabled={deletingId === quality.id}
-                          >
-                            {deletingId === quality.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {qualities.map((quality, index) => (
+                      <tr key={quality.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="quality-name">{quality.name}</td>
+
+                        <td className="quality-name-eng" dir="ltr">
+                          {quality.name_eng}
+                        </td>
+
+                        <td>
+                          <div className="quality-actions">
+                            <button
+                              type="button"
+                              className="quality-edit-button"
+                              onClick={() => setEditingQuality(quality)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="quality-delete-button"
+                              onClick={() => handleDelete(quality.id)}
+                              disabled={!isAdmin || deletingId === quality.id}
+                            >
+                              {deletingId === quality.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

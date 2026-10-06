@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import { useAuth } from "../../../auth/AuthContext.jsx";
+
 import PlanetForm from "./PlanetForm.jsx";
 
 import {
@@ -17,6 +19,8 @@ import { getNatures } from "../../../services/natureService.js";
 import "./Planets.css";
 
 export default function PlanetsList() {
+  const { isAdmin } = useAuth();
+
   const [planets, setPlanets] = useState([]);
 
   const [natures, setNatures] = useState([]);
@@ -181,145 +185,149 @@ export default function PlanetsList() {
       )}
 
       {/* Main Card */}
-      <div className="planets-card">
-        <div className="planets-card-header">
-          <div className="planets-card-title">نمایش سیارات</div>
+      {!editingPlanet && (
+        <div className="planets-card">
+          <div className="planets-card-header">
+            <div className="planets-card-title">نمایش سیارات</div>
 
-          <button
-            type="button"
-            className="planets-add-button"
-            onClick={startCreate}
-            disabled={Boolean(editingPlanet)}
-          >
-            <i className="bi bi-plus-lg" />
-            <span>افزودن سیاره</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              className="planets-add-button"
+              onClick={startCreate}
+              disabled={Boolean(editingPlanet)}
+            >
+              <i className="bi bi-plus-lg" />
+              <span>افزودن سیاره</span>
+            </button>
+          </div>
 
-        <div className="planets-card-body">
-          {loading ? (
-            <div className="planets-state">
-              <span
-                className="spinner-border spinner-border-sm"
-                aria-hidden="true"
-              />
+          <div className="planets-card-body">
+            {loading ? (
+              <div className="planets-state">
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                />
 
-              <span>در حال دریافت اطلاعات...</span>
-            </div>
-          ) : loadError ? (
-            <div className="planets-error">
-              <span>{loadError}</span>
+                <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : loadError ? (
+              <div className="planets-error">
+                <span>{loadError}</span>
 
-              <button type="button" onClick={loadData}>
-                تلاش مجدد
-              </button>
-            </div>
-          ) : planets.length === 0 ? (
-            <div className="planets-state">
-              <i className="bi bi-inbox" />
+                <button type="button" onClick={loadData}>
+                  تلاش مجدد
+                </button>
+              </div>
+            ) : planets.length === 0 ? (
+              <div className="planets-state">
+                <i className="bi bi-inbox" />
 
-              <span>هنوز سیاره‌ای ثبت نشده است.</span>
-            </div>
-          ) : (
-            <div className="planets-table-wrapper">
-              <table className="planets-table">
-                <thead>
-                  <tr>
-                    <th className="col-number">ردیف</th>
+                <span>هنوز سیاره‌ای ثبت نشده است.</span>
+              </div>
+            ) : (
+              <div className="planets-table-wrapper">
+                <table className="planets-table">
+                  <thead>
+                    <tr>
+                      <th className="col-number">ردیف</th>
 
-                    <th>نام سیاره</th>
+                      <th>نام سیاره</th>
 
-                    <th className="col-english">نام انگلیسی</th>
+                      <th className="col-english">نام انگلیسی</th>
 
-                    <th>طبیعت</th>
+                      <th>طبیعت</th>
 
-                    <th>گونا</th>
+                      <th>گونا</th>
 
-                    <th>عنصر</th>
+                      <th>عنصر</th>
 
-                    <th className="col-symbol">نماد</th>
+                      <th className="col-symbol">نماد</th>
 
-                    <th className="col-actions">عملیات</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {planets.map((planet, index) => (
-                    <tr key={planet.id}>
-                      <td className="text-center">{index + 1}</td>
-
-                      <td className="planet-name">{planet.name}</td>
-
-                      <td className="planet-name-eng" dir="ltr">
-                        {planet.name_eng}
-                      </td>
-
-                      <td>{findName(natures, planet.nature_id)}</td>
-
-                      <td>
-                        <div className="planet-relation-stack">
-                          <span>{findName(gunas, planet.guna_1_id)}</span>
-
-                          {planet.guna_2_id && (
-                            <span>{findName(gunas, planet.guna_2_id)}</span>
-                          )}
-                        </div>
-                      </td>
-
-                      <td>
-                        <div className="planet-relation-stack">
-                          <span>{findName(elements, planet.element_1_id)}</span>
-
-                          {planet.element_2_id && (
-                            <span>
-                              {findName(elements, planet.element_2_id)}
-                            </span>
-                          )}
-                        </div>
-                      </td>
-
-                      <td className="planet-symbol">{planet.symbol}</td>
-
-                      <td>
-                        <div className="planet-actions">
-                          <button
-                            type="button"
-                            className="planet-edit-button"
-                            onClick={() => setEditingPlanet(planet)}
-                            disabled={deletingId !== null}
-                          >
-                            <i className="bi bi-pencil" />
-                            <span>ویرایش</span>
-                          </button>
-
-                          <button
-                            type="button"
-                            className="planet-delete-button"
-                            onClick={() => handleDelete(planet.id)}
-                            disabled={deletingId === planet.id}
-                          >
-                            {deletingId === planet.id ? (
-                              <span
-                                className="spinner-border spinner-border-sm"
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <>
-                                <i className="bi bi-trash" />
-                                <span>حذف</span>
-                              </>
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                      <th className="col-actions">عملیات</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+                  </thead>
+
+                  <tbody>
+                    {planets.map((planet, index) => (
+                      <tr key={planet.id}>
+                        <td className="text-center">{index + 1}</td>
+
+                        <td className="planet-name">{planet.name}</td>
+
+                        <td className="planet-name-eng" dir="ltr">
+                          {planet.name_eng}
+                        </td>
+
+                        <td>{findName(natures, planet.nature_id)}</td>
+
+                        <td>
+                          <div className="planet-relation-stack">
+                            <span>{findName(gunas, planet.guna_1_id)}</span>
+
+                            {planet.guna_2_id && (
+                              <span>{findName(gunas, planet.guna_2_id)}</span>
+                            )}
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="planet-relation-stack">
+                            <span>
+                              {findName(elements, planet.element_1_id)}
+                            </span>
+
+                            {planet.element_2_id && (
+                              <span>
+                                {findName(elements, planet.element_2_id)}
+                              </span>
+                            )}
+                          </div>
+                        </td>
+
+                        <td className="planet-symbol">{planet.symbol}</td>
+
+                        <td>
+                          <div className="planet-actions">
+                            <button
+                              type="button"
+                              className="planet-edit-button"
+                              onClick={() => setEditingPlanet(planet)}
+                              disabled={deletingId !== null}
+                            >
+                              <i className="bi bi-pencil" />
+                              <span>ویرایش</span>
+                            </button>
+
+                            <button
+                              type="button"
+                              className="planet-delete-button"
+                              onClick={() => handleDelete(planet.id)}
+                              disabled={!isAdmin || deletingId === planet.id}
+                            >
+                              {deletingId === planet.id ? (
+                                <span
+                                  className="spinner-border spinner-border-sm"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <>
+                                  <i className="bi bi-trash" />
+                                  <span>حذف</span>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

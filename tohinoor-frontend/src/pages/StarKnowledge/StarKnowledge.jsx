@@ -156,10 +156,10 @@ export default function StarKnowledge() {
   }, [people, queryFromUrl, selectedZodiac]);
 
   /*
-  |--------------------------------------------------------------------------
-  | Search submit
-  |--------------------------------------------------------------------------
-  */
+|--------------------------------------------------------------------------
+| Search submit
+|--------------------------------------------------------------------------
+*/
 
   const handleSearchSubmit = () => {
     const query = normalizeSearchText(searchInput);
@@ -171,18 +171,24 @@ export default function StarKnowledge() {
     }
   };
 
+  const handleClearAllFilters = () => {
+    navigate("/star-knowledge");
+  };
+
   /*
-  |--------------------------------------------------------------------------
-  | Suggestion click
-  |--------------------------------------------------------------------------
-  */
+|--------------------------------------------------------------------------
+| Suggestion click
+|--------------------------------------------------------------------------
+*/
 
   const handleSuggestionClick = (person) => {
     navigate(`/star-knowledge/person/${person.slug}`);
   };
 
   const hasSearch = queryFromUrl.trim().length > 0;
-
+  const hasZodiacFilter = Boolean(selectedZodiac);
+  const hasFilter = hasSearch || hasZodiacFilter;
+  
   return (
     <PageShell>
       {selectedZodiac ? (
@@ -210,9 +216,7 @@ export default function StarKnowledge() {
 
         {loading ? (
           <section className="person-list">
-            <p className="person-list__empty">
-              در حال دریافت اطلاعات افراد...
-            </p>
+            <p className="person-list__empty">در حال دریافت اطلاعات افراد...</p>
           </section>
         ) : loadError ? (
           <section className="person-list">
@@ -230,6 +234,8 @@ export default function StarKnowledge() {
                   ? "نتایج جستجو"
                   : "همه زایچه‌ها"
             }
+            filterActive={hasFilter}
+            onClearFilter={handleClearAllFilters}
           />
         )}
 

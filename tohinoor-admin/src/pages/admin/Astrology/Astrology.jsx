@@ -22,7 +22,7 @@ const astrologyItems = [
   },
   {
     title: "کیفیت‌ها",
-    description: "مدیریت کیفیت‌های زودیاک",
+    description: "مدیریت کیفیت‌های صورفلکی",
     icon: "bi-stars",
     path: "/admin/qualities",
   },
@@ -33,8 +33,8 @@ const astrologyItems = [
     path: "/admin/planets",
   },
   {
-    title: "نشانه‌های زودیاک",
-    description: "مدیریت نشانه‌های دوازده‌گانه",
+    title: "صور فلکی",
+    description: "مدیریت صورفلکی دوازده‌گانه",
     icon: "bi-moon-stars",
     path: "/admin/zodiac-signs",
   },
