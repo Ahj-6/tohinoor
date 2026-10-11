@@ -38,6 +38,7 @@ class PersonResource extends JsonResource
             'country_id' => $this->country_id,
             'city_id' => $this->city_id,
             'time_zone' => $this->time_zone,
+            'dst' => $this->dst,
 
             'zodiac_sign_id' => $this->zodiac_sign_id,
             'birth_accuracy_id' => $this->birth_accuracy_id,

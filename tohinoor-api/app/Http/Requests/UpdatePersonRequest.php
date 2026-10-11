@@ -29,6 +29,7 @@ class UpdatePersonRequest extends FormRequest
             'city_id' => ['nullable', Rule::exists('cities', 'id')->whereNull('deleted_at'),],
 
             'time_zone' => ['nullable', 'string', 'max:255'],
+            'dst' => ['nullable', 'string', 'max:255'],
 
             'zodiac_sign_id' => ['nullable', Rule::exists('zodiac_signs', 'id')->whereNull('deleted_at'),],
             'birth_accuracy_id' => ['nullable', Rule::exists('birth_accuracies', 'id')->whereNull('deleted_at'),],

@@ -192,6 +192,11 @@ export default function PersonDetails() {
     [cities, person],
   );
 
+  const selectedCity = useMemo(
+    () => cities.find((item) => Number(item.id) === Number(person?.city_id)),
+    [cities, person],
+  );
+
   const zodiacSign = useMemo(
     () =>
       zodiacSigns.find(
@@ -370,33 +375,37 @@ export default function PersonDetails() {
             <span>تاریخ تولد</span>
             <strong>{formatBirthDate(person.birth_date)}</strong>
           </div>
-
           <div className="person-info-item">
             <span>ساعت تولد</span>
             <strong dir="ltr">{formatBirthTime(person.birth_time)}</strong>
           </div>
-
           <div className="person-info-item">
             <span>کشور تولد</span>
             <strong>{countryName}</strong>
           </div>
-
           <div className="person-info-item">
             <span>شهر تولد</span>
             <strong>{cityName}</strong>
           </div>
-
+          {/* Latitude */}
+          <div className="person-info-item">
+            <span>عرض جغرافیایی (Latitude)</span>
+            <strong dir="ltr">{selectedCity?.latitude ?? "—"}</strong>
+          </div>
+          {/* Longitude */}
+          <div className="person-info-item">
+            <span>طول جغرافیایی (Longitude)</span>
+            <strong dir="ltr">{selectedCity?.longitude ?? "—"}</strong>
+          </div>{" "}
           <div className="person-info-item">
             <span>منطقه زمانی</span>
             <strong dir="ltr">{person.time_zone || "—"}</strong>
           </div>
-
-          {/* <div className="person-info-item">
-            <span>دقت اطلاعات تولد</span>
-            <strong>{birthAccuracy?.name || "—"}</strong>
-
-            {birthAccuracy?.code && <small>{birthAccuracy.code}</small>}
-          </div> */}
+          {/* DST */}
+          <div className="person-info-item">
+            <span>DST</span>
+            <strong dir="ltr">{person.dst || "—"}</strong>
+          </div>
         </div>
       </section>
 

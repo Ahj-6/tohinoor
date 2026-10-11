@@ -1,7 +1,7 @@
 import "./PersonList.css";
 import "./PersonList-responsive.css";
 
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
 
 import PersonCard from "../PersonCard";
 import SectionHeader from "../../page/SectionHeader";
@@ -43,7 +43,7 @@ export default function PersonList({
             className="person-list__back-button"
             onClick={onClearFilter}
           >
-            <FaArrowRight />
+            <FaArrowLeft />
             <span>بازگشت به همه زایچه‌ها</span>
           </button>
         </div>

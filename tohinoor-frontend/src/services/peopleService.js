@@ -38,6 +38,7 @@ import api from "../api/axios";
       birthDate: person.birth_date || null,
       birthTime: person.birth_time || null,
       timezone: person.time_zone || null,
+      dst: person.dst || null,
 
       // -------------------------------------------------
       // Birth Place

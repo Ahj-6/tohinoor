@@ -26,6 +26,7 @@ class Person extends Model
         'country_id',
         'city_id',
         'time_zone',
+        'dst',
         'zodiac_sign_id',
         'birth_accuracy_id',
         'biography',

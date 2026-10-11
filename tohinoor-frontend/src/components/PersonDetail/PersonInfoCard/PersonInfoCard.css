@@ -81,7 +81,7 @@
   margin-bottom: 18px;
 }
 
-.person-info-card__zodiac-name{
+.person-info-card__zodiac-name {
   font-size: 16px;
 }
 
@@ -141,6 +141,17 @@
   font-size: 15px;
   font-weight: 700;
   color: var(--txt-person-detail);
+  /* direction: ltr; */
+}
+
+.person-info-card__value2 {
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--txt-person-detail);
+  direction: ltr;
+  text-align: right;
+  /* border: 1px solid red; */
 }
 
 .person-info-card__value--date {
@@ -159,10 +170,10 @@
   margin-top: -4px;
 }
 
-.red-b{
+.red-b {
   border: 2px solid red;
 }
 
-.mr-2{
+.mr-2 {
   margin-right: 20px;
 }

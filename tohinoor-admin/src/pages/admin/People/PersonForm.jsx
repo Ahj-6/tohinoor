@@ -13,6 +13,7 @@ const emptyForm = {
   city_id: "",
 
   time_zone: "",
+  dst: "",
 
   zodiac_sign_id: "",
   birth_accuracy_id: "",
@@ -177,6 +178,7 @@ export default function PersonForm({
         city_id: person.city_id ? String(person.city_id) : "",
 
         time_zone: person.time_zone || "",
+        dst: person.dst || "",
 
         zodiac_sign_id: person.zodiac_sign_id
           ? String(person.zodiac_sign_id)
@@ -333,6 +335,9 @@ export default function PersonForm({
     if (form.time_zone) {
       formData.append("time_zone", form.time_zone);
     }
+
+    // DST
+    formData.append("dst", form.dst ?? "");
 
     if (form.zodiac_sign_id) {
       formData.append("zodiac_sign_id", form.zodiac_sign_id);
@@ -655,6 +660,28 @@ export default function PersonForm({
                 />
 
                 {renderError("time_zone")}
+              </div>
+
+              {/* DST */}
+              <div className="col-12 col-md-4">
+                <label htmlFor="person-dst" className="form-label">
+                  DST
+                </label>
+
+                <input
+                  id="person-dst"
+                  type="text"
+                  name="dst"
+                  dir="ltr"
+                  style={{ textAlign: "right" }}
+                  className={`form-control ${errors.dst ? "is-invalid" : ""}`}
+                  value={form.dst}
+                  onChange={handleChange}
+                  maxLength={255}
+                  disabled={saving}
+                />
+
+                {renderError("dst")}
               </div>
 
               {/* Zodiac Sign */}

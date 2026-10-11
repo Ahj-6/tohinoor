@@ -101,11 +101,11 @@ export default function PersonInfoCard({ person }) {
             <div className="person-info-card__field">
               <span className="person-info-card__label">
                 <IconGlobe className="person-info-card__icon" />
-                <b>Timezone :</b>
+                <b>Timezone (DST):</b>
               </span>
 
-              <span className="person-info-card__value">
-                {person.timezone || "—"}
+              <span className="person-info-card__value2">
+                {person.timezone || "—"} (DST: {person.dst || "—"})
               </span>
             </div>
           </div>
