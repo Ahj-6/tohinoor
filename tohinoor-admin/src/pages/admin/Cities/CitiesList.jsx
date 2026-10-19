@@ -19,6 +19,9 @@ import "./Cities.css";
 export default function CitiesList() {
   const { isAdmin } = useAuth();
 
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCountryId, setSelectedCountryId] = useState("");
+
   const [cities, setCities] = useState([]);
   const [countries, setCountries] = useState([]);
 
@@ -79,6 +82,35 @@ export default function CitiesList() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  /* --------------------------------
+   Search & Country Filter
+-------------------------------- */
+
+  const normalizeSearch = (value) =>
+    String(value ?? "")
+      .trim()
+      .toLocaleLowerCase()
+      .replace(/[يى]/g, "ی")
+      .replace(/ك/g, "ک");
+
+  const normalizedSearch = normalizeSearch(searchTerm);
+
+  const filteredCities = cities.filter((city) => {
+    const matchesCountry =
+      selectedCountryId === "" ||
+      Number(city.country_id) === Number(selectedCountryId);
+
+    const name = normalizeSearch(city.name);
+    const englishName = normalizeSearch(city.name_eng);
+
+    const matchesSearch =
+      normalizedSearch === "" ||
+      name.includes(normalizedSearch) ||
+      englishName.includes(normalizedSearch);
+
+    return matchesCountry && matchesSearch;
+  });
 
   const findCountryName = (countryId) => {
     if (!countryId) {
@@ -196,17 +228,61 @@ export default function CitiesList() {
       {!editingCity && (
         <div className="cities-card">
           <div className="cities-card-header">
-            <div className="cities-card-title">نمایش شهرها</div>
+            {/* ردیف اول: عنوان و دکمه افزودن */}
+            <div className="cities-card-header-top">
+              <div className="cities-card-title">نمایش شهرها</div>
 
-            <button
-              type="button"
-              className="cities-add-button"
-              onClick={startCreate}
-              disabled={Boolean(editingCity)}
-            >
-              <i className="bi bi-plus-lg" />
-              <span>افزودن شهر</span>
-            </button>
+              <button
+                type="button"
+                className="cities-add-button"
+                onClick={startCreate}
+                disabled={Boolean(editingCity)}
+              >
+                <i className="bi bi-plus-lg" />
+                <span>افزودن شهر</span>
+              </button>
+            </div>
+          </div>
+
+          {/* ردیف دوم: جستجو و فیلتر کشور */}
+          <div className="cities-filters-row">
+            <div className="cities-search-group">
+              <label htmlFor="cities-search">جستجو</label>
+
+              <input
+                id="cities-search"
+                type="search"
+                className="form-control cities-search-input"
+                placeholder="نام فارسی یا انگلیسی شهر..."
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                autoComplete="off"
+              />
+            </div>
+
+            <div className="cities-country-filter">
+              <label htmlFor="cities-country">کشور</label>
+
+              <select
+                id="cities-country"
+                className="form-select"
+                value={selectedCountryId}
+                onChange={(event) => setSelectedCountryId(event.target.value)}
+              >
+                <option value="">همه کشورها</option>
+
+                {countries.map((country) => (
+                  <option key={country.id} value={country.id}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* <div className="cities-filter-count">
+                نمایش {filteredCities.length.toLocaleString("fa-IR")} از{" "}
+                {cities.length.toLocaleString("fa-IR")} شهر
+              </div> */}
           </div>
 
           <div className="cities-card-body">
@@ -218,6 +294,16 @@ export default function CitiesList() {
                 />
 
                 <span>در حال دریافت اطلاعات...</span>
+              </div>
+            ) : cities.length === 0 ? (
+              <div className="cities-state">
+                <i className="bi bi-inbox" />
+                <span>هنوز شهری ثبت نشده است.</span>
+              </div>
+            ) : filteredCities.length === 0 ? (
+              <div className="cities-state">
+                <i className="bi bi-search" />
+                <span>شهری با این مشخصات پیدا نشد.</span>
               </div>
             ) : loadError ? (
               <div className="cities-error">
@@ -255,7 +341,7 @@ export default function CitiesList() {
                   </thead>
 
                   <tbody>
-                    {cities.map((city, index) => (
+                    {filteredCities.map((city, index) => (
                       <tr key={city.id}>
                         <td className="text-center">{index + 1}</td>
 

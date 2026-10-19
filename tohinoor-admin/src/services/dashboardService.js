@@ -5,3 +5,10 @@ export async function getDashboardStats() {
 
   return response.data.data;
 }
+
+
+export async function getSitePageViewStats() {
+  const response = await api.get("/admin/site-page-views/stats");
+
+  return response.data.data;
+}

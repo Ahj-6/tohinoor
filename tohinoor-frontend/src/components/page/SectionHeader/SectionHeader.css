@@ -31,11 +31,12 @@
 
     border-radius:14px;
 
-    background:#b8b3af;
+    background:#9b9793;
 
     color:#fff;
 
     font-size:14px;
+    font-weight: bold;
 }
 
 .section-header__title-wrapper {

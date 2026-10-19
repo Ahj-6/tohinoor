@@ -16,6 +16,7 @@ import "./Countries.css";
 
 export default function CountriesList() {
   const { isAdmin } = useAuth();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [countries, setCountries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -51,6 +52,32 @@ export default function CountriesList() {
   useEffect(() => {
     loadCountries();
   }, [loadCountries]);
+
+  /* --------------------------------
+   Search Countries
+-------------------------------- */
+
+  const normalizeSearch = (value) =>
+    String(value ?? "")
+      .trim()
+      .toLocaleLowerCase()
+      .replace(/[يى]/g, "ی")
+      .replace(/ك/g, "ک");
+
+  const normalizedSearch = normalizeSearch(searchTerm);
+
+  const filteredCountries = countries.filter((country) => {
+    if (!normalizedSearch) {
+      return true;
+    }
+
+    const name = normalizeSearch(country.name);
+    const englishName = normalizeSearch(country.name_eng);
+
+    return (
+      name.includes(normalizedSearch) || englishName.includes(normalizedSearch)
+    );
+  });
 
   const handleSaved = (savedCountry) => {
     setCountries((current) => {
@@ -153,17 +180,35 @@ export default function CountriesList() {
       {!editingCountry && (
         <div className="countries-card">
           <div className="countries-card-header">
-            <div className="countries-card-title">نمایش کشورها</div>
+            {/* ردیف اول: عنوان و افزودن کشور */}
+            <div className="countries-card-header-top">
+              <div className="countries-card-title">نمایش کشورها</div>
 
-            <button
-              type="button"
-              className="countries-add-button"
-              onClick={startCreate}
-              disabled={Boolean(editingCountry)}
-            >
-              <i className="bi bi-plus-lg" />
-              <span>افزودن کشور</span>
-            </button>
+              <button
+                type="button"
+                className="countries-add-button"
+                onClick={startCreate}
+                disabled={Boolean(editingCountry)}
+              >
+                <i className="bi bi-plus-lg" />
+                <span>افزودن کشور</span>
+              </button>
+            </div>
+          </div>
+
+          {/* ردیف دوم: جستجو */}
+          <div className="countries-search-row">
+            <label htmlFor="countries-search">جستجو</label>
+
+            <input
+              id="countries-search"
+              type="search"
+              className="form-control countries-search-input"
+              placeholder="نام فارسی یا انگلیسی کشور..."
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              autoComplete="off"
+            />
           </div>
 
           <div className="countries-card-body">
@@ -183,6 +228,11 @@ export default function CountriesList() {
                 <button type="button" onClick={loadCountries}>
                   تلاش مجدد
                 </button>
+              </div>
+            ) : filteredCountries.length === 0 ? (
+              <div className="countries-state">
+                <i className="bi bi-search" />
+                <span>کشوری با این نام پیدا نشد.</span>
               </div>
             ) : countries.length === 0 ? (
               <div className="countries-state">
@@ -206,7 +256,7 @@ export default function CountriesList() {
                   </thead>
 
                   <tbody>
-                    {countries.map((country, index) => (
+                    {filteredCountries.map((country, index) => (
                       <tr key={country.id}>
                         <td className="text-center">{index + 1}</td>
 

@@ -28,18 +28,18 @@ class PersonController extends Controller
         return PersonResource::collection($people);
     }
 
-    public function publicIndex()
-    {
-        $people = Person::where('status', true)
-            ->with([
-                'zodiacSign',
-                'birthAccuracy',
-            ])
-            ->ordered()
-            ->get();
+public function publicIndex()
+{
+    $people = Person::where('status', true)
+        ->with([
+            'zodiacSign',
+            'birthAccuracy',
+        ])
+        ->orderBy('name_eng', 'asc')
+        ->get();
 
-        return PersonResource::collection($people);
-    }
+    return PersonResource::collection($people);
+}
 
     public function store(StorePersonRequest $request)
     {

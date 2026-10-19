@@ -24,6 +24,7 @@ use App\Http\Controllers\Api\BookPeopleController;
 use App\Http\Controllers\Api\MovieController;
 use App\Http\Controllers\Api\MoviePeopleController;
 use App\Http\Controllers\Api\SampleAnalysisController;
+use App\Http\Controllers\Api\SitePageViewController;
 
 
 /*
@@ -359,6 +360,33 @@ Route::get(
     [PersonController::class, 'publicShow']
 );
 
+
+/*
+|--------------------------------------------------------------------------
+| PUBLIC PAGE VIEWS
+|--------------------------------------------------------------------------
+*/
+
+// ثبت بازدید سایت عمومی با محدودیت تعداد درخواست
+Route::post(
+    'page-views',
+    [SitePageViewController::class, 'store']
+)->middleware('throttle:60,1');
+
+
+/*
+|--------------------------------------------------------------------------
+| SITE ANALYTICS - ADMIN + OPERATOR
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware([
+    'auth:sanctum',
+    'role:admin,operator',
+])->get(
+    'admin/site-page-views/stats',
+    [SitePageViewController::class, 'stats']
+);
 
 /*
 |--------------------------------------------------------------------------

@@ -31,7 +31,7 @@
 
 @media (max-width: 576px) {
   .login-button__label {
-    display: none;
+    /* display: none; */
   }
 
   .login-button__icon {

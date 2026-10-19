@@ -63,3 +63,121 @@
 .person-list__back-button:active {
   transform: translateY(1px);
 }
+
+
+
+
+
+/* Pagination */
+
+.person-list__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 36px;
+  direction: rtl;
+}
+
+.person-list__page-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.person-list__page-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 42px;
+  height: 42px;
+  padding: 0 12px;
+
+  border: 1px solid #d9c5a5;
+  border-radius: 9px;
+
+  background: transparent;
+  color: #946c32;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.person-list__page-button:hover:not(:disabled) {
+  background: #f0e5d4;
+  border-color: #c79a52;
+}
+
+.person-list__page-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.person-list__page-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.person-list__page-button--active,
+.person-list__page-button--active:hover {
+  background: #c79a52;
+  border-color: #c79a52;
+  color: #ffffff;
+}
+
+.person-list__page-navigation {
+  min-width: 68px;
+}
+
+.person-list__ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  color: #9b876b;
+}
+
+.person-list__page-info {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: #8b8174;
+}
+
+@media (max-width: 575.98px) {
+  .person-list__pagination {
+    gap: 5px;
+    margin-top: 28px;
+  }
+
+  .person-list__page-numbers {
+    gap: 4px;
+  }
+
+  .person-list__page-button {
+    min-width: 36px;
+    height: 38px;
+    padding: 0 8px;
+    font-size: 13px;
+  }
+
+  .person-list__page-navigation {
+    min-width: 54px;
+  }
+
+  .person-list__ellipsis {
+    min-width: 12px;
+  }
+}
